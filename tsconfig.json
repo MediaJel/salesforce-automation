@@ -1,29 +1,14 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Node 18",
-
   "compilerOptions": {
-    "outDir": "dist",
-    "lib": ["es2022"],
-    "module": "commonjs",
-    "target": "es2022",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "lib": ["ESNext"],
+    "module": "esnext",
+    "target": "esnext",
     "moduleResolution": "node",
-    "baseUrl": "./src/",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": true,
-    "importHelpers": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "types": ["node"],
-    "typeRoots": ["node_modules/@types"]
-  },
-  "include": ["src/**/*.ts", "spec/**/*.ts"],
-  "exclude": ["src/public/"]
+
+    // so that if your project isn't using TypeScript, it still has autocomplete
+    "allowJs": true,
+
+    // "bun-types" is the important part
+    "types": ["bun-types"]
+  }
 }

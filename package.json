@@ -1,21 +1,13 @@
 {
   "name": "salesforce-automation",
-  "version": "0.1.0",
-  "description": "Salesforce NodeJS Microservice that automates Mediajel dashboard tasks",
-  "main": "index.js",
-  "repository": "git@github.com:MediaJel/salesforce-automation.git",
-  "author": "pacholoamit <pacholoamit.tech@gmail.com>",
+  "module": "index.ts",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon index.ts",
-    "prod": "tsc -p . && node dist/index.js"
-  },
-  "dependencies": {
-    "typescript": "^4.9.3"
+    "start": "bun ./index.ts",
+    "prod": "bun ./index.ts --prod",
+    "clean": "rm -rf dist out node_modules"
   },
   "devDependencies": {
-    "@tsconfig/node18": "^1.0.1",
-    "@types/node": "^18.11.9",
-    "nodemon": "^2.0.20",
-    "ts-node": "^10.9.1"
+    "bun-types": "^0.2.2"
   }
 }
