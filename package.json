@@ -8,6 +8,10 @@
     "clean": "rm -rf dist out node_modules"
   },
   "devDependencies": {
+    "@types/jsforce": "^1.11.0",
     "bun-types": "^0.2.2"
+  },
+  "dependencies": {
+    "jsforce": "^1.11.0"
   }
 }
