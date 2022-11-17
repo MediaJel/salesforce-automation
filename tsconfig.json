@@ -3,7 +3,7 @@
   "display": "Node 18",
 
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "dist",
     "lib": ["es2022"],
     "module": "commonjs",
     "target": "es2022",
@@ -11,6 +11,19 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "baseUrl": "./src/",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": true,
+    "importHelpers": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": ["src/**/*.ts", "spec/**/*.ts"],
+  "exclude": ["src/public/"]
 }
