@@ -6,7 +6,8 @@
   "repository": "git@github.com:MediaJel/salesforce-automation.git",
   "author": "pacholoamit <pacholoamit.tech@gmail.com>",
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "nodemon index.ts",
+    "prod": "tsc -p . && node dist/index.js"
   },
   "dependencies": {
     "typescript": "^4.9.3"
