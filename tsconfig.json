@@ -5,6 +5,10 @@
     "target": "esnext",
     "moduleResolution": "node",
     "allowJs": true,
-    "types": ["bun-types"]
+    "types": ["bun-types"],
+    "baseUrl": "app",
+    "paths": {
+      "@/*": ["*"]
+    }
   }
 }
