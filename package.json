@@ -4,5 +4,8 @@
   "description": "Salesforce NodeJS Microservice that automates Mediajel dashboard tasks",
   "main": "index.js",
   "repository": "git@github.com:MediaJel/salesforce-automation.git",
-  "author": "pacholoamit <pacholoamit.tech@gmail.com>"
+  "author": "pacholoamit <pacholoamit.tech@gmail.com>",
+  "dependencies": {
+    "typescript": "^4.9.3"
+  }
 }
