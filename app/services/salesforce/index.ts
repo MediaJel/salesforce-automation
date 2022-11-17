@@ -1,3 +1,3 @@
-import SalesforceService from "./service";
+import SalesforceService from "@/services/salesforce/service";
 
 export default SalesforceService;
