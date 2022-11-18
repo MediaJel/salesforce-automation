@@ -8,6 +8,7 @@
     "dev": "nodemon",
     "preprod": "rimraf dist && tsc -p . ",
     "prod": "node -r ts-node/register -r dotenv/config -r tsconfig-paths/register dist/index.js",
+    "precodegen": "rimraf src/services/graphql/generated ",
     "codegen": "graphql-codegen -r dotenv/config --config src/codegen.ts"
   },
   "devDependencies": {

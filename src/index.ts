@@ -1,6 +1,8 @@
 import { ConnectionOptions } from "jsforce";
-import createApp from "@/app";
 import { App } from "@/utils/types";
+import { mustPromise } from "@/utils/utils";
+
+import createApp from "@/app";
 
 const options: ConnectionOptions = {
   oauth2: {
@@ -20,9 +22,5 @@ const startApp = async () => {
 };
 
 (async () => {
-  try {
-    await startApp();
-  } catch (error) {
-    console.error("Application error:", error);
-  }
+  mustPromise(startApp());
 })();
