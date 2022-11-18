@@ -25190,6 +25190,7 @@ export type OrgSendEmailConfigData = {
   dayOfWeek?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   frequency?: Maybe<Scalars['String']>;
+  frequencyValue?: Maybe<Scalars['String']>;
 };
 
 export type OrgSendEmailConfigInput = {
@@ -25197,6 +25198,7 @@ export type OrgSendEmailConfigInput = {
   dayOfWeek?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   frequency?: InputMaybe<Scalars['String']>;
+  frequencyValue?: InputMaybe<Scalars['String']>;
 };
 
 export type OrgSeoSummary = Node & {
@@ -39288,6 +39290,7 @@ export type SendEmailConfig = Node & {
   dayOfWeek?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   frequency?: Maybe<Scalars['String']>;
+  frequencyValue?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   orgs?: Maybe<Array<Org>>;
 };
@@ -39313,6 +39316,7 @@ export type SendEmailConfigCreateWithoutOrgsInput = {
   dayOfWeek?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   frequency?: InputMaybe<Scalars['String']>;
+  frequencyValue?: InputMaybe<Scalars['String']>;
 };
 
 export type SendEmailConfigUpdateOneWithoutOrgsInput = {
@@ -39329,6 +39333,7 @@ export type SendEmailConfigUpdateWithoutOrgsDataInput = {
   dayOfWeek?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   frequency?: InputMaybe<Scalars['String']>;
+  frequencyValue?: InputMaybe<Scalars['String']>;
 };
 
 export type SendEmailConfigUpsertWithoutOrgsInput = {
@@ -39425,6 +39430,33 @@ export type SendEmailConfigWhereInput = {
   /** All values starting with the given string. */
   email_starts_with?: InputMaybe<Scalars['String']>;
   frequency?: InputMaybe<Scalars['String']>;
+  frequencyValue?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  frequencyValue_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  frequencyValue_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  frequencyValue_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  frequencyValue_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  frequencyValue_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  frequencyValue_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  frequencyValue_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  frequencyValue_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  frequencyValue_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  frequencyValue_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  frequencyValue_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  frequencyValue_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  frequencyValue_starts_with?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   frequency_contains?: InputMaybe<Scalars['String']>;
   /** All values ending with the given string. */

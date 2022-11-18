@@ -1,5 +1,5 @@
 import { createClient } from "@urql/core";
-import { Org } from "@/utils/gql/graphql";
+import queries from "@/services/graphql/resolvers/queries";
 
 const client = createClient({
   url: process.env.GRAPHQL_ENDPOINT,
@@ -15,18 +15,11 @@ const client = createClient({
 const createGraphqlService = () => {
   return {
     async fetchOrgs() {
-      const QUERY = ` 
-        query test($id: ID!) {
-        orgs(where: { id_not: $id }) {
-            id
-          }
-        }`;
-
       const operation = await client
-        .query(QUERY, { id: "cjlwwzv86hn3q0726mqm60q3f" })
+        .query(queries.GET_ORG, { id: "cjlwwzv86hn3q0726mqm60q3f" })
         .toPromise();
 
-      return operation.data["orgs"] as Org;
+      return operation.data["orgs"];
     },
   };
 };
