@@ -1,17 +1,38 @@
 {
   "name": "salesforce-automation",
-  "module": "index.ts",
-  "type": "module",
+  "version": "1.0.0",
+  "description": "Salesforce NodeJS Microservice that automates Mediajel dashboard tasks",
+  "author": "Pacholo Amit <https://github.com/pacholoamit>",
+  "main": "app/index.js",
   "scripts": {
-    "start": "bun ./app/index.ts",
-    "prod": "bun ./app/index.ts --prod",
-    "clean": "rm -rf dist out node_modules"
+    "dev": "nodemon",
+    "build": "rimraf dist && tsc ",
+    "start": "yarn build && node dist/index.js"
   },
   "devDependencies": {
     "@types/jsforce": "^1.11.0",
-    "bun-types": "^0.2.2"
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.1"
   },
   "dependencies": {
-    "jsforce": "^1.11.0"
+    "jsforce": "^1.11.0",
+    "tsconfig-paths": "^4.1.0",
+    "typescript": "^4.9.3"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src"
+    ],
+    "exec": "node -r tsconfig-paths/register -r ts-node/register ./app/index.ts",
+    "ext": "ts, js"
   }
 }

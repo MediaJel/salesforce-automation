@@ -1,16 +1,27 @@
 {
   "compilerOptions": {
-    "lib": ["ESNext"],
-    "module": "esnext",
+    "lib": ["ES2022", "ES6"],
+    "module": "CommonJS",
     "target": "esnext",
     "moduleResolution": "node",
     "allowJs": true,
-    "types": ["bun-types"],
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
+    "importHelpers": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
     "baseUrl": "app",
+    "types": ["node"],
     "paths": {
       "@/*": ["*"]
     }
   },
   "include": ["app/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules/**/*"]
 }

@@ -1,10 +1,10 @@
-import * as jsforce from "jsforce";
+import { ConnectionOptions, Connection } from "jsforce";
 
-const createSalesforceAuth = (params: jsforce.ConnectionOptions) => {
+const createSalesforceAuth = (params: ConnectionOptions) => {
   return {
     async authenticate() {
-      return new Promise<jsforce.Connection>((resolve, reject) => {
-        const client = new jsforce.Connection(params);
+      return new Promise<Connection>((resolve, reject) => {
+        const client = new Connection(params);
 
         client.oauth2.refreshToken(params.refreshToken, (err, res) => {
           if (err) {
@@ -12,7 +12,7 @@ const createSalesforceAuth = (params: jsforce.ConnectionOptions) => {
             reject(err);
           }
 
-          const newClient = new jsforce.Connection({
+          const newClient = new Connection({
             accessToken: res.access_token,
             instanceUrl: res["instance_url"],
           });
