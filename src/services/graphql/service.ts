@@ -1,4 +1,5 @@
 import { createClient } from "@urql/core";
+import { Org } from "@/utils/gql/graphql";
 
 const client = createClient({
   url: process.env.GRAPHQL_ENDPOINT,
@@ -25,7 +26,7 @@ const createGraphqlService = () => {
         .query(QUERY, { id: "cjlwwzv86hn3q0726mqm60q3f" })
         .toPromise();
 
-      return operation.data["orgs"];
+      return operation.data["orgs"] as Org;
     },
   };
 };
