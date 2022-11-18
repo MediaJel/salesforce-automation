@@ -37,7 +37,7 @@
     "watch": [
       "app"
     ],
-    "exec": "node -r tsconfig-paths/register -r dotenv/config -r ts-node/register ./app/index.ts",
+    "exec": "node -r tsconfig-paths/register -r dotenv/config -r ts-node/register ./src/index.ts",
     "ext": "ts"
   }
 }

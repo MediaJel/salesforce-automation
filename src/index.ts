@@ -16,7 +16,7 @@ const options: ConnectionOptions = {
 
 const startApp = async () => {
   const app: App = createApp(options);
-  await app.run();
+  await app.testGraphQL();
 };
 
 (async () => {

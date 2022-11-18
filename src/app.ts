@@ -1,14 +1,20 @@
-import { ConnectionOptions } from "jsforce";
 import SalesforceService from "@/services/salesforce";
+import createGraphqlService from "@/services/graphql";
+
+import { ConnectionOptions } from "jsforce";
 import {
   SalesforceStreamSubscriptionParams,
   SalesforceChannel,
   Opportunity,
-  App,
 } from "@/utils/types";
 
 const createApp = (options: ConnectionOptions) => {
   return {
+    async testGraphQL() {
+      const graphql = createGraphqlService();
+      const orgs = await graphql.fetchOrgs();
+      console.log(orgs);
+    },
     async run(): Promise<void> {
       SalesforceService(options, (client, svc) => {
         console.log("Listening for Salesforce Opportunities...");
