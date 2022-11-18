@@ -1,0 +1,7 @@
+version: "3.0"
+services:
+  app:
+    container_name: salesforce-automation
+    build:
+      context: .
+    env_file: .env

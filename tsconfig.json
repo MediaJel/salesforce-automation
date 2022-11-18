@@ -19,6 +19,7 @@
     "baseUrl": "src",
     "rootDir": "src",
     "types": ["node"],
+    "skipLibCheck": true,
     "paths": {
       "@/*": ["*"]
     }
