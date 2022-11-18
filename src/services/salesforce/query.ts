@@ -3,7 +3,7 @@ import { Contact, Product, Account, QueryAttribute } from "@/utils/types";
 import { match } from "@/utils/utils";
 interface ProductsByOpportunityIdParams {
   id: string;
-  matches?: { [key in keyof Partial<Product>]: string };
+  where?: { [key in keyof Partial<Product>]: string };
 }
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
@@ -20,14 +20,14 @@ const createSalesforceQueries = (client: Connection) => {
   return {
     productsByOpportunityId: async ({
       id,
-      matches,
+      where,
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql);
 
-      if (!matches) return products;
+      if (!where) return products;
 
-      return products.filter((product) => match(product, matches));
+      return products.filter((product) => match(product, where));
     },
 
     contactById: async (id: string): Promise<Contact> => {

@@ -28,7 +28,7 @@ const createApp = (options: ConnectionOptions) => {
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
           const products = await svc.query.productsByOpportunityId({
             id: opp.Id,
-            matches: {
+            where: {
               Family: "Display Advertising",
               Name: "Standard Display Awareness",
             },
