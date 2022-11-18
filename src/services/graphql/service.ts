@@ -1,5 +1,7 @@
 import { createClient } from "@urql/core";
 import { PartnerLevel } from "@/services/graphql/generated/graphql";
+import { CreateOrgParams } from "@/utils/types";
+
 import queries from "@/services/graphql/resolvers/queries";
 import mutations from "@/services/graphql/resolvers/mutations";
 
@@ -23,11 +25,11 @@ const createGraphqlService = () => {
 
       return operation.data.orgs;
     },
-    async createOrg() {
+    async createOrg({ name, description }: CreateOrgParams) {
       const operation = await client
         .mutation(mutations.CREATE_ORG, {
-          name: "SALESFORCE ACCOUNT NAME",
-          description: "SALESFORCE ACCOUNT ID",
+          name,
+          description,
           website: "",
           level: PartnerLevel.Standard,
           appIds: [],

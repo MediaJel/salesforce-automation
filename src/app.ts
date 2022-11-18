@@ -9,6 +9,8 @@ import {
 } from "@/utils/types";
 
 const createApp = (options: ConnectionOptions) => {
+  const graphql = createGraphqlService();
+
   return {
     async testGraphQL() {
       const graphql = createGraphqlService();
@@ -36,11 +38,12 @@ const createApp = (options: ConnectionOptions) => {
           const contact = await svc.query.contactById(opp.Deal_Signatory__c);
           const account = await svc.query.accountById(opp.AccountId);
 
-          console.log({
-            products,
-            contact,
-            account,
+          const createdOrg = await graphql.createOrg({
+            name: account.Name,
+            description: `salesforce: ${account.Id}`,
           });
+
+          console.log(createdOrg);
 
           //! TODO: Create User and match to Org, and match to Org
           //! TODO: Create Campaign and match to Org

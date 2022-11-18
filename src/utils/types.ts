@@ -1,3 +1,5 @@
+import { CreateOrgMutationVariables } from "@/services/graphql/generated/graphql";
+
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
 import createApp from "@/app";
@@ -61,6 +63,9 @@ export interface SalesforceService {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
 }
+
+export interface CreateOrgParams
+  extends Pick<CreateOrgMutationVariables, "name" | "description"> {}
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 

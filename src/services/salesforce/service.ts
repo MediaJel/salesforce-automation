@@ -16,6 +16,7 @@ import createSalesforceStream from "@/services/salesforce/stream";
  * @param {ConnectionOptions} params - Salesforce connection params
  * @param callback - callback function to be called when the connection is established
  */
+
 const SalesforceService = (
   params: ConnectionOptions,
   callback: (client: Connection, svc: SalesforceService) => void

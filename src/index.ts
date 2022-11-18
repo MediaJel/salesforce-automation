@@ -1,6 +1,6 @@
 import { ConnectionOptions } from "jsforce";
 import { App } from "@/utils/types";
-import { mustPromise } from "@/utils/utils";
+import { mustRecover } from "@/utils/utils";
 
 import createApp from "@/app";
 
@@ -18,7 +18,7 @@ const options: ConnectionOptions = {
 
 const startApp = async () => {
   const app: App = createApp(options);
-  await app.testGraphQL();
+  await app.run();
 };
 
-(async () => mustPromise(startApp()))();
+(async () => mustRecover(startApp()))();

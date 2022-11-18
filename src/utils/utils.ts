@@ -1,4 +1,4 @@
-export const mustPromise = async <T>(promise: Promise<T>) => {
+export const mustRecover = async <T>(promise: Promise<T>) => {
   try {
     await promise;
   } catch (error) {
