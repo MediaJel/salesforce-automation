@@ -1,6 +1,6 @@
 import { Connection } from "jsforce";
 import { Contact, Product, Account, QueryAttribute } from "@/utils/types";
-
+import { compare } from "@/utils/utils";
 interface ProductsByOpportunityIdParams {
   id: string;
   match?: { [key in keyof Partial<Product>]: string };
@@ -27,17 +27,7 @@ const createSalesforceQueries = (client: Connection) => {
 
       if (!match) return products;
 
-      const matched = products.filter((product) => {
-        return Object.keys(match).some((key) => {
-          if (typeof key === "string") {
-            const k = <string>product[key];
-
-            return k.includes(match[key]);
-          }
-          return product[key] === match[key];
-        });
-      });
-      return matched;
+      return products.filter((product) => compare(product, match));
     },
 
     contactById: async (id: string): Promise<Contact> => {

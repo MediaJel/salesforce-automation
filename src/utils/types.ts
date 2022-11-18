@@ -64,4 +64,9 @@ export interface SalesforceService {
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
+export interface CompareParams<T> {
+  obj: T;
+  match: 
+}
+
 export type App = ReturnType<typeof createApp>;
