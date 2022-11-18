@@ -36,15 +36,21 @@ const createApp = (options: ConnectionOptions) => {
 
           if (products.length === 0) return console.log("No Display product");
           const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+
           const account = await svc.query.accountById(opp.AccountId);
 
-          const createdOrg = await graphql.createOrg({
-            name: account.Name,
-            description: `salesforce: ${account.Id}`,
-          });
+          console.log(account);
 
-          console.log(createdOrg);
+          // const createdOrg = await graphql.createOrg({
+          //   name: account.Name,
+          //   description: `salesforce: ${account.Id}`,
+          // });
 
+          // console.log(createdOrg);
+
+          //! TODOS
+          //! [] - Validate if Org Exists via querying by Salesforce ID
+          //! [] - Add additional fields to orgs
           //! TODO: Create User and match to Org, and match to Org
           //! TODO: Create Campaign and match to Org
         });

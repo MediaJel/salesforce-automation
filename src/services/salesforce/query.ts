@@ -37,7 +37,7 @@ const createSalesforceQueries = (client: Connection) => {
     },
 
     accountById: async (id: string): Promise<Account> => {
-      const soql = `SELECT Id, Name FROM Account WHERE Id = '${id}'`;
+      const soql = `SELECT Id, Name, ParentId  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql);
       return account;
     },

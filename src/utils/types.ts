@@ -51,6 +51,7 @@ export interface Product {
 export interface Account {
   Id: string;
   Name: string;
+  ParentId: string;
   attributes: PushTopicRecordAttributes;
 }
 
