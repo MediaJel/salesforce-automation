@@ -16,13 +16,13 @@
     "strict": true,
     "strictNullChecks": false,
     "noImplicitAny": false,
-    "baseUrl": "app",
-    "rootDir": "app",
+    "baseUrl": "src",
+    "rootDir": "src",
     "types": ["node"],
     "paths": {
       "@/*": ["*"]
     }
   },
-  "include": ["app/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**/*"]
 }
