@@ -1,4 +1,4 @@
-import { graphql } from "@/utils/gql-types";
+import { graphql } from "@/services/graphql/generated";
 
 const GET_ORG = graphql(`
   query getOrg($id: ID!) {

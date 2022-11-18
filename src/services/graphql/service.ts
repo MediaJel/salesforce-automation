@@ -19,7 +19,7 @@ const createGraphqlService = () => {
         .query(queries.GET_ORG, { id: "cjlwwzv86hn3q0726mqm60q3f" })
         .toPromise();
 
-      return operation.data["orgs"];
+      return operation.data.orgs;
     },
   };
 };
