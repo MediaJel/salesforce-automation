@@ -21,6 +21,4 @@ const startApp = async () => {
   await app.testGraphQL();
 };
 
-(async () => {
-  mustPromise(startApp());
-})();
+(async () => mustPromise(startApp()))();
