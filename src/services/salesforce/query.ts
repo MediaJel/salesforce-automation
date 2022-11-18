@@ -1,9 +1,9 @@
 import { Connection } from "jsforce";
 import { Contact, Product, Account, QueryAttribute } from "@/utils/types";
-import { compare } from "@/utils/utils";
+import { match } from "@/utils/utils";
 interface ProductsByOpportunityIdParams {
   id: string;
-  match?: { [key in keyof Partial<Product>]: string };
+  matches?: { [key in keyof Partial<Product>]: string };
 }
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
@@ -20,14 +20,14 @@ const createSalesforceQueries = (client: Connection) => {
   return {
     productsByOpportunityId: async ({
       id,
-      match,
+      matches,
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql);
 
       if (!match) return products;
 
-      return products.filter((product) => compare(product, match));
+      return products.filter((product) => match(product, matches));
     },
 
     contactById: async (id: string): Promise<Contact> => {

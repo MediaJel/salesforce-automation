@@ -1,5 +1,3 @@
-import { CompareParams } from "@/utils/types";
-
 export const mustPromise = async <T>(promise: Promise<T>) => {
   try {
     await promise;
@@ -8,15 +6,15 @@ export const mustPromise = async <T>(promise: Promise<T>) => {
   }
 };
 
-export const compare = async <T extends {}>(
+export const match = <T extends {}>(
   obj: T,
-  match: { [key in keyof Partial<T>]: string }
-) => {
-  return Object.keys(match).some((key) => {
+  criteria: { [key in keyof Partial<T>]: string }
+): boolean => {
+  return Object.keys(obj).some((key) => {
     if (typeof key === "string") {
-      const k = match[key] as string;
-      return k.includes(match[key]);
+      const k = obj[key] as string;
+      return k.includes(criteria[key]);
     }
-    return match[key] === obj[key];
+    return obj[key] === criteria[key];
   });
 };
