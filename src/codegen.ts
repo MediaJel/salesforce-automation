@@ -1,5 +1,8 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 
+/**
+ * Auto generates Graphql types
+ */
 const config: CodegenConfig = {
   schema: process.env.GRAPHQL_ENDPOINT,
   documents: ["src/**/*.ts"],
