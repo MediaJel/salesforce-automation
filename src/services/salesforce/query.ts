@@ -1,10 +1,5 @@
 import { Connection } from "jsforce";
-import {
-  Contact,
-  Product,
-  Account,
-  QueryAttribute,
-} from "@/services/salesforce/types";
+import { Contact, Product, Account, QueryAttribute } from "@/utils/types";
 
 interface ProductsByOpportunityIdParams {
   id: string;
@@ -35,7 +30,8 @@ const createSalesforceQueries = (client: Connection) => {
       const matched = products.filter((product) => {
         return Object.keys(match).some((key) => {
           if (typeof key === "string") {
-            const k = product[key] as string;
+            const k = <string>product[key];
+
             return k.includes(match[key]);
           }
           return product[key] === match[key];

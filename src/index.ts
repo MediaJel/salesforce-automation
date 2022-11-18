@@ -1,5 +1,6 @@
 import { ConnectionOptions } from "jsforce";
 import createApp from "@/app";
+import { App } from "@/utils/types";
 
 const options: ConnectionOptions = {
   oauth2: {
@@ -14,7 +15,7 @@ const options: ConnectionOptions = {
 };
 
 const startApp = async () => {
-  const app = createApp(options);
+  const app: App = createApp(options);
   await app.run();
 };
 

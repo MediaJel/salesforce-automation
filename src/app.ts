@@ -4,11 +4,12 @@ import {
   SalesforceStreamSubscriptionParams,
   SalesforceChannel,
   Opportunity,
-} from "@/services/salesforce/types";
+  App,
+} from "@/utils/types";
 
 const createApp = (options: ConnectionOptions) => {
   return {
-    async run() {
+    async run(): Promise<void> {
       SalesforceService(options, (client, svc) => {
         console.log("Listening for Salesforce Opportunities...");
 

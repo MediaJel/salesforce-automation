@@ -1,5 +1,6 @@
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
+import createApp from "@/app";
 
 export enum SalesforceChannel {
   /**
@@ -62,3 +63,5 @@ export interface SalesforceService {
 }
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
+
+export type App = ReturnType<typeof createApp>;

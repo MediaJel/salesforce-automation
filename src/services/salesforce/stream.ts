@@ -1,5 +1,5 @@
 import { StreamingExtension, Connection, StreamingMessage } from "jsforce";
-import { SalesforceStreamSubscriptionParams } from "@/services/salesforce/types";
+import { SalesforceStreamSubscriptionParams } from "@/utils/types";
 
 const createSalesforceStream = (client: Connection) => {
   return {
@@ -21,7 +21,7 @@ const createSalesforceStream = (client: Connection) => {
     subscribe: async <T extends { Id: string }>(
       { channel, replayId = -2 }: SalesforceStreamSubscriptionParams,
       callback: (message: T) => void
-    ) => {
+    ): Promise<void> => {
       const ids: string[] = [];
       const replayExt = new StreamingExtension.Replay(channel, replayId);
       const streamClient = client.streaming.createClient([replayExt]);

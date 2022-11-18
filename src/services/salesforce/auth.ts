@@ -2,7 +2,7 @@ import { ConnectionOptions, Connection } from "jsforce";
 
 const createSalesforceAuth = (params: ConnectionOptions) => {
   return {
-    async authenticate() {
+    async authenticate(): Promise<Connection> {
       return new Promise<Connection>((resolve, reject) => {
         const client = new Connection(params);
 

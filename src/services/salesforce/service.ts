@@ -1,5 +1,5 @@
 import { Connection, ConnectionOptions } from "jsforce";
-import { SalesforceService } from "@/services/salesforce/types";
+import { SalesforceService } from "@/utils/types";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceAuth from "@/services/salesforce/auth";
@@ -19,7 +19,7 @@ import createSalesforceStream from "@/services/salesforce/stream";
 const SalesforceService = (
   params: ConnectionOptions,
   callback: (client: Connection, svc: SalesforceService) => void
-) => {
+): void => {
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {
