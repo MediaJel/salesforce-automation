@@ -6,8 +6,8 @@
   "main": "app/index.js",
   "scripts": {
     "dev": "nodemon",
-    "build": "rimraf dist && tsc -p . ",
-    "prod": "yarn build && node -r ts-node/register -r dotenv/config -r tsconfig-paths/register dist/index.js"
+    "preprod": "rimraf dist && tsc -p . ",
+    "prod": "node -r ts-node/register -r dotenv/config -r tsconfig-paths/register dist/index.js"
   },
   "devDependencies": {
     "@types/jsforce": "^1.11.0",
