@@ -19,6 +19,11 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1"
   },
+  "engines": {
+    "node": ">=18.12.1",
+    "yarn": ">=1.22.19",
+    "npm": "please-use-yarn"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
