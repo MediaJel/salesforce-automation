@@ -25,7 +25,7 @@ const createSalesforceQueries = (client: Connection) => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql);
 
-      if (!match) return products;
+      if (!matches) return products;
 
       return products.filter((product) => match(product, matches));
     },
