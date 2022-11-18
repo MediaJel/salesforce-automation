@@ -21,6 +21,7 @@ coverage
 
 # API keys and secrets
 .env
+.env.*
 
 # Dependency directory
 node_modules
@@ -33,9 +34,3 @@ bower_components
 # OS metadata
 .DS_Store
 Thumbs.db
-
-# Ignore built ts files
-dist/**/*
-
-# ignore yarn.lock
-yarn.lock
