@@ -5,7 +5,7 @@ const CREATE_USER = graphql(`
     $username: String!
     $email: String!
     $phone: String!
-    $loggedInOrg: ID!
+    $orgId: ID!
     $roleItems: [RoleItemCreateWithoutRoleInput!]
     $avatar: ID
     $name: String
@@ -16,7 +16,7 @@ const CREATE_USER = graphql(`
         username: $username
         email: $email
         phone: $phone
-        orgId: $loggedInOrg
+        orgId: $orgId
         roleItems: $roleItems
         avatar: $avatar
         name: $name

@@ -22,7 +22,6 @@ const createApp = (options: ConnectionOptions) => {
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
-          console.log(opp);
           this.subscriptionHandler(opp, svc);
         });
       });
@@ -54,7 +53,7 @@ const createApp = (options: ConnectionOptions) => {
         name: `salesforce: ${contact.Name}`,
         phone: contact.Phone,
         username: contact.Email,
-        loggedInOrg: createdOrg.id,
+        orgId: createdOrg.id,
       });
 
       console.log("🚀 Created User", createdUser.id);
