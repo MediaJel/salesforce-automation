@@ -8,14 +8,11 @@ export const mustRecover = async <T>(promise: Promise<T>) => {
 
 export const match = <T extends {}>(
   obj: T,
-  criteria: { [key in keyof Partial<T>]: string }
+  where: { [key in keyof Partial<T>]: string }
 ): boolean => {
-  return Object.keys(criteria).some((key) => {
-    if (typeof key === "string") {
-      const k = obj[key] as string;
-
-      return k.includes(criteria[key]);
-    }
-    return obj[key] === criteria[key];
+  const matched = Object.keys(where).some((key) => {
+    return obj[key] === where[key];
   });
+
+  return matched;
 };

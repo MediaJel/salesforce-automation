@@ -18,7 +18,7 @@ const createApp = (options: ConnectionOptions) => {
         console.log("Listening for Salesforce Opportunities...");
 
         const subOptions: SalesforceStreamSubscriptionParams = {
-          channel: SalesforceChannel.OpportunitiesUpdateV2,
+          channel: SalesforceChannel.OpportunitiesUpdate,
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
@@ -33,7 +33,7 @@ const createApp = (options: ConnectionOptions) => {
         id: opp.Id,
         where: {
           Family: "Display Advertising",
-          Name: "Standard Display Awareness",
+          Name: "*Standard Display Awareness",
         },
       });
 
