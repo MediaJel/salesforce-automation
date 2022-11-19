@@ -26,15 +26,15 @@ const createGraphqlService = () => {
       return operation.data.orgs;
     },
 
-    async createUser({ email, name, loggedInOrg }: CreateUserParams) {
+    async createUser(params: CreateUserParams) {
       const operation = await client
         .mutation(mutations.CREATE_USER, {
-          email,
+          email: params.email,
           config: {},
           loggedInOrg: "",
-          name,
-          phone: "",
-          username: name,
+          name: params.name,
+          phone: params.phone || "",
+          username: params.email,
           avatar: "",
           roleItems: [],
         })

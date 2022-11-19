@@ -42,7 +42,7 @@ const createApp = (options: ConnectionOptions) => {
 
       const account = await svc.query.accountById(opp.AccountId);
 
-      console.log(account);
+      console.log(contact);
 
       // const createdOrg = await graphql.createOrg({
       //   name: account.Name,

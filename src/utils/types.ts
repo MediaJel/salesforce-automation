@@ -42,6 +42,7 @@ export interface Contact {
   Id: string;
   Name: string;
   Email: string;
+  Phone: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -73,7 +74,10 @@ export type CreateOrgParams = Pick<
   "name" | "description"
 >;
 
-export type CreateUserParams = CreateDashboardUserMutationVariables;
+export type CreateUserParams = Pick<
+  CreateDashboardUserMutationVariables,
+  "email" | "phone" | "name" | "username"
+>;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
