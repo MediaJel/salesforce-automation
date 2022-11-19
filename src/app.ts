@@ -1,4 +1,4 @@
-import SalesforceService from "@/services/salesforce";
+import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 
 import { ConnectionOptions } from "jsforce";
@@ -6,19 +6,15 @@ import {
   SalesforceStreamSubscriptionParams,
   SalesforceChannel,
   Opportunity,
+  SalesforceService,
 } from "@/utils/types";
 
 const createApp = (options: ConnectionOptions) => {
   const graphql = createGraphqlService();
 
   return {
-    async testGraphQL() {
-      const graphql = createGraphqlService();
-      const orgs = await graphql.fetchOrgs();
-      console.log(orgs);
-    },
     async run(): Promise<void> {
-      SalesforceService(options, (client, svc) => {
+      createSalesforceService(options, (client, svc) => {
         console.log("Listening for Salesforce Opportunities...");
 
         const subOptions: SalesforceStreamSubscriptionParams = {
@@ -26,35 +22,44 @@ const createApp = (options: ConnectionOptions) => {
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
-          const products = await svc.query.productsByOpportunityId({
-            id: opp.Id,
-            where: {
-              Family: "Display Advertising",
-              Name: "Standard Display Awareness",
-            },
-          });
-
-          if (products.length === 0) return console.log("No Display product");
-          const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-
-          const account = await svc.query.accountById(opp.AccountId);
-
-          console.log(account);
-
-          // const createdOrg = await graphql.createOrg({
-          //   name: account.Name,
-          //   description: `salesforce: ${account.Id}`,
-          // });
-
-          // console.log(createdOrg);
-
-          //! TODOS
-          //! [] - Validate if Org Exists via querying by Salesforce ID
-          //! [] - Add additional fields to orgs
-          //! TODO: Create User and match to Org, and match to Org
-          //! TODO: Create Campaign and match to Org
+          this.subscriptionHandler(opp, svc);
         });
       });
+    },
+
+    async testGraphQL() {
+      const orgs = await graphql.fetchOrgs();
+      console.log(orgs);
+    },
+
+    async subscriptionHandler(opp: Opportunity, svc: SalesforceService) {
+      const products = await svc.query.productsByOpportunityId({
+        id: opp.Id,
+        where: {
+          Family: "Display Advertising",
+          Name: "Standard Display Awareness",
+        },
+      });
+
+      if (products.length === 0) return console.log("No Display product");
+      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+
+      const account = await svc.query.accountById(opp.AccountId);
+
+      console.log(account);
+
+      // const createdOrg = await graphql.createOrg({
+      //   name: account.Name,
+      //   description: `salesforce: ${account.Id}`,
+      // });
+
+      // console.log(createdOrg);
+
+      //! TODOS
+      //! [] - Validate if Org Exists via querying by Salesforce ID
+      //! [] - Add additional fields to orgs
+      //! TODO: Create User and match to Org, and match to Org
+      //! TODO: Create Campaign and match to Org
     },
   };
 };
