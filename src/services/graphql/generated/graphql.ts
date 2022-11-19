@@ -10636,7 +10636,6 @@ export type CatalogItem = Node & {
   description?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   medias?: Maybe<Array<Media>>;
-  message?: Maybe<Message>;
   name: Scalars['String'];
   partnerUpdated?: Maybe<Scalars['DateTime']>;
   price?: Maybe<Scalars['Float']>;
@@ -10661,7 +10660,6 @@ export type CatalogItemCreateInput = {
   catalog?: InputMaybe<CatalogCreateOneWithoutCatalogItemsInput>;
   description?: InputMaybe<Scalars['String']>;
   medias?: InputMaybe<MediaCreateManyWithoutCatalogItemInput>;
-  message?: InputMaybe<MessageCreateOneWithoutCatalogItemsInput>;
   name: Scalars['String'];
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10670,14 +10668,14 @@ export type CatalogItemCreateInput = {
   weight?: InputMaybe<Scalars['Float']>;
 };
 
+export type CatalogItemCreateManyInput = {
+  connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
+  create?: InputMaybe<Array<CatalogItemCreateInput>>;
+};
+
 export type CatalogItemCreateManyWithoutCatalogInput = {
   connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
   create?: InputMaybe<Array<CatalogItemCreateWithoutCatalogInput>>;
-};
-
-export type CatalogItemCreateManyWithoutMessageInput = {
-  connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
-  create?: InputMaybe<Array<CatalogItemCreateWithoutMessageInput>>;
 };
 
 export type CatalogItemCreateManyWithoutProductInput = {
@@ -10693,7 +10691,6 @@ export type CatalogItemCreateOneWithoutMediasInput = {
 export type CatalogItemCreateWithoutCatalogInput = {
   description?: InputMaybe<Scalars['String']>;
   medias?: InputMaybe<MediaCreateManyWithoutCatalogItemInput>;
-  message?: InputMaybe<MessageCreateOneWithoutCatalogItemsInput>;
   name: Scalars['String'];
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10705,19 +10702,6 @@ export type CatalogItemCreateWithoutCatalogInput = {
 export type CatalogItemCreateWithoutMediasInput = {
   catalog?: InputMaybe<CatalogCreateOneWithoutCatalogItemsInput>;
   description?: InputMaybe<Scalars['String']>;
-  message?: InputMaybe<MessageCreateOneWithoutCatalogItemsInput>;
-  name: Scalars['String'];
-  partnerUpdated?: InputMaybe<Scalars['DateTime']>;
-  price?: InputMaybe<Scalars['Float']>;
-  product: ProductCreateOneWithoutCatalogItemsInput;
-  quantity?: InputMaybe<Scalars['Int']>;
-  weight?: InputMaybe<Scalars['Float']>;
-};
-
-export type CatalogItemCreateWithoutMessageInput = {
-  catalog?: InputMaybe<CatalogCreateOneWithoutCatalogItemsInput>;
-  description?: InputMaybe<Scalars['String']>;
-  medias?: InputMaybe<MediaCreateManyWithoutCatalogItemInput>;
   name: Scalars['String'];
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10730,7 +10714,6 @@ export type CatalogItemCreateWithoutProductInput = {
   catalog?: InputMaybe<CatalogCreateOneWithoutCatalogItemsInput>;
   description?: InputMaybe<Scalars['String']>;
   medias?: InputMaybe<MediaCreateManyWithoutCatalogItemInput>;
-  message?: InputMaybe<MessageCreateOneWithoutCatalogItemsInput>;
   name: Scalars['String'];
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10759,6 +10742,27 @@ export enum CatalogItemOrderByInput {
   WeightDesc = 'weight_DESC'
 }
 
+export type CatalogItemUpdateDataInput = {
+  catalog?: InputMaybe<CatalogUpdateOneWithoutCatalogItemsInput>;
+  description?: InputMaybe<Scalars['String']>;
+  medias?: InputMaybe<MediaUpdateManyWithoutCatalogItemInput>;
+  name?: InputMaybe<Scalars['String']>;
+  partnerUpdated?: InputMaybe<Scalars['DateTime']>;
+  price?: InputMaybe<Scalars['Float']>;
+  product?: InputMaybe<ProductUpdateOneRequiredWithoutCatalogItemsInput>;
+  quantity?: InputMaybe<Scalars['Int']>;
+  weight?: InputMaybe<Scalars['Float']>;
+};
+
+export type CatalogItemUpdateManyInput = {
+  connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
+  create?: InputMaybe<Array<CatalogItemCreateInput>>;
+  delete?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
+  disconnect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
+  update?: InputMaybe<Array<CatalogItemUpdateWithWhereUniqueNestedInput>>;
+  upsert?: InputMaybe<Array<CatalogItemUpsertWithWhereUniqueNestedInput>>;
+};
+
 export type CatalogItemUpdateManyWithoutCatalogInput = {
   connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
   create?: InputMaybe<Array<CatalogItemCreateWithoutCatalogInput>>;
@@ -10766,15 +10770,6 @@ export type CatalogItemUpdateManyWithoutCatalogInput = {
   disconnect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
   update?: InputMaybe<Array<CatalogItemUpdateWithWhereUniqueWithoutCatalogInput>>;
   upsert?: InputMaybe<Array<CatalogItemUpsertWithWhereUniqueWithoutCatalogInput>>;
-};
-
-export type CatalogItemUpdateManyWithoutMessageInput = {
-  connect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
-  create?: InputMaybe<Array<CatalogItemCreateWithoutMessageInput>>;
-  delete?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
-  disconnect?: InputMaybe<Array<CatalogItemWhereUniqueInput>>;
-  update?: InputMaybe<Array<CatalogItemUpdateWithWhereUniqueWithoutMessageInput>>;
-  upsert?: InputMaybe<Array<CatalogItemUpsertWithWhereUniqueWithoutMessageInput>>;
 };
 
 export type CatalogItemUpdateManyWithoutProductInput = {
@@ -10795,13 +10790,13 @@ export type CatalogItemUpdateOneWithoutMediasInput = {
   upsert?: InputMaybe<CatalogItemUpsertWithoutMediasInput>;
 };
 
-export type CatalogItemUpdateWithWhereUniqueWithoutCatalogInput = {
-  data: CatalogItemUpdateWithoutCatalogDataInput;
+export type CatalogItemUpdateWithWhereUniqueNestedInput = {
+  data: CatalogItemUpdateDataInput;
   where: CatalogItemWhereUniqueInput;
 };
 
-export type CatalogItemUpdateWithWhereUniqueWithoutMessageInput = {
-  data: CatalogItemUpdateWithoutMessageDataInput;
+export type CatalogItemUpdateWithWhereUniqueWithoutCatalogInput = {
+  data: CatalogItemUpdateWithoutCatalogDataInput;
   where: CatalogItemWhereUniqueInput;
 };
 
@@ -10813,7 +10808,6 @@ export type CatalogItemUpdateWithWhereUniqueWithoutProductInput = {
 export type CatalogItemUpdateWithoutCatalogDataInput = {
   description?: InputMaybe<Scalars['String']>;
   medias?: InputMaybe<MediaUpdateManyWithoutCatalogItemInput>;
-  message?: InputMaybe<MessageUpdateOneWithoutCatalogItemsInput>;
   name?: InputMaybe<Scalars['String']>;
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10825,19 +10819,6 @@ export type CatalogItemUpdateWithoutCatalogDataInput = {
 export type CatalogItemUpdateWithoutMediasDataInput = {
   catalog?: InputMaybe<CatalogUpdateOneWithoutCatalogItemsInput>;
   description?: InputMaybe<Scalars['String']>;
-  message?: InputMaybe<MessageUpdateOneWithoutCatalogItemsInput>;
-  name?: InputMaybe<Scalars['String']>;
-  partnerUpdated?: InputMaybe<Scalars['DateTime']>;
-  price?: InputMaybe<Scalars['Float']>;
-  product?: InputMaybe<ProductUpdateOneRequiredWithoutCatalogItemsInput>;
-  quantity?: InputMaybe<Scalars['Int']>;
-  weight?: InputMaybe<Scalars['Float']>;
-};
-
-export type CatalogItemUpdateWithoutMessageDataInput = {
-  catalog?: InputMaybe<CatalogUpdateOneWithoutCatalogItemsInput>;
-  description?: InputMaybe<Scalars['String']>;
-  medias?: InputMaybe<MediaUpdateManyWithoutCatalogItemInput>;
   name?: InputMaybe<Scalars['String']>;
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10850,7 +10831,6 @@ export type CatalogItemUpdateWithoutProductDataInput = {
   catalog?: InputMaybe<CatalogUpdateOneWithoutCatalogItemsInput>;
   description?: InputMaybe<Scalars['String']>;
   medias?: InputMaybe<MediaUpdateManyWithoutCatalogItemInput>;
-  message?: InputMaybe<MessageUpdateOneWithoutCatalogItemsInput>;
   name?: InputMaybe<Scalars['String']>;
   partnerUpdated?: InputMaybe<Scalars['DateTime']>;
   price?: InputMaybe<Scalars['Float']>;
@@ -10858,15 +10838,15 @@ export type CatalogItemUpdateWithoutProductDataInput = {
   weight?: InputMaybe<Scalars['Float']>;
 };
 
-export type CatalogItemUpsertWithWhereUniqueWithoutCatalogInput = {
-  create: CatalogItemCreateWithoutCatalogInput;
-  update: CatalogItemUpdateWithoutCatalogDataInput;
+export type CatalogItemUpsertWithWhereUniqueNestedInput = {
+  create: CatalogItemCreateInput;
+  update: CatalogItemUpdateDataInput;
   where: CatalogItemWhereUniqueInput;
 };
 
-export type CatalogItemUpsertWithWhereUniqueWithoutMessageInput = {
-  create: CatalogItemCreateWithoutMessageInput;
-  update: CatalogItemUpdateWithoutMessageDataInput;
+export type CatalogItemUpsertWithWhereUniqueWithoutCatalogInput = {
+  create: CatalogItemCreateWithoutCatalogInput;
+  update: CatalogItemUpdateWithoutCatalogDataInput;
   where: CatalogItemWhereUniqueInput;
 };
 
@@ -10961,7 +10941,6 @@ export type CatalogItemWhereInput = {
   medias_every?: InputMaybe<MediaWhereInput>;
   medias_none?: InputMaybe<MediaWhereInput>;
   medias_some?: InputMaybe<MediaWhereInput>;
-  message?: InputMaybe<MessageWhereInput>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -20995,7 +20974,7 @@ export type MessageStrainsArgs = {
 };
 
 export type MessageCreateInput = {
-  catalogItems?: InputMaybe<CatalogItemCreateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemCreateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation: ConversationCreateOneWithoutMessagesInput;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21017,11 +20996,6 @@ export type MessageCreateManyWithoutUserInput = {
   create?: InputMaybe<Array<MessageCreateWithoutUserInput>>;
 };
 
-export type MessageCreateOneWithoutCatalogItemsInput = {
-  connect?: InputMaybe<MessageWhereUniqueInput>;
-  create?: InputMaybe<MessageCreateWithoutCatalogItemsInput>;
-};
-
 export type MessageCreateOneWithoutLocationsInput = {
   connect?: InputMaybe<MessageWhereUniqueInput>;
   create?: InputMaybe<MessageCreateWithoutLocationsInput>;
@@ -21032,20 +21006,8 @@ export type MessageCreateOneWithoutStrainsInput = {
   create?: InputMaybe<MessageCreateWithoutStrainsInput>;
 };
 
-export type MessageCreateWithoutCatalogItemsInput = {
-  context?: InputMaybe<Scalars['String']>;
-  conversation: ConversationCreateOneWithoutMessagesInput;
-  currentOrgID?: InputMaybe<Scalars['String']>;
-  isUser?: InputMaybe<Scalars['Boolean']>;
-  locations?: InputMaybe<LocationCreateManyWithoutMessageInput>;
-  message: Scalars['String'];
-  personality?: InputMaybe<Scalars['String']>;
-  strains?: InputMaybe<StrainCreateManyWithoutMessageInput>;
-  user?: InputMaybe<UserCreateOneWithoutMessagesInput>;
-};
-
 export type MessageCreateWithoutConversationInput = {
-  catalogItems?: InputMaybe<CatalogItemCreateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemCreateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   currentOrgID?: InputMaybe<Scalars['String']>;
   isUser?: InputMaybe<Scalars['Boolean']>;
@@ -21057,7 +21019,7 @@ export type MessageCreateWithoutConversationInput = {
 };
 
 export type MessageCreateWithoutLocationsInput = {
-  catalogItems?: InputMaybe<CatalogItemCreateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemCreateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation: ConversationCreateOneWithoutMessagesInput;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21069,7 +21031,7 @@ export type MessageCreateWithoutLocationsInput = {
 };
 
 export type MessageCreateWithoutStrainsInput = {
-  catalogItems?: InputMaybe<CatalogItemCreateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemCreateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation: ConversationCreateOneWithoutMessagesInput;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21081,7 +21043,7 @@ export type MessageCreateWithoutStrainsInput = {
 };
 
 export type MessageCreateWithoutUserInput = {
-  catalogItems?: InputMaybe<CatalogItemCreateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemCreateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation: ConversationCreateOneWithoutMessagesInput;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21112,7 +21074,7 @@ export enum MessageOrderByInput {
 }
 
 export type MessageUpdateInput = {
-  catalogItems?: InputMaybe<CatalogItemUpdateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemUpdateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesInput>;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21150,15 +21112,6 @@ export type MessageUpdateManyWithoutUserInput = {
   upsert?: InputMaybe<Array<MessageUpsertWithWhereUniqueWithoutUserInput>>;
 };
 
-export type MessageUpdateOneWithoutCatalogItemsInput = {
-  connect?: InputMaybe<MessageWhereUniqueInput>;
-  create?: InputMaybe<MessageCreateWithoutCatalogItemsInput>;
-  delete?: InputMaybe<Scalars['Boolean']>;
-  disconnect?: InputMaybe<Scalars['Boolean']>;
-  update?: InputMaybe<MessageUpdateWithoutCatalogItemsDataInput>;
-  upsert?: InputMaybe<MessageUpsertWithoutCatalogItemsInput>;
-};
-
 export type MessageUpdateOneWithoutLocationsInput = {
   connect?: InputMaybe<MessageWhereUniqueInput>;
   create?: InputMaybe<MessageCreateWithoutLocationsInput>;
@@ -21187,20 +21140,8 @@ export type MessageUpdateWithWhereUniqueWithoutUserInput = {
   where: MessageWhereUniqueInput;
 };
 
-export type MessageUpdateWithoutCatalogItemsDataInput = {
-  context?: InputMaybe<Scalars['String']>;
-  conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesInput>;
-  currentOrgID?: InputMaybe<Scalars['String']>;
-  isUser?: InputMaybe<Scalars['Boolean']>;
-  locations?: InputMaybe<LocationUpdateManyWithoutMessageInput>;
-  message?: InputMaybe<Scalars['String']>;
-  personality?: InputMaybe<Scalars['String']>;
-  strains?: InputMaybe<StrainUpdateManyWithoutMessageInput>;
-  user?: InputMaybe<UserUpdateOneWithoutMessagesInput>;
-};
-
 export type MessageUpdateWithoutConversationDataInput = {
-  catalogItems?: InputMaybe<CatalogItemUpdateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemUpdateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   currentOrgID?: InputMaybe<Scalars['String']>;
   isUser?: InputMaybe<Scalars['Boolean']>;
@@ -21212,7 +21153,7 @@ export type MessageUpdateWithoutConversationDataInput = {
 };
 
 export type MessageUpdateWithoutLocationsDataInput = {
-  catalogItems?: InputMaybe<CatalogItemUpdateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemUpdateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesInput>;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21224,7 +21165,7 @@ export type MessageUpdateWithoutLocationsDataInput = {
 };
 
 export type MessageUpdateWithoutStrainsDataInput = {
-  catalogItems?: InputMaybe<CatalogItemUpdateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemUpdateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesInput>;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21236,7 +21177,7 @@ export type MessageUpdateWithoutStrainsDataInput = {
 };
 
 export type MessageUpdateWithoutUserDataInput = {
-  catalogItems?: InputMaybe<CatalogItemUpdateManyWithoutMessageInput>;
+  catalogItems?: InputMaybe<CatalogItemUpdateManyInput>;
   context?: InputMaybe<Scalars['String']>;
   conversation?: InputMaybe<ConversationUpdateOneRequiredWithoutMessagesInput>;
   currentOrgID?: InputMaybe<Scalars['String']>;
@@ -21257,11 +21198,6 @@ export type MessageUpsertWithWhereUniqueWithoutUserInput = {
   create: MessageCreateWithoutUserInput;
   update: MessageUpdateWithoutUserDataInput;
   where: MessageWhereUniqueInput;
-};
-
-export type MessageUpsertWithoutCatalogItemsInput = {
-  create: MessageCreateWithoutCatalogItemsInput;
-  update: MessageUpdateWithoutCatalogItemsDataInput;
 };
 
 export type MessageUpsertWithoutLocationsInput = {
@@ -46458,6 +46394,20 @@ export type CreateOrgMutationVariables = Exact<{
 
 export type CreateOrgMutation = { __typename?: 'Mutation', createOrg: { __typename?: 'Org', id: string, name: string, description?: string | null, level: PartnerLevel, website?: string | null, domain?: string | null, chatWootId?: string | null, cpm?: string | null, brands?: Array<{ __typename?: 'Brand', name?: string | null, logo?: { __typename?: 'Media', key: string } | null }> | null, config?: { __typename?: 'OrgConfig', priceVisible?: boolean | null, isDemo?: boolean | null, isAdmin?: boolean | null, isPartner?: boolean | null, isTrafficker?: boolean | null, exportData?: boolean | null, isSelfService?: boolean | null, hasInsights?: boolean | null, providersVisible?: boolean | null, isProcessor?: boolean | null, canResetPasswords?: boolean | null, campaignSummary?: boolean | null, isPacing?: boolean | null, pastData?: boolean | null, segment?: boolean | null, technicalSupport?: boolean | null, articles?: boolean | null } | null, dataConfig?: { __typename?: 'OrgDataConfig', reTargeting: boolean, appIds: Array<string>, tradeDeskIdentifier?: string | null, storageBucket?: string | null, googleCustomerId?: string | null, seo?: boolean | null, googleAnalytics?: { __typename?: 'GoogleAnalytics', viewId?: string | null, isGA4?: boolean | null } | null } | null, locations?: Array<{ __typename?: 'Location', street: string, city: string, state?: StateType | null }> | null, logo?: { __typename?: 'Media', id: string, key: string } | null, signInLogo?: { __typename?: 'Media', id: string, key: string } | null, roles?: Array<{ __typename?: 'Role', id: string, name?: string | null, isMaster?: boolean | null, roleItems?: Array<{ __typename?: 'RoleItem', id: string, feature: Feature, actions: Array<FeatureActions> }> | null, users?: Array<{ __typename?: 'User', id: string }> | null }> | null, parentOrg?: Array<{ __typename?: 'Org', name: string, id: string }> | null } };
 
+export type CreateDashboardUserMutationVariables = Exact<{
+  username: Scalars['String'];
+  email: Scalars['String'];
+  phone: Scalars['String'];
+  loggedInOrg: Scalars['ID'];
+  roleItems?: InputMaybe<Array<RoleItemCreateWithoutRoleInput> | RoleItemCreateWithoutRoleInput>;
+  avatar?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  config: UserConfigCreateInput;
+}>;
+
+
+export type CreateDashboardUserMutation = { __typename?: 'Mutation', createDashboardUser: { __typename?: 'User', id: string, name?: string | null, username: string, email?: string | null, phone?: string | null, cognitoUserId: string, roles?: Array<{ __typename?: 'Role', id: string, roleItems?: Array<{ __typename?: 'RoleItem', id: string, feature: Feature, actions: Array<FeatureActions> }> | null, org: { __typename?: 'Org', id: string, name: string, parentOrg?: Array<{ __typename?: 'Org', id: string, name: string }> | null, logo?: { __typename?: 'Media', id: string, key: string } | null } }> | null, avatar?: { __typename?: 'Media', id: string, key: string } | null } };
+
 export type GetOrgQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -46467,4 +46417,5 @@ export type GetOrgQuery = { __typename?: 'Query', orgs: Array<{ __typename?: 'Or
 
 
 export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"signInLogo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brands"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"priceVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isDemo"}},{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}},{"kind":"Field","name":{"kind":"Name","value":"isPartner"}},{"kind":"Field","name":{"kind":"Name","value":"isTrafficker"}},{"kind":"Field","name":{"kind":"Name","value":"exportData"}},{"kind":"Field","name":{"kind":"Name","value":"isSelfService"}},{"kind":"Field","name":{"kind":"Name","value":"hasInsights"}},{"kind":"Field","name":{"kind":"Name","value":"providersVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isProcessor"}},{"kind":"Field","name":{"kind":"Name","value":"canResetPasswords"}},{"kind":"Field","name":{"kind":"Name","value":"campaignSummary"}},{"kind":"Field","name":{"kind":"Name","value":"isPacing"}},{"kind":"Field","name":{"kind":"Name","value":"pastData"}},{"kind":"Field","name":{"kind":"Name","value":"segment"}},{"kind":"Field","name":{"kind":"Name","value":"technicalSupport"}},{"kind":"Field","name":{"kind":"Name","value":"articles"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dataConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reTargeting"}},{"kind":"Field","name":{"kind":"Name","value":"appIds"}},{"kind":"Field","name":{"kind":"Name","value":"tradeDeskIdentifier"}},{"kind":"Field","name":{"kind":"Name","value":"storageBucket"}},{"kind":"Field","name":{"kind":"Name","value":"googleCustomerId"}},{"kind":"Field","name":{"kind":"Name","value":"seo"}},{"kind":"Field","name":{"kind":"Name","value":"googleAnalytics"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"viewId"}},{"kind":"Field","name":{"kind":"Name","value":"isGA4"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"locations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"signInLogo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isMaster"}},{"kind":"Field","name":{"kind":"Name","value":"roleItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"feature"}},{"kind":"Field","name":{"kind":"Name","value":"actions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"domain"}},{"kind":"Field","name":{"kind":"Name","value":"parentOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"chatWootId"}},{"kind":"Field","name":{"kind":"Name","value":"cpm"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
+export const CreateDashboardUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createDashboardUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"loggedInOrg"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createDashboardUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"phone"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"orgId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"loggedInOrg"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"avatar"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"cognitoUserId"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"roleItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"20"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"feature"}},{"kind":"Field","name":{"kind":"Name","value":"actions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"org"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"parentOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]}}]} as unknown as DocumentNode<CreateDashboardUserMutation, CreateDashboardUserMutationVariables>;
 export const GetOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_not"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetOrgQuery, GetOrgQueryVariables>;
