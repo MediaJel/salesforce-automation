@@ -51,7 +51,7 @@ const createApp = (options: ConnectionOptions) => {
       const createdUser = await graphql.createUser({
         email: contact.Email,
         name: `salesforce: ${contact.Name}`,
-        phone: contact.Phone,
+        phone: "+11234567894", // Always add a +1 for some reason
         username: contact.Email,
         orgId: createdOrg.id,
       });
@@ -59,9 +59,8 @@ const createApp = (options: ConnectionOptions) => {
       console.log("🚀 Created User", createdUser.id);
 
       //! TODOS
-      //! [] - Validate if Org Exists via querying by Salesforce ID
-      //! [] - Add additional fields to orgs
-      //! TODO: Create User and match to Org, and match to Org
+      //! [x] - Validate if Org Exists via querying by Salesforce ID
+      //! [x] - Create User and match to Org, and match to Org
       //! TODO: Create Campaign and match to Org
     },
   };

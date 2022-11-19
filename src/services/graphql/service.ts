@@ -38,12 +38,30 @@ const createGraphqlService = () => {
       const operation = await client
         .mutation(mutations.CREATE_USER, {
           email: params.email,
-          config: {},
+          config: {
+            articles: false,
+            campaignSummary: false,
+            canResetPasswords: false,
+            exportData: false,
+            hasInsights: false,
+            isAdmin: false,
+            isDemo: false,
+            isPacing: false,
+            isPartner: false,
+            isProcessor: false,
+            isSelfService: false,
+            isTrafficker: false,
+            pastData: false,
+            priceVisible: false,
+            providersVisible: false,
+            segment: false,
+            technicalSupport: false,
+          },
           orgId: params.orgId,
           name: params.name,
-          phone: params.phone || "",
+          phone: params.phone,
           username: params.username,
-          avatar: "",
+          avatar: null,
           roleItems: [],
         })
         .toPromise()
@@ -51,7 +69,6 @@ const createGraphqlService = () => {
           throw new Error(err);
         });
 
-      console.log(util.inspect(operation, false, null, true));
       return operation.data.createDashboardUser;
     },
     async createOrg({ name, description }: CreateOrgParams) {
