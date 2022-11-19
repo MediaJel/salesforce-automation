@@ -1,4 +1,7 @@
-import { CreateOrgMutationVariables } from "@/services/graphql/generated/graphql";
+import {
+  CreateDashboardUserMutationVariables,
+  CreateOrgMutationVariables,
+} from "@/services/graphql/generated/graphql";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
@@ -65,8 +68,12 @@ export interface SalesforceService {
   stream: ReturnType<typeof createSalesforceStream>;
 }
 
-export interface CreateOrgParams
-  extends Pick<CreateOrgMutationVariables, "name" | "description"> {}
+export type CreateOrgParams = Pick<
+  CreateOrgMutationVariables,
+  "name" | "description"
+>;
+
+export type CreateUserParams = CreateDashboardUserMutationVariables;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 

@@ -1,6 +1,6 @@
 import { createClient } from "@urql/core";
 import { PartnerLevel } from "@/services/graphql/generated/graphql";
-import { CreateOrgParams } from "@/utils/types";
+import { CreateOrgParams, CreateUserParams } from "@/utils/types";
 
 import queries from "@/services/graphql/resolvers/queries";
 import mutations from "@/services/graphql/resolvers/mutations";
@@ -24,6 +24,23 @@ const createGraphqlService = () => {
         .toPromise();
 
       return operation.data.orgs;
+    },
+
+    async createUser({ email, name, loggedInOrg }: CreateUserParams) {
+      const operation = await client
+        .mutation(mutations.CREATE_USER, {
+          email,
+          config: {},
+          loggedInOrg: "",
+          name,
+          phone: "",
+          username: name,
+          avatar: "",
+          roleItems: [],
+        })
+        .toPromise();
+
+      return operation.data.createDashboardUser;
     },
     async createOrg({ name, description }: CreateOrgParams) {
       const operation = await client
