@@ -18,18 +18,14 @@ const createApp = (options: ConnectionOptions) => {
         console.log("Listening for Salesforce Opportunities...");
 
         const subOptions: SalesforceStreamSubscriptionParams = {
-          channel: SalesforceChannel.OpportunitiesUpdate,
+          channel: SalesforceChannel.OpportunitiesUpdateV2,
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
+          console.log(opp);
           this.subscriptionHandler(opp, svc);
         });
       });
-    },
-
-    async testGraphQL() {
-      const orgs = await graphql.fetchOrgs();
-      console.log(orgs);
     },
 
     async subscriptionHandler(opp: Opportunity, svc: SalesforceService) {
