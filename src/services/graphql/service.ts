@@ -18,9 +18,16 @@ const client = createClient({
 
 const createGraphqlService = () => {
   return {
-    async fetchOrgs() {
+    async getOrgs() {
       const operation = await client
         .query(queries.GET_ORG, { id: "cjlwwzv86hn3q0726mqm60q3f" })
+        .toPromise();
+
+      return operation.data.orgs;
+    },
+    async getOrgByName(name: string) {
+      const operation = await client
+        .query(queries.GET_ORG_BY_NAME, { name })
         .toPromise();
 
       return operation.data.orgs;
