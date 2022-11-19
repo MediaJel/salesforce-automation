@@ -76,7 +76,7 @@ export type CreateOrgParams = Pick<
 
 export type CreateUserParams = Pick<
   CreateDashboardUserMutationVariables,
-  "email" | "phone" | "name" | "username"
+  "email" | "phone" | "name" | "username" | "loggedInOrg"
 >;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };

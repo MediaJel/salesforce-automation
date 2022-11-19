@@ -42,14 +42,22 @@ const createApp = (options: ConnectionOptions) => {
 
       const account = await svc.query.accountById(opp.AccountId);
 
-      console.log(contact);
+      const createdOrg = await graphql.createOrg({
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+      });
 
-      // const createdOrg = await graphql.createOrg({
-      //   name: account.Name,
-      //   description: `salesforce: ${account.Id}`,
-      // });
+      console.log("🚀 Created Org", createdOrg.id);
 
-      // console.log(createdOrg);
+      const createdUser = await graphql.createUser({
+        email: contact.Email,
+        name: contact.Name,
+        phone: contact.Phone,
+        username: contact.Email,
+        loggedInOrg: createdOrg.id,
+      });
+
+      console.log("🚀 Created User", createdUser.id);
 
       //! TODOS
       //! [] - Validate if Org Exists via querying by Salesforce ID

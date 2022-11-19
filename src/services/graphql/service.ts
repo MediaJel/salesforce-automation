@@ -31,10 +31,10 @@ const createGraphqlService = () => {
         .mutation(mutations.CREATE_USER, {
           email: params.email,
           config: {},
-          loggedInOrg: "",
+          loggedInOrg: params.loggedInOrg,
           name: params.name,
           phone: params.phone || "",
-          username: params.email,
+          username: params.username,
           avatar: "",
           roleItems: [],
         })
