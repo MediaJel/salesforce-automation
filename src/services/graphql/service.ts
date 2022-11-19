@@ -30,7 +30,7 @@ const createGraphqlService = () => {
         .query(queries.GET_ORG_BY_NAME, { name })
         .toPromise();
 
-      return operation.data.orgs;
+      return operation.data.org;
     },
 
     async createUser(params: CreateUserParams) {
@@ -50,6 +50,12 @@ const createGraphqlService = () => {
       return operation.data.createDashboardUser;
     },
     async createOrg({ name, description }: CreateOrgParams) {
+      const isExistingOrg = await this.getOrgByName(name);
+
+      if (isExistingOrg) {
+        throw "Org already exists";
+      }
+
       const operation = await client
         .mutation(mutations.CREATE_ORG, {
           name,

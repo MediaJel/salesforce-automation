@@ -51,7 +51,7 @@ const createApp = (options: ConnectionOptions) => {
 
       const createdUser = await graphql.createUser({
         email: contact.Email,
-        name: contact.Name,
+        name: `salesforce: ${contact.Name}`,
         phone: contact.Phone,
         username: contact.Email,
         loggedInOrg: createdOrg.id,
