@@ -1,8 +1,18 @@
-export const logError = async <T>(promise: Promise<T>) => {
+// export const logError = async <T>(promise: Promise<any>) => {
+//   try {
+//     await promise();
+//   } catch (err) {
+//     console.log("Exception");
+//     console.error(err);
+//   }
+// };
+
+export const tryCatch = async <T>(fn: () => Promise<T>) => {
   try {
-    await promise;
-  } catch (error) {
-    console.error("Application error:", error);
+    await fn();
+  } catch (err) {
+    console.error("Application error: ");
+    console.error(err);
   }
 };
 

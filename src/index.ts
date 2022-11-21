@@ -1,6 +1,6 @@
 import { ConnectionOptions } from "jsforce";
 import { App } from "@/utils/types";
-import { logError } from "@/utils/utils";
+import { tryCatch } from "@/utils/utils";
 
 import createApp from "@/app";
 
@@ -21,4 +21,4 @@ const startApp = async () => {
   await app.setupSubscription();
 };
 
-(async () => logError(startApp()))();
+(async () => tryCatch(startApp))();
