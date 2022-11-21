@@ -22,14 +22,20 @@ const createGraphqlService = () => {
     async getOrgs() {
       const operation = await client
         .query(queries.GET_ORG, { id: "cjlwwzv86hn3q0726mqm60q3f" })
-        .toPromise();
+        .toPromise()
+        .catch((err) => {
+          throw new Error("Querying orgs", { cause: err });
+        });
 
       return operation.data.orgs;
     },
     async getOrgByName(name: string) {
       const operation = await client
         .query(queries.GET_ORG_BY_NAME, { name })
-        .toPromise();
+        .toPromise()
+        .catch((err) => {
+          throw new Error(`Getting Org by Name: ${name}`, { cause: err });
+        });
 
       return operation.data.org;
     },
@@ -66,7 +72,7 @@ const createGraphqlService = () => {
         })
         .toPromise()
         .catch((err) => {
-          throw new Error(err);
+          throw new Error("Error creating user: " + err);
         });
 
       return operation.data.createDashboardUser;
@@ -101,7 +107,10 @@ const createGraphqlService = () => {
           isGA4: false,
           parentOrgs: [{ id: "cjlwwzv86hn3q0726mqm60q3f" }],
         })
-        .toPromise();
+        .toPromise()
+        .catch((err) => {
+          throw new Error("Error creating org: " + err);
+        });
 
       return operation.data.createOrg;
     },
