@@ -24,7 +24,12 @@ const SalesforceService = (
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {
-    const client = await createSalesforceAuth(params).authenticate();
+    const client = await createSalesforceAuth(params)
+      .authenticate()
+      .catch((err) => {
+        throw new Error("Authenticating to Salesforce", { cause: err });
+      });
+
     callback(client, {
       query: createSalesforceQueries(client),
       stream: createSalesforceStream(client),
