@@ -1,6 +1,6 @@
 import { ConnectionOptions } from "jsforce";
 import { App } from "@/utils/types";
-import { mustRecover } from "@/utils/utils";
+import { logError } from "@/utils/utils";
 
 import createApp from "@/app";
 
@@ -18,7 +18,7 @@ const options: ConnectionOptions = {
 
 const startApp = async () => {
   const app: App = createApp(options);
-  await app.run();
+  await app.setupSubscription();
 };
 
-(async () => mustRecover(startApp()))();
+(async () => logError(startApp()))();

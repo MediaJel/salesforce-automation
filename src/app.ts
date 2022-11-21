@@ -13,7 +13,7 @@ const createApp = (options: ConnectionOptions) => {
   const graphql = createGraphqlService();
 
   return {
-    async run(): Promise<void> {
+    async setupSubscription(): Promise<void> {
       createSalesforceService(options, (client, svc) => {
         console.log("Listening for Salesforce Opportunities...");
 
