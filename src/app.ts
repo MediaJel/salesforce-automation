@@ -61,7 +61,8 @@ const createApp = (options: ConnectionOptions) => {
       //! TODOS
       //! [x] - Validate if Org Exists via querying by Salesforce ID
       //! [x] - Create User and match to Org, and match to Org
-      //! TODO: Create Campaign and match to Org
+      //! [] - How to delete user?
+      //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
     },
   };
 };
