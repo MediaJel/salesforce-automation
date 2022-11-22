@@ -14,7 +14,7 @@ const config: Config = {
   },
   graphql: {
     url: process.env.GRAPHQL_ENDPOINT,
-    X_API_KEY: process.env.GRAPHQL_API_KEY,
+    X_API_KEY: process.env.GRAPHQL_KEY,
   },
 };
 

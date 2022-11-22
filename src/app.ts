@@ -50,18 +50,18 @@ const createApp = (config: Config) => {
       //! [x] - How to delete user?
       //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
 
-      // const createdOrg = await graphql.createOrg({
-      //   name: account.Name,
-      //   description: `salesforce: ${account.Id}`,
-      // });
+      const createdOrg = await graphql.createOrg({
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+      });
 
-      // const createdUser = await graphql.createUser({
-      //   email: contact.Email,
-      //   name: `salesforce: ${contact.Name}`,
-      //   phone: "+11234567894", // Always add a +1 for some reason
-      //   username: contact.Email, //! TODO: Username should be the "parsed name" of the contact
-      //   orgId: createdOrg.id,
-      // });
+      const createdUser = await graphql.createUser({
+        email: contact.Email,
+        name: `salesforce: ${contact.Name}`,
+        phone: "+11234567894", // Always add a +1 for some reason
+        username: contact.Email, //! TODO: Username should be the "parsed name" of the contact
+        orgId: createdOrg.id,
+      });
     },
   };
 };

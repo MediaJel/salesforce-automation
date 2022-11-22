@@ -1,5 +1,9 @@
 import { createClient } from "@urql/core";
-import { PartnerLevel } from "@/services/graphql/generated/graphql";
+import {
+  Feature,
+  FeatureActions,
+  PartnerLevel,
+} from "@/services/graphql/generated/graphql";
 import {
   CreateOrgParams,
   CreateUserParams,
@@ -35,7 +39,12 @@ const createGraphqlService = (config: GraphQLConfig) => {
           throw new Error(`Getting Org by Name: ${name}`, { cause: err });
         });
 
-      logger.debug(`Got Org by Name: ${operation.data.org.name}`);
+      if (!operation.data?.org) {
+        logger.warn(`No org found with name: ${name}`);
+        return null;
+      }
+
+      logger.debug(`Got Org by Id ${operation?.data?.org?.id}`);
 
       return operation.data.org;
     },
@@ -78,6 +87,11 @@ const createGraphqlService = (config: GraphQLConfig) => {
           throw err;
         });
 
+      if (!operation.data?.createDashboardUser) {
+        logger.warn(`Unable to create user: ${params.name}`);
+        return null;
+      }
+
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
 
       return operation.data.createDashboardUser;
@@ -104,7 +118,14 @@ const createGraphqlService = (config: GraphQLConfig) => {
           googleCustomerId: null,
           logoId: null,
           reTargeting: false,
-          roleitems: [],
+          roleitems: [
+            {
+              feature: Feature.Enabled,
+              actions: {
+                set: [FeatureActions.Read, FeatureActions.Write],
+              },
+            },
+          ], //! THESE MUST BE ENABLED OTHERWISE USER CANT BE DELETED
           seo: false,
           signInLogoId: null,
           storageBucket: null,
