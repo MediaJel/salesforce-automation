@@ -31,16 +31,18 @@ const createGraphqlService = (config: GraphQLConfig) => {
         .query(queries.GET_ORG_BY_NAME, { name })
         .toPromise()
         .catch((err) => {
+          logger.error("Error running getOrgByName", err);
           throw new Error(`Getting Org by Name: ${name}`, { cause: err });
         });
 
-      logger.success(`Got Org by Name: ${operation.data.org.name}`);
+      logger.debug(`Got Org by Name: ${operation.data.org.name}`);
 
       return operation.data.org;
     },
 
     async createUser(params: CreateUserParams) {
       logger.debug(`Running createUser: ${params.name}`);
+
       const operation = await client
         .mutation(mutations.CREATE_USER, {
           email: params.email,
@@ -72,10 +74,11 @@ const createGraphqlService = (config: GraphQLConfig) => {
         })
         .toPromise()
         .catch((err) => {
-          throw new Error("Error creating user: " + err);
+          logger.error("Error running createUser");
+          throw err;
         });
 
-      logger.success(`Created User: ${operation.data.createDashboardUser.id}`);
+      logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
 
       return operation.data.createDashboardUser;
     },
@@ -112,10 +115,11 @@ const createGraphqlService = (config: GraphQLConfig) => {
         })
         .toPromise()
         .catch((err) => {
-          throw new Error("Error creating org: " + err);
+          logger.error("Error running createOrg");
+          throw err;
         });
 
-      logger.success(`Created Org: ${operation.data.createOrg.id}`);
+      logger.debug(`Created Org: ${operation.data.createOrg.id}`);
 
       return operation.data.createOrg;
     },

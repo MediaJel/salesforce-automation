@@ -40,8 +40,8 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
       const matches = products.filter((product) => match(product, where));
 
-      logger.success(
-        `Found ${matches.length} Display products from Opportunity: ${id}`
+      logger.debug(
+        `${matches.length} Display products from Opportunity: ${id}`
       );
 
       return matches;
@@ -55,7 +55,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
         logger.error("Error running contactById", err);
         throw err;
       });
-      logger.success(`Found contact ${contact.Name}`);
+      logger.debug(`Found contact ${contact.Name}`);
       return contact;
     },
 
@@ -67,7 +67,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
         throw err;
       });
 
-      logger.success(`Found account ${account.Name}`);
+      logger.debug(`Found account ${account.Name}`);
       return account;
     },
   };

@@ -1,17 +1,19 @@
 import chalk from "chalk";
 
-const createLogger = (name: string) => {
-  const isProduction = process.env.NODE_ENV === "production";
+type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
-  const template = (level: string, message: string) => {
+const createLogger = (name: string) => {
+  const logLevel: LogLevel = (process.env.LOG_LEVEL as LogLevel) || "INFO";
+
+  const template = (level: LogLevel, message: string, ...args: any[]) => {
     const date = new Date().toISOString();
-    return `${date} | ${level} | [${name}]: ${message}`;
+    return `${date} | ${level} | [${name}]: ${message} | ${args.join(" | ")}`;
   };
 
   return {
     debug: (message: string) => {
-      if (!isProduction) {
-        console.log(chalk.white(template("DEBUG", message)));
+      if (logLevel === "DEBUG") {
+        console.log(chalk.green(template("DEBUG", message)));
       }
     },
     warn: (message: string) => {
@@ -21,10 +23,7 @@ const createLogger = (name: string) => {
       console.log(chalk.blue(template("INFO", message)));
     },
     error: (message: string, ...args: any[]) => {
-      console.log(chalk.red(message));
-    },
-    success: (message: string) => {
-      console.log(chalk.green(template("SUCCESS", message)));
+      console.log(chalk.red(template("ERROR", message, ...args)));
     },
   };
 };

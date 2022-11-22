@@ -21,6 +21,7 @@ const createApp = (config: Config) => {
 
         const subOptions: SalesforceStreamSubscriptionParams = {
           channel: SalesforceChannel.OpportunitiesUpdate,
+          replayId: -1,
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
@@ -43,6 +44,12 @@ const createApp = (config: Config) => {
 
       const account = await svc.query.accountById(opp.AccountId);
 
+      //! TODOS
+      //! [x] - Validate if Org Exists via querying by Salesforce ID
+      //! [x] - Create User and match to Org, and match to Org
+      //! [x] - How to delete user?
+      //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
+
       // const createdOrg = await graphql.createOrg({
       //   name: account.Name,
       //   description: `salesforce: ${account.Id}`,
@@ -52,15 +59,9 @@ const createApp = (config: Config) => {
       //   email: contact.Email,
       //   name: `salesforce: ${contact.Name}`,
       //   phone: "+11234567894", // Always add a +1 for some reason
-      //   username: contact.Email,
+      //   username: contact.Email, //! TODO: Username should be the "parsed name" of the contact
       //   orgId: createdOrg.id,
       // });
-
-      //! TODOS
-      //! [x] - Validate if Org Exists via querying by Salesforce ID
-      //! [x] - Create User and match to Org, and match to Org
-      //! [] - How to delete user?
-      //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
     },
   };
 };

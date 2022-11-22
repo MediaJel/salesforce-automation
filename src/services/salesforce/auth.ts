@@ -18,7 +18,7 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
             instanceUrl: res["instance_url"],
           });
 
-          logger.success("Authenticated to Salesforce");
+          logger.info("Authenticated to Salesforce");
 
           resolve(newClient);
         });
