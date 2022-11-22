@@ -2,6 +2,7 @@ import {
   CreateDashboardUserMutationVariables,
   CreateOrgMutationVariables,
 } from "@/services/graphql/generated/graphql";
+import { ConnectionOptions } from "jsforce";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
@@ -80,5 +81,9 @@ export type CreateUserParams = Pick<
 >;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
+
+export interface Config {
+  salesforce: ConnectionOptions;
+}
 
 export type App = ReturnType<typeof createApp>;
