@@ -8,6 +8,7 @@ import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
 import createApp from "@/app";
 import { ClientOptions } from "urql";
+import createLogger from "./logger";
 
 export enum SalesforceChannel {
   /**
@@ -88,7 +89,10 @@ export interface Config {
   graphql: GraphQLConfig;
 }
 
+export type Logger = ReturnType<typeof createLogger>;
+
 export type SalesforceConfig = ConnectionOptions;
+
 export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
 
 export type App = ReturnType<typeof createApp>;

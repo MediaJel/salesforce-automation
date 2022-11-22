@@ -4,6 +4,7 @@ import { SalesforceService } from "@/utils/types";
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceAuth from "@/services/salesforce/auth";
 import createSalesforceStream from "@/services/salesforce/stream";
+import createLogger from "@/utils/logger";
 
 /**
  * Create a SalesforceService instance. Authentication &
@@ -17,6 +18,8 @@ import createSalesforceStream from "@/services/salesforce/stream";
  * @param callback - callback function to be called when the connection is established
  */
 
+const logger = createLogger("Salesforce Service");
+
 const SalesforceService = (
   params: ConnectionOptions,
   callback: (client: Connection, svc: SalesforceService) => void
@@ -24,15 +27,15 @@ const SalesforceService = (
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {
-    const client = await createSalesforceAuth(params)
+    const client = await createSalesforceAuth(params, logger)
       .authenticate()
       .catch((err) => {
         throw new Error("Authenticating to Salesforce", { cause: err });
       });
 
     callback(client, {
-      query: createSalesforceQueries(client),
-      stream: createSalesforceStream(client),
+      query: createSalesforceQueries(client, logger),
+      stream: createSalesforceStream(client, logger),
     });
   };
 

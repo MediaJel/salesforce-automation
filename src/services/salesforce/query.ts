@@ -1,5 +1,11 @@
 import { Connection } from "jsforce";
-import { Contact, Product, Account, QueryAttribute } from "@/utils/types";
+import {
+  Contact,
+  Product,
+  Account,
+  QueryAttribute,
+  Logger,
+} from "@/utils/types";
 import { match } from "@/utils/utils";
 interface ProductsByOpportunityIdParams {
   id: string;
@@ -21,7 +27,7 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   });
 };
 
-const createSalesforceQueries = (client: Connection) => {
+const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
     productsByOpportunityId: async ({
       id,
@@ -34,7 +40,11 @@ const createSalesforceQueries = (client: Connection) => {
 
       if (!where) return products;
 
-      return products.filter((product) => match(product, where));
+      const matches = products.filter((product) => match(product, where));
+
+      logger.success(`Found ${matches.length} products`);
+
+      return matches;
     },
 
     contactById: async (id: string): Promise<Contact> => {
@@ -42,6 +52,7 @@ const createSalesforceQueries = (client: Connection) => {
       const [contact] = await query<Contact>(client, soql).catch((err) => {
         throw new Error("Querying contact", { cause: err });
       });
+      logger.success(`Found contact ${contact.Name}`);
       return contact;
     },
 
@@ -50,6 +61,8 @@ const createSalesforceQueries = (client: Connection) => {
       const [account] = await query<Account>(client, soql).catch((err) => {
         throw new Error("Querying account", { cause: err });
       });
+
+      logger.success(`Found account ${account.Name}`);
       return account;
     },
   };

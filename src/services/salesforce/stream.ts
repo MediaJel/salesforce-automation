@@ -1,7 +1,7 @@
 import { StreamingExtension, Connection, StreamingMessage } from "jsforce";
-import { SalesforceStreamSubscriptionParams } from "@/utils/types";
+import { Logger, SalesforceStreamSubscriptionParams } from "@/utils/types";
 
-const createSalesforceStream = (client: Connection) => {
+const createSalesforceStream = (client: Connection, logger: Logger) => {
   return {
     /**
      * Subscribe to a Salesforce PushTopic, setting the replayId to `-2` will
@@ -31,6 +31,7 @@ const createSalesforceStream = (client: Connection) => {
         if (ids.includes(result.Id)) return;
 
         ids.push(result.Id);
+        logger.info(`Received Opportunity from Salesforce: ${result.Id}`);
         callback(result);
       });
     },

@@ -8,7 +8,7 @@ import {
 
 import queries from "@/services/graphql/resolvers/queries";
 import mutations from "@/services/graphql/resolvers/mutations";
-import createLogger from "../../utils/logger";
+import createLogger from "@/utils/logger";
 
 const logger = createLogger("GraphQL Service");
 
