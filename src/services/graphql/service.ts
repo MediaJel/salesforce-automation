@@ -25,6 +25,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
   });
   return {
     async getOrgByName(name: string) {
+      logger.debug(`Running getOrgByName: ${name}`);
+
       const operation = await client
         .query(queries.GET_ORG_BY_NAME, { name })
         .toPromise()
@@ -38,6 +40,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
     },
 
     async createUser(params: CreateUserParams) {
+      logger.debug(`Running createUser: ${params.name}`);
       const operation = await client
         .mutation(mutations.CREATE_USER, {
           email: params.email,
@@ -80,7 +83,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
       const isExistingOrg = await this.getOrgByName(name);
 
       if (isExistingOrg) {
-        throw new Error("Org already exists");
+        logger.warn(`Org already exists: ${name}`);
+        return;
       }
 
       const operation = await client

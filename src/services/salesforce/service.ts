@@ -30,7 +30,8 @@ const SalesforceService = (
     const client = await createSalesforceAuth(params, logger)
       .authenticate()
       .catch((err) => {
-        throw new Error("Authenticating to Salesforce", { cause: err });
+        logger.error("Error authenticating to Salesforce", err);
+        throw new Error(err);
       });
 
     callback(client, {

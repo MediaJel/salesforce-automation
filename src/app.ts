@@ -17,7 +17,7 @@ const createApp = (config: Config) => {
   return {
     async setupSubscription(): Promise<void> {
       createSalesforceService(config.salesforce, (client, svc) => {
-        logger.info("Subscribing to Salesforce Streaming API");
+        logger.info("Subscribing to Salesforce Opportunity Pushtopic");
 
         const subOptions: SalesforceStreamSubscriptionParams = {
           channel: SalesforceChannel.OpportunitiesUpdate,
@@ -38,7 +38,7 @@ const createApp = (config: Config) => {
         },
       });
 
-      if (products.length === 0) return logger.info("No Display products");
+      if (products.length === 0) return logger.warn("No Display products");
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
 
       const account = await svc.query.accountById(opp.AccountId);

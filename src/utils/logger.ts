@@ -8,7 +8,10 @@ const createLogger = (name: string) => {
 
   return {
     debug: (message: string) => {
-      console.log(chalk.gray(template("DEBUG", message)));
+      console.log(chalk.white(template("DEBUG", message)));
+    },
+    warn: (message: string) => {
+      console.log(chalk.yellow(template("WARN", message)));
     },
     info: (message: string) => {
       console.log(chalk.blue(template("INFO", message)));
