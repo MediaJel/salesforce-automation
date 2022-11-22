@@ -28,7 +28,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
       id,
       where,
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
-      logger.info(`Querying for Products for Opportunity: ${id}`);
+      logger.info(`Querying Products from Opportunity: ${id}`);
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
         throw new Error("Querying products", { cause: err });
@@ -38,7 +38,10 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
       const matches = products.filter((product) => match(product, where));
 
-      logger.success(`Found ${matches.length} products`);
+      logger.success(
+        `Found ${matches.length} Display products from Opportunity: ${id}`
+      );
+
       return matches;
     },
 
