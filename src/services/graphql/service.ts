@@ -40,11 +40,11 @@ const createGraphqlService = (config: GraphQLConfig) => {
         });
 
       if (!operation.data?.org) {
-        logger.warn(`No org found with name: ${name}`);
+        logger.info(`No org found with name: ${name}`);
         return null;
       }
 
-      logger.debug(`Got Org by Id ${operation?.data?.org?.id}`);
+      logger.debug(`Got org by name: ${operation?.data?.org?.id}`);
 
       return operation.data.org;
     },

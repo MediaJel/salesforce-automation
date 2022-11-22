@@ -55,6 +55,8 @@ const createApp = (config: Config) => {
         description: `salesforce: ${account.Id}`,
       });
 
+      //! TODO: If entity already exists, fetch it.
+
       if (!createdOrg) return logger.warn("No Org Created");
 
       const createdUser = await graphql.createUser({
