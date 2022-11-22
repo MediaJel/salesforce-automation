@@ -55,6 +55,8 @@ const createApp = (config: Config) => {
         description: `salesforce: ${account.Id}`,
       });
 
+      if (!createdOrg) return logger.warn("No Org Created");
+
       const createdUser = await graphql.createUser({
         email: contact.Email,
         name: `salesforce: ${contact.Name}`,
@@ -62,6 +64,8 @@ const createApp = (config: Config) => {
         username: contact.Email, //! TODO: Username should be the "parsed name" of the contact
         orgId: createdOrg.id,
       });
+
+      if (!createdUser) return logger.warn("No User Created");
     },
   };
 };

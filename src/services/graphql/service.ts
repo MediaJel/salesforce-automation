@@ -89,7 +89,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       if (!operation.data?.createDashboardUser) {
         logger.warn(`Unable to create user: ${params.name}`);
-        return null;
+        return;
       }
 
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
@@ -101,7 +101,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       if (isExistingOrg) {
         logger.warn(`Org already exists: ${name}`);
-        return;
+        return null;
       }
 
       const operation = await client
