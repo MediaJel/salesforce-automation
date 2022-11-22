@@ -1,20 +1,23 @@
 import chalk from "chalk";
 
 const createLogger = (name: string) => {
-  const template = (message: string) => {
+  const template = (level: string, message: string) => {
     const date = new Date().toISOString();
-    return `${date} | [${name}]: ${message}`;
+    return `${date} | ${level} | [${name}]: ${message}`;
   };
 
   return {
+    debug: (message: string) => {
+      console.log(chalk.gray(template("DEBUG", message)));
+    },
     info: (message: string) => {
-      console.log(chalk.blue(template(message)));
+      console.log(chalk.blue(template("INFO", message)));
     },
     error: (message: string, ...args: any[]) => {
       console.log(chalk.red(message));
     },
     success: (message: string) => {
-      console.log(chalk.green(template(message)));
+      console.log(chalk.green(template("SUCCESS", message)));
     },
   };
 };
