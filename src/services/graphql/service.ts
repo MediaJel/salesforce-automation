@@ -8,6 +8,9 @@ import {
 
 import queries from "@/services/graphql/resolvers/queries";
 import mutations from "@/services/graphql/resolvers/mutations";
+import createLogger from "../../utils/logger";
+
+const logger = createLogger("GraphQL Service");
 
 const createGraphqlService = (config: GraphQLConfig) => {
   const client = createClient({
@@ -83,7 +86,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
       const isExistingOrg = await this.getOrgByName(name);
 
       if (isExistingOrg) {
-        throw "Org already exists";
+        throw new Error("Org already exists");
       }
 
       const operation = await client

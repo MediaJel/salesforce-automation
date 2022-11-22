@@ -25,6 +25,7 @@
     "npm": "===> PLEASE USE YARN >=1.22.19 WHEN  INSTALLING DEPENDENCIES <==="
   },
   "dependencies": {
+    "chalk": "^5.1.2",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "jsforce": "^1.11.0",
