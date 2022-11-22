@@ -24,16 +24,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
     },
   });
   return {
-    async getOrgs() {
-      const operation = await client
-        .query(queries.GET_ORG, { id: "cjlwwzv86hn3q0726mqm60q3f" })
-        .toPromise()
-        .catch((err) => {
-          throw new Error("Querying orgs", { cause: err });
-        });
-
-      return operation.data.orgs;
-    },
     async getOrgByName(name: string) {
       const operation = await client
         .query(queries.GET_ORG_BY_NAME, { name })
@@ -41,6 +31,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
         .catch((err) => {
           throw new Error(`Getting Org by Name: ${name}`, { cause: err });
         });
+
+      logger.success(`Got Org by Name: ${operation.data.org.name}`);
 
       return operation.data.org;
     },
@@ -80,6 +72,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
           throw new Error("Error creating user: " + err);
         });
 
+      logger.success(`Created User: ${operation.data.createDashboardUser.id}`);
+
       return operation.data.createDashboardUser;
     },
     async createOrg({ name, description }: CreateOrgParams) {
@@ -116,6 +110,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
         .catch((err) => {
           throw new Error("Error creating org: " + err);
         });
+
+      logger.success(`Created Org: ${operation.data.createOrg.id}`);
 
       return operation.data.createOrg;
     },
