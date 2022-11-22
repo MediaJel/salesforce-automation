@@ -9,7 +9,7 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
 
         client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
           if (err) {
-            console.log("Error refreshing Salesforce token: ", err);
+            logger.error("Error Refreshing Salesforce token");
             reject(err);
           }
 
