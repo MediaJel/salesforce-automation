@@ -3,7 +3,7 @@ import chalk from "chalk";
 const createLogger = (name: string) => {
   const template = (message: string) => {
     const date = new Date().toISOString();
-    return `${date} [${name}]: ${message}`;
+    return `${date} | [${name}]: ${message}`;
   };
 
   return {

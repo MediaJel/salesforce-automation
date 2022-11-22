@@ -1,5 +1,6 @@
 import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
+import createLogger from "@/utils/logger";
 
 import {
   SalesforceStreamSubscriptionParams,
@@ -11,11 +12,12 @@ import {
 
 const createApp = (config: Config) => {
   const graphql = createGraphqlService(config.graphql);
+  const logger = createLogger("App");
 
   return {
     async setupSubscription(): Promise<void> {
       createSalesforceService(config.salesforce, (client, svc) => {
-        console.log("Listening for Salesforce Opportunities...");
+        logger.info("Subscribing to Salesforce Streaming API");
 
         const subOptions: SalesforceStreamSubscriptionParams = {
           channel: SalesforceChannel.OpportunitiesUpdate,
@@ -36,27 +38,23 @@ const createApp = (config: Config) => {
         },
       });
 
-      if (products.length === 0) return console.log("No Display product");
+      if (products.length === 0) return logger.info("No Display products");
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
 
       const account = await svc.query.accountById(opp.AccountId);
 
-      const createdOrg = await graphql.createOrg({
-        name: account.Name,
-        description: `salesforce: ${account.Id}`,
-      });
+      // const createdOrg = await graphql.createOrg({
+      //   name: account.Name,
+      //   description: `salesforce: ${account.Id}`,
+      // });
 
-      console.log("🚀 Created Org", createdOrg.id);
-
-      const createdUser = await graphql.createUser({
-        email: contact.Email,
-        name: `salesforce: ${contact.Name}`,
-        phone: "+11234567894", // Always add a +1 for some reason
-        username: contact.Email,
-        orgId: createdOrg.id,
-      });
-
-      console.log("🚀 Created User", createdUser.id);
+      // const createdUser = await graphql.createUser({
+      //   email: contact.Email,
+      //   name: `salesforce: ${contact.Name}`,
+      //   phone: "+11234567894", // Always add a +1 for some reason
+      //   username: contact.Email,
+      //   orgId: createdOrg.id,
+      // });
 
       //! TODOS
       //! [x] - Validate if Org Exists via querying by Salesforce ID
