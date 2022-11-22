@@ -27,7 +27,7 @@ const createSalesforceQueries = (client: Connection) => {
       id,
       where,
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
-      const soql = `SELECT Id, Name, Family FROMs Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
+      const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
         throw new Error("Querying products", { cause: err });
       });

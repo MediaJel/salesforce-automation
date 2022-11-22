@@ -1,4 +1,3 @@
-import { ConnectionOptions } from "jsforce";
 import { App } from "@/utils/types";
 import { tryCatch } from "@/utils/utils";
 

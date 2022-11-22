@@ -1,23 +1,25 @@
 import { createClient } from "@urql/core";
 import { PartnerLevel } from "@/services/graphql/generated/graphql";
-import { CreateOrgParams, CreateUserParams } from "@/utils/types";
+import {
+  CreateOrgParams,
+  CreateUserParams,
+  GraphQLConfig,
+} from "@/utils/types";
 
-import * as util from "util";
 import queries from "@/services/graphql/resolvers/queries";
 import mutations from "@/services/graphql/resolvers/mutations";
 
-const client = createClient({
-  url: process.env.GRAPHQL_ENDPOINT,
-  fetchOptions: () => {
-    return {
-      headers: {
-        "X-API-KEY": process.env.GRAPHQL_KEY,
-      },
-    };
-  },
-});
-
-const createGraphqlService = () => {
+const createGraphqlService = (config: GraphQLConfig) => {
+  const client = createClient({
+    url: config.url,
+    fetchOptions: () => {
+      return {
+        headers: {
+          "X-API-KEY": config.X_API_KEY,
+        },
+      };
+    },
+  });
   return {
     async getOrgs() {
       const operation = await client

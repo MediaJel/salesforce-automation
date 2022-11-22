@@ -12,6 +12,10 @@ const config: Config = {
     instanceUrl: process.env.SALESFORCE_INSTANCE_URL,
     version: "56.0",
   },
+  graphql: {
+    url: process.env.GRAPHQL_ENDPOINT,
+    X_API_KEY: process.env.GRAPHQL_API_KEY,
+  },
 };
 
 export default config;

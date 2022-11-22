@@ -10,7 +10,7 @@ import {
 } from "@/utils/types";
 
 const createApp = (config: Config) => {
-  const graphql = createGraphqlService();
+  const graphql = createGraphqlService(config.graphql);
 
   return {
     async setupSubscription(): Promise<void> {
