@@ -2,6 +2,7 @@ import chalk from "chalk";
 
 const createLogger = (name: string) => {
   const isProduction = process.env.NODE_ENV === "production";
+
   const template = (level: string, message: string) => {
     const date = new Date().toISOString();
     return `${date} | ${level} | [${name}]: ${message}`;
