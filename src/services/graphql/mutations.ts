@@ -46,6 +46,11 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           throw err;
         });
 
+      if (!operation.data.createDashboardUser) {
+        logger.error("Error running createUser");
+        throw new Error("Error running createUser");
+      }
+
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
 
       return operation.data.createDashboardUser;
@@ -86,6 +91,11 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           logger.error("Error running createOrg");
           throw err;
         });
+
+      if (!operation.data.createOrg) {
+        logger.error("Error running createOrg");
+        throw new Error("Error running createOrg");
+      }
 
       logger.debug(`Created Org: ${operation.data.createOrg.id}`);
 
