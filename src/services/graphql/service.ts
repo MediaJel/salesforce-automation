@@ -46,26 +46,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       return operation.data.orgs[0].id;
     },
-    async getOrgByName(name: string) {
-      logger.debug(`Running getOrgByName: ${name}`);
-
-      const operation = await client
-        .query(queries.GET_ORG_BY_NAME, { name })
-        .toPromise()
-        .catch((err) => {
-          logger.error("Error running getOrgByName", err);
-          throw new Error(`Getting Org by Name: ${name}`, { cause: err });
-        });
-
-      if (!operation.data?.org) {
-        logger.info(`No org found with name: ${name}`);
-        return null;
-      }
-
-      logger.debug(`Got org by name: ${operation?.data?.org?.id}`);
-
-      return operation.data.org;
-    },
 
     async createUser(params: CreateUserParams) {
       logger.debug(`Running createUser: ${params.name}`);
@@ -115,7 +95,10 @@ const createGraphqlService = (config: GraphQLConfig) => {
       return operation.data.createDashboardUser;
     },
     async createOrg({ name, description }: CreateOrgParams) {
-      const isExistingOrg = await this.getOrgByName(name);
+      const isExistingOrg = await this.getOrgBySalesforceId({
+        salesforceId: "1",
+      });
+      // const isExistingOrg = await this.getOrgByName(name);
 
       if (isExistingOrg) {
         logger.warn(`Org already exists: ${name}`);
