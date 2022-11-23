@@ -77,8 +77,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
       });
 
       if (isExistingUser) {
-        logger.debug(`User already exists`);
-        return;
+        logger.debug(`User ${params.salesforceId} already exists`);
+        return null;
       }
 
       const operation = await client
@@ -126,8 +126,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
       });
 
       if (isExistingOrg) {
-        logger.warn(`Org already exists: ${name}`);
-        return;
+        logger.warn(`Org ${salesforceId} already exists`);
+        return null;
       }
 
       const operation = await client
