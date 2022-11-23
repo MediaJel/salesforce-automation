@@ -44,19 +44,11 @@ const createApp = (config: Config) => {
 
       const account = await svc.query.accountById(opp.AccountId);
 
-      //! TODOS
-      //! [x] - Validate if Org Exists via querying by Salesforce ID
-      //! [x] - Create User and match to Org, and match to Org
-      //! [x] - How to delete user?
-      //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
-
       const createdOrg = await graphql.createOrg({
         salesforceId: account.Id,
         name: account.Name,
         description: `salesforce: ${account.Id}`,
       });
-
-      //! TODO: If entity already exists, fetch it.
 
       if (!createdOrg) return logger.warn("No Org Created");
 

@@ -47,6 +47,12 @@ const createGraphqlService = (config: GraphQLConfig) => {
       return operation.data.orgs[0].id;
     },
 
+    async getUserBySalesforceId({
+      salesforceId,
+    }: GetOrgBySalesforceIdParams) {
+      
+    },
+
     async createUser(params: CreateUserParams) {
       logger.debug(`Running createUser: ${params.name}`);
 
