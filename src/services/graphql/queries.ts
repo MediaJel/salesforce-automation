@@ -29,7 +29,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
 
       logger.debug(`getOrgBySalesforceId result ${operation.data.orgs[0].id}`);
 
-      return operation.data.orgs[0].id;
+      return operation.data.orgs[0];
     },
 
     async getUserBySalesforceIdOrEmail({
@@ -56,7 +56,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         `getUserBySalesforceIdOrEmail result ${operation.data.users[0].id}`
       );
 
-      return operation.data.users[0].id;
+      return operation.data.users[0];
     },
   };
 };

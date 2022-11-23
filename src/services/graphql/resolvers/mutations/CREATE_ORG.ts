@@ -22,9 +22,11 @@ const CREATE_ORG = graphql(`
     $chatWootId: String
     $cpm: String
     $isGA4: Boolean
+    $salesforceId: String!
   ) {
     createOrg(
       data: {
+        salesforceId: $salesforceId
         name: $name
         description: $description
         website: $website
@@ -56,6 +58,7 @@ const CREATE_ORG = graphql(`
         }
       }
     ) {
+      salesforceId
       id
       brands(first: 5) {
         name

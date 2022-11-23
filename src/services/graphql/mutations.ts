@@ -46,9 +46,9 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (!operation.data.createDashboardUser) {
+      if (!operation?.data?.createDashboardUser) {
         logger.error("Error running createUser");
-        throw new Error("Error running createUser");
+        throw "Error running createUser";
       }
 
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
@@ -60,6 +60,7 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         .mutation(mutations.CREATE_ORG, {
           name,
           description,
+          salesforceId,
           website: "",
           level: PartnerLevel.Standard,
           appIds: [],
@@ -92,9 +93,9 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (!operation.data.createOrg) {
+      if (!operation?.data?.createOrg) {
         logger.error("Error running createOrg");
-        throw new Error("Error running createOrg");
+        throw "Error running createOrg";
       }
 
       logger.debug(`Created Org: ${operation.data.createOrg.id}`);
