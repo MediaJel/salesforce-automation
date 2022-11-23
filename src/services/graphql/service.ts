@@ -30,8 +30,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
   });
   return {
     async getOrgBySalesforceId({ salesforceId }: GetOrgBySalesforceIdParams) {
-      logger.debug(`Running getOrgBySalesforceId: ${salesforceId}`);
-
       const operation = await client
         .query(queries.GET_ORG_BY_SALESFORCE_ID, {
           salesforceId,
@@ -47,15 +45,25 @@ const createGraphqlService = (config: GraphQLConfig) => {
       return operation.data.orgs[0].id;
     },
 
-    async getUserBySalesforceId({
-      salesforceId,
-    }: GetOrgBySalesforceIdParams) {
-      
+    async getUserBySalesforceId({ salesforceId }: GetOrgBySalesforceIdParams) {
+      const operation = await client
+        .query(queries.GET_USER_BY_SALESFORCE_ID, {
+          salesforceId: "1",
+        })
+        .toPromise()
+        .catch((err) => {
+          logger.error("Error running getUserBySalesforceId");
+          throw err;
+        });
+
+      logger.debug(
+        `getUserBySalesforceId result ${operation.data.users[0].id}`
+      );
+
+      return operation.data.users[0].id;
     },
 
     async createUser(params: CreateUserParams) {
-      logger.debug(`Running createUser: ${params.name}`);
-
       const operation = await client
         .mutation(mutations.CREATE_USER, {
           email: params.email,
