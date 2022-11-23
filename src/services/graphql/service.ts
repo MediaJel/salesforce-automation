@@ -3,7 +3,7 @@ import {
   Feature,
   FeatureActions,
   GetOrgBySalesforceIdQueryVariables,
-  GetUsersBySalesforceIdOrEmailQueryVariables,
+  GetUserBySalesforceIdOrEmailQueryVariables,
   PartnerLevel,
 } from "@/services/graphql/generated/graphql";
 import {
@@ -51,7 +51,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
     async getUserBySalesforceIdOrEmail({
       salesforceId,
       email,
-    }: GetUsersBySalesforceIdOrEmailQueryVariables) {
+    }: GetUserBySalesforceIdOrEmailQueryVariables) {
       const operation = await client
         .query(queries.GET_USER_BY_SALESFORCE_ID_OR_EMAIL, {
           salesforceId,
@@ -59,7 +59,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
         })
         .toPromise()
         .catch((err) => {
-          logger.error("Error running getUserBySalesforceId");
+          logger.error("Error running getUserBySalesforceIdOrEmail");
           throw err;
         });
 
