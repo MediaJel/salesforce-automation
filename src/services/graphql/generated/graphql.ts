@@ -6300,6 +6300,7 @@ export type CampaignOrder = Node & {
   requestorId?: Maybe<Scalars['String']>;
   retargetDayCap?: Maybe<Scalars['Int']>;
   retargetTotalCap?: Maybe<Scalars['Int']>;
+  salesforceId?: Maybe<Scalars['String']>;
   signUpCampaign?: Maybe<Scalars['Boolean']>;
   signUpConfig?: Maybe<SignUpConfig>;
   startDate?: Maybe<Scalars['DateTime']>;
@@ -6542,6 +6543,7 @@ export type CampaignOrderCreateInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6664,6 +6666,7 @@ export type CampaignOrderCreateWithoutAdTagsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6721,6 +6724,7 @@ export type CampaignOrderCreateWithoutAdUnitsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6778,6 +6782,7 @@ export type CampaignOrderCreateWithoutAdvertiserInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6835,6 +6840,7 @@ export type CampaignOrderCreateWithoutAggregateDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6892,6 +6898,7 @@ export type CampaignOrderCreateWithoutBrandsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -6949,6 +6956,7 @@ export type CampaignOrderCreateWithoutCampaignsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7006,6 +7014,7 @@ export type CampaignOrderCreateWithoutChangeLogInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7063,6 +7072,7 @@ export type CampaignOrderCreateWithoutGeoTargetsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7120,6 +7130,7 @@ export type CampaignOrderCreateWithoutOrgsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7177,6 +7188,7 @@ export type CampaignOrderCreateWithoutPacingDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7234,6 +7246,7 @@ export type CampaignOrderCreateWithoutReportsInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7292,6 +7305,7 @@ export type CampaignOrderCreateWithoutTransactionsConfigInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigCreateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7391,6 +7405,8 @@ export enum CampaignOrderOrderByInput {
   RetargetDayCapDesc = 'retargetDayCap_DESC',
   RetargetTotalCapAsc = 'retargetTotalCap_ASC',
   RetargetTotalCapDesc = 'retargetTotalCap_DESC',
+  SalesforceIdAsc = 'salesforceId_ASC',
+  SalesforceIdDesc = 'salesforceId_DESC',
   SignUpCampaignAsc = 'signUpCampaign_ASC',
   SignUpCampaignDesc = 'signUpCampaign_DESC',
   StartDateAsc = 'startDate_ASC',
@@ -7443,6 +7459,7 @@ export type CampaignOrderPreviousValues = {
   requestorId?: Maybe<Scalars['String']>;
   retargetDayCap?: Maybe<Scalars['Int']>;
   retargetTotalCap?: Maybe<Scalars['Int']>;
+  salesforceId?: Maybe<Scalars['String']>;
   signUpCampaign?: Maybe<Scalars['Boolean']>;
   startDate?: Maybe<Scalars['DateTime']>;
   status: CampaignStatus;
@@ -7525,6 +7542,7 @@ export type CampaignOrderUpdateDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7583,6 +7601,7 @@ export type CampaignOrderUpdateInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7779,6 +7798,7 @@ export type CampaignOrderUpdateWithoutAdTagsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7836,6 +7856,7 @@ export type CampaignOrderUpdateWithoutAdUnitsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7893,6 +7914,7 @@ export type CampaignOrderUpdateWithoutAdvertiserDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -7950,6 +7972,7 @@ export type CampaignOrderUpdateWithoutAggregateDataDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8007,6 +8030,7 @@ export type CampaignOrderUpdateWithoutBrandsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8064,6 +8088,7 @@ export type CampaignOrderUpdateWithoutCampaignsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8121,6 +8146,7 @@ export type CampaignOrderUpdateWithoutChangeLogDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8178,6 +8204,7 @@ export type CampaignOrderUpdateWithoutGeoTargetsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8235,6 +8262,7 @@ export type CampaignOrderUpdateWithoutOrgsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8292,6 +8320,7 @@ export type CampaignOrderUpdateWithoutPacingDataDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8349,6 +8378,7 @@ export type CampaignOrderUpdateWithoutReportsDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8407,6 +8437,7 @@ export type CampaignOrderUpdateWithoutTransactionsConfigDataInput = {
   requestorId?: InputMaybe<Scalars['String']>;
   retargetDayCap?: InputMaybe<Scalars['Int']>;
   retargetTotalCap?: InputMaybe<Scalars['Int']>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   signUpConfig?: InputMaybe<SignUpConfigUpdateOneWithoutCampaignOrdersInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -8948,6 +8979,33 @@ export type CampaignOrderWhereInput = {
   retargetTotalCap_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   retargetTotalCap_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  salesforceId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  salesforceId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  salesforceId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  salesforceId_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  salesforceId_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  salesforceId_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  salesforceId_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  salesforceId_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  salesforceId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  salesforceId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  salesforceId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  salesforceId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  salesforceId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  salesforceId_starts_with?: InputMaybe<Scalars['String']>;
   signUpCampaign?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   signUpCampaign_not?: InputMaybe<Scalars['Boolean']>;
@@ -17471,11 +17529,42 @@ export type LineItemWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type LiquidMCreativeInput = {
+  bannerUrl?: InputMaybe<Scalars['String']>;
+  height?: InputMaybe<Scalars['Int']>;
+  width?: InputMaybe<Scalars['Int']>;
+};
+
 export type LiquidMGeoCoordinateInput = {
   lat?: InputMaybe<Scalars['Float']>;
   lng?: InputMaybe<Scalars['Float']>;
   name?: InputMaybe<Scalars['String']>;
   rad?: InputMaybe<Scalars['Float']>;
+};
+
+export type LiquidMNativeCreateAttributeInput = {
+  campaignId?: InputMaybe<Scalars['Int']>;
+  creative?: InputMaybe<LiquidMCreativeInput>;
+  name?: InputMaybe<Scalars['String']>;
+  targetUrl?: InputMaybe<Scalars['String']>;
+  trackers?: InputMaybe<Array<InputMaybe<LiquidMTrackersInput>>>;
+};
+
+export type LiquidMSettingAttributeInput = {
+  dealIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
+  targetUrl?: InputMaybe<Scalars['String']>;
+  trackers?: InputMaybe<Array<InputMaybe<LiquidMTrackersInput>>>;
+};
+
+export type LiquidMSupplyAttributeInput = {
+  exclAppIds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  exclDomains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  exclPublishers?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  exclSites?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  inclAppIds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  inclDomains?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  inclPublishers?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  inclSites?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type LiquidMTrackersInput = {
@@ -21434,6 +21523,8 @@ export type Mutation = {
   createLiquidMBannerCreative?: Maybe<Scalars['JSON']>;
   createLiquidMNativeCreative?: Maybe<Scalars['JSON']>;
   createLiquidMScriptTagCreative?: Maybe<Scalars['JSON']>;
+  createLiquidMSetting?: Maybe<Scalars['JSON']>;
+  createLiquidMSupply?: Maybe<Scalars['JSON']>;
   createLiquidMVideoCreative?: Maybe<Scalars['JSON']>;
   createLocation: Location;
   createLoyaltyCampaign: LoyaltyCampaign;
@@ -21545,6 +21636,8 @@ export type Mutation = {
   updateEventsTarget?: Maybe<EventsTarget>;
   updateGeoTarget?: Maybe<GeoTarget>;
   updateLicense?: Maybe<License>;
+  updateLiquidMSetting?: Maybe<Scalars['JSON']>;
+  updateLiquidMSupply?: Maybe<Scalars['JSON']>;
   updateLocation?: Maybe<Location>;
   updateManyMessages: BatchPayload;
   updateMedia?: Maybe<Media>;
@@ -21721,18 +21814,9 @@ export type MutationCreateLiquidMBannerCreativeArgs = {
 
 
 export type MutationCreateLiquidMNativeCreativeArgs = {
-  campaignId?: InputMaybe<Scalars['Int']>;
-  creativeDataDescription?: InputMaybe<Scalars['String']>;
-  creativeDataSponsored?: InputMaybe<Scalars['String']>;
-  creativeImageIconUrl?: InputMaybe<Scalars['String']>;
-  creativeImageMainHeight?: InputMaybe<Scalars['Float']>;
-  creativeImageMainUrl?: InputMaybe<Scalars['String']>;
-  creativeImageMainWidth?: InputMaybe<Scalars['Float']>;
-  creativeTitle?: InputMaybe<Scalars['String']>;
-  dealIds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-  name?: InputMaybe<Scalars['String']>;
-  targetUrl?: InputMaybe<Scalars['String']>;
-  trackers?: InputMaybe<Array<InputMaybe<LiquidMTrackersInput>>>;
+  attributes?: InputMaybe<LiquidMNativeCreateAttributeInput>;
+  settingId?: InputMaybe<Scalars['String']>;
+  supplyId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -21745,6 +21829,18 @@ export type MutationCreateLiquidMScriptTagCreativeArgs = {
   name?: InputMaybe<Scalars['String']>;
   targetUrl?: InputMaybe<Scalars['String']>;
   trackers?: InputMaybe<Array<InputMaybe<LiquidMTrackersInput>>>;
+};
+
+
+export type MutationCreateLiquidMSettingArgs = {
+  accountId?: InputMaybe<Scalars['String']>;
+  attributes?: InputMaybe<LiquidMSettingAttributeInput>;
+};
+
+
+export type MutationCreateLiquidMSupplyArgs = {
+  accountId?: InputMaybe<Scalars['String']>;
+  attributes?: InputMaybe<LiquidMSupplyAttributeInput>;
 };
 
 
@@ -22324,6 +22420,20 @@ export type MutationUpdateGeoTargetArgs = {
 export type MutationUpdateLicenseArgs = {
   data: LicenseUpdateInput;
   where: LicenseWhereUniqueInput;
+};
+
+
+export type MutationUpdateLiquidMSettingArgs = {
+  accountId?: InputMaybe<Scalars['String']>;
+  attributes?: InputMaybe<LiquidMSettingAttributeInput>;
+  id: Scalars['String'];
+};
+
+
+export type MutationUpdateLiquidMSupplyArgs = {
+  accountId?: InputMaybe<Scalars['String']>;
+  attributes?: InputMaybe<LiquidMSupplyAttributeInput>;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -22951,6 +23061,7 @@ export type Org = Node & {
   posConfig?: Maybe<Array<PosConfig>>;
   regionGroup?: Maybe<Array<RegionGroup>>;
   roles?: Maybe<Array<Role>>;
+  salesforceId?: Maybe<Scalars['String']>;
   sendEmailConfig?: Maybe<SendEmailConfig>;
   signInLogo?: Maybe<Media>;
   tableConfig?: Maybe<OrgTableConfig>;
@@ -23418,6 +23529,7 @@ export type OrgCreateInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23571,6 +23683,7 @@ export type OrgCreateWithoutAdGroupCreativesInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23614,6 +23727,7 @@ export type OrgCreateWithoutAdvertiserCampaignOrdersInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23657,6 +23771,7 @@ export type OrgCreateWithoutAudiencesInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23700,6 +23815,7 @@ export type OrgCreateWithoutCampaignOrdersInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23743,6 +23859,7 @@ export type OrgCreateWithoutCampaignsInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23786,6 +23903,7 @@ export type OrgCreateWithoutCustomersInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23829,6 +23947,7 @@ export type OrgCreateWithoutDataConfigInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23872,6 +23991,7 @@ export type OrgCreateWithoutEventInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23915,6 +24035,7 @@ export type OrgCreateWithoutEventsTargetInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -23958,6 +24079,7 @@ export type OrgCreateWithoutIabCategoryGroupInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24001,6 +24123,7 @@ export type OrgCreateWithoutLogoInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24044,6 +24167,7 @@ export type OrgCreateWithoutLoyaltyCampaignsInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24087,6 +24211,7 @@ export type OrgCreateWithoutMediaInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24130,6 +24255,7 @@ export type OrgCreateWithoutOffersInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24173,6 +24299,7 @@ export type OrgCreateWithoutOrgSummaryInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24216,6 +24343,7 @@ export type OrgCreateWithoutPaidSearchSummaryInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24259,6 +24387,7 @@ export type OrgCreateWithoutPaidSearchSummarySharedOrgsInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24302,6 +24431,7 @@ export type OrgCreateWithoutRegionGroupInput = {
   phone?: InputMaybe<Scalars['String']>;
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24345,6 +24475,7 @@ export type OrgCreateWithoutRolesInput = {
   phone?: InputMaybe<Scalars['String']>;
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24388,6 +24519,7 @@ export type OrgCreateWithoutSeoSummaryInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24432,6 +24564,7 @@ export type OrgCreateWithoutTagsConfigInput = {
   posConfig?: InputMaybe<PosConfigCreateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupCreateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleCreateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
@@ -24909,6 +25042,8 @@ export enum OrgOrderByInput {
   NameDesc = 'name_DESC',
   PhoneAsc = 'phone_ASC',
   PhoneDesc = 'phone_DESC',
+  SalesforceIdAsc = 'salesforceId_ASC',
+  SalesforceIdDesc = 'salesforceId_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC',
   WebsiteAsc = 'website_ASC',
@@ -24929,6 +25064,7 @@ export type OrgPreviousValues = {
   level: PartnerLevel;
   name: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
+  salesforceId?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   website?: Maybe<Scalars['String']>;
   zone?: Maybe<Scalars['String']>;
@@ -26704,6 +26840,7 @@ export type OrgUpdateDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -26748,6 +26885,7 @@ export type OrgUpdateInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27045,6 +27183,7 @@ export type OrgUpdateWithoutAdGroupCreativesDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27088,6 +27227,7 @@ export type OrgUpdateWithoutAdvertiserCampaignOrdersDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27131,6 +27271,7 @@ export type OrgUpdateWithoutAudiencesDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27174,6 +27315,7 @@ export type OrgUpdateWithoutCampaignOrdersDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27217,6 +27359,7 @@ export type OrgUpdateWithoutCampaignsDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27260,6 +27403,7 @@ export type OrgUpdateWithoutCustomersDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27303,6 +27447,7 @@ export type OrgUpdateWithoutEventDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27346,6 +27491,7 @@ export type OrgUpdateWithoutEventsTargetDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27389,6 +27535,7 @@ export type OrgUpdateWithoutIabCategoryGroupDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27432,6 +27579,7 @@ export type OrgUpdateWithoutLogoDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27475,6 +27623,7 @@ export type OrgUpdateWithoutLoyaltyCampaignsDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27518,6 +27667,7 @@ export type OrgUpdateWithoutMediaDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27561,6 +27711,7 @@ export type OrgUpdateWithoutOffersDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27604,6 +27755,7 @@ export type OrgUpdateWithoutOrgSummaryDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27647,6 +27799,7 @@ export type OrgUpdateWithoutPaidSearchSummaryDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27690,6 +27843,7 @@ export type OrgUpdateWithoutPaidSearchSummarySharedOrgsDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27733,6 +27887,7 @@ export type OrgUpdateWithoutRegionGroupDataInput = {
   phone?: InputMaybe<Scalars['String']>;
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27776,6 +27931,7 @@ export type OrgUpdateWithoutRolesDataInput = {
   phone?: InputMaybe<Scalars['String']>;
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27819,6 +27975,7 @@ export type OrgUpdateWithoutSeoSummaryDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -27863,6 +28020,7 @@ export type OrgUpdateWithoutTagsConfigDataInput = {
   posConfig?: InputMaybe<PosConfigUpdateManyWithoutOrgInput>;
   regionGroup?: InputMaybe<RegionGroupUpdateManyWithoutOrgsInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutOrgInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
@@ -28274,6 +28432,33 @@ export type OrgWhereInput = {
   roles_every?: InputMaybe<RoleWhereInput>;
   roles_none?: InputMaybe<RoleWhereInput>;
   roles_some?: InputMaybe<RoleWhereInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  salesforceId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  salesforceId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  salesforceId_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  salesforceId_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  salesforceId_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  salesforceId_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  salesforceId_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  salesforceId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  salesforceId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  salesforceId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  salesforceId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  salesforceId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  salesforceId_starts_with?: InputMaybe<Scalars['String']>;
   sendEmailConfig?: InputMaybe<SendEmailConfigWhereInput>;
   signInLogo?: InputMaybe<MediaWhereInput>;
   tableConfig?: InputMaybe<OrgTableConfigWhereInput>;
@@ -36707,6 +36892,10 @@ export type Query = {
   liquidMCampaignStart?: Maybe<Scalars['JSON']>;
   liquidMCampaigns?: Maybe<Scalars['JSON']>;
   liquidMRegions?: Maybe<Scalars['JSON']>;
+  liquidMSetting?: Maybe<Scalars['JSON']>;
+  liquidMSettings?: Maybe<Scalars['JSON']>;
+  liquidMSupplies?: Maybe<Scalars['JSON']>;
+  liquidMSupply?: Maybe<Scalars['JSON']>;
   location?: Maybe<Location>;
   locations: Array<Maybe<Location>>;
   loyaltyCampaigns: Array<Maybe<LoyaltyCampaign>>;
@@ -37347,6 +37536,23 @@ export type QueryLiquidMCampaignStartArgs = {
 
 export type QueryLiquidMRegionsArgs = {
   name?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryLiquidMSettingArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type QueryLiquidMSuppliesArgs = {
+  attributes?: InputMaybe<LiquidMSupplyAttributeInput>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryLiquidMSupplyArgs = {
+  attributes?: InputMaybe<LiquidMSupplyAttributeInput>;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -43786,6 +43992,7 @@ export type User = Node & {
   products?: Maybe<Array<Product>>;
   reviews?: Maybe<Array<Review>>;
   roles?: Maybe<Array<Role>>;
+  salesforceId?: Maybe<Scalars['String']>;
   ssoToken?: Maybe<Scalars['String']>;
   strains?: Maybe<Array<Strain>>;
   updatedAt: Scalars['DateTime'];
@@ -43967,6 +44174,7 @@ export type UserConfig = Node & {
   createdAt: Scalars['DateTime'];
   exportData?: Maybe<Scalars['Boolean']>;
   hasInsights?: Maybe<Scalars['Boolean']>;
+  horizontalNavigation?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   isAdmin?: Maybe<Scalars['Boolean']>;
   isDemo?: Maybe<Scalars['Boolean']>;
@@ -44002,6 +44210,7 @@ export type UserConfigCreateInput = {
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
   exportData?: InputMaybe<Scalars['Boolean']>;
   hasInsights?: InputMaybe<Scalars['Boolean']>;
+  horizontalNavigation?: InputMaybe<Scalars['Boolean']>;
   isAdmin?: InputMaybe<Scalars['Boolean']>;
   isDemo?: InputMaybe<Scalars['Boolean']>;
   isPacing?: InputMaybe<Scalars['Boolean']>;
@@ -44029,6 +44238,7 @@ export type UserConfigCreateWithoutUsersInput = {
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
   exportData?: InputMaybe<Scalars['Boolean']>;
   hasInsights?: InputMaybe<Scalars['Boolean']>;
+  horizontalNavigation?: InputMaybe<Scalars['Boolean']>;
   isAdmin?: InputMaybe<Scalars['Boolean']>;
   isDemo?: InputMaybe<Scalars['Boolean']>;
   isPacing?: InputMaybe<Scalars['Boolean']>;
@@ -44059,6 +44269,7 @@ export type UserConfigUpdateWithoutUsersDataInput = {
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
   exportData?: InputMaybe<Scalars['Boolean']>;
   hasInsights?: InputMaybe<Scalars['Boolean']>;
+  horizontalNavigation?: InputMaybe<Scalars['Boolean']>;
   isAdmin?: InputMaybe<Scalars['Boolean']>;
   isDemo?: InputMaybe<Scalars['Boolean']>;
   isPacing?: InputMaybe<Scalars['Boolean']>;
@@ -44116,6 +44327,9 @@ export type UserConfigWhereInput = {
   hasInsights?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   hasInsights_not?: InputMaybe<Scalars['Boolean']>;
+  horizontalNavigation?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  horizontalNavigation_not?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -44228,6 +44442,7 @@ export type UserCreateInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44346,6 +44561,7 @@ export type UserCreateWithoutCannatypeInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44374,6 +44590,7 @@ export type UserCreateWithoutChangesInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44402,6 +44619,7 @@ export type UserCreateWithoutConfigInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44430,6 +44648,7 @@ export type UserCreateWithoutConversationInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44458,6 +44677,7 @@ export type UserCreateWithoutCreatedIabCategoryGroupsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44486,6 +44706,7 @@ export type UserCreateWithoutCreatedRegionGroupsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44514,6 +44735,7 @@ export type UserCreateWithoutEventsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44542,6 +44764,7 @@ export type UserCreateWithoutMessagesInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44570,6 +44793,7 @@ export type UserCreateWithoutNotificationsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44598,6 +44822,7 @@ export type UserCreateWithoutOffersInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44626,6 +44851,7 @@ export type UserCreateWithoutProductsInput = {
   phone?: InputMaybe<Scalars['String']>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44654,6 +44880,7 @@ export type UserCreateWithoutReviewsInput = {
   phone?: InputMaybe<Scalars['String']>;
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44682,6 +44909,7 @@ export type UserCreateWithoutRolesInput = {
   phone?: InputMaybe<Scalars['String']>;
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44711,6 +44939,7 @@ export type UserCreateWithoutStrainsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
   updatedRegionGroups?: InputMaybe<RegionGroupCreateManyWithoutUpdatedByInput>;
@@ -44739,6 +44968,7 @@ export type UserCreateWithoutUpdatedIabCategoryGroupsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedRegionGroups?: InputMaybe<RegionGroupCreateManyWithoutUpdatedByInput>;
@@ -44767,6 +44997,7 @@ export type UserCreateWithoutUpdatedRegionGroupsInput = {
   products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
@@ -44788,6 +45019,8 @@ export enum UserOrderByInput {
   NameDesc = 'name_DESC',
   PhoneAsc = 'phone_ASC',
   PhoneDesc = 'phone_DESC',
+  SalesforceIdAsc = 'salesforceId_ASC',
+  SalesforceIdDesc = 'salesforceId_DESC',
   SsoTokenAsc = 'ssoToken_ASC',
   SsoTokenDesc = 'ssoToken_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -44805,6 +45038,7 @@ export type UserPreviousValues = {
   msaStatus?: Maybe<MsaVersion>;
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  salesforceId?: Maybe<Scalars['String']>;
   ssoToken?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
@@ -44858,6 +45092,7 @@ export type UserUpdateDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -44887,6 +45122,7 @@ export type UserUpdateInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45076,6 +45312,7 @@ export type UserUpdateWithoutCannatypeDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45104,6 +45341,7 @@ export type UserUpdateWithoutChangesDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45132,6 +45370,7 @@ export type UserUpdateWithoutConversationDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45160,6 +45399,7 @@ export type UserUpdateWithoutCreatedIabCategoryGroupsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45188,6 +45428,7 @@ export type UserUpdateWithoutCreatedRegionGroupsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45216,6 +45457,7 @@ export type UserUpdateWithoutEventsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45244,6 +45486,7 @@ export type UserUpdateWithoutMessagesDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45272,6 +45515,7 @@ export type UserUpdateWithoutNotificationsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45300,6 +45544,7 @@ export type UserUpdateWithoutOffersDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45328,6 +45573,7 @@ export type UserUpdateWithoutProductsDataInput = {
   phone?: InputMaybe<Scalars['String']>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45356,6 +45602,7 @@ export type UserUpdateWithoutReviewsDataInput = {
   phone?: InputMaybe<Scalars['String']>;
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45384,6 +45631,7 @@ export type UserUpdateWithoutRolesDataInput = {
   phone?: InputMaybe<Scalars['String']>;
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45413,6 +45661,7 @@ export type UserUpdateWithoutStrainsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
   updatedRegionGroups?: InputMaybe<RegionGroupUpdateManyWithoutUpdatedByInput>;
@@ -45441,6 +45690,7 @@ export type UserUpdateWithoutUpdatedIabCategoryGroupsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedRegionGroups?: InputMaybe<RegionGroupUpdateManyWithoutUpdatedByInput>;
@@ -45469,6 +45719,7 @@ export type UserUpdateWithoutUpdatedRegionGroupsDataInput = {
   products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
   reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
   roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
   updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
@@ -45766,6 +46017,33 @@ export type UserWhereInput = {
   roles_every?: InputMaybe<RoleWhereInput>;
   roles_none?: InputMaybe<RoleWhereInput>;
   roles_some?: InputMaybe<RoleWhereInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  salesforceId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  salesforceId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  salesforceId_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  salesforceId_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  salesforceId_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  salesforceId_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  salesforceId_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  salesforceId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  salesforceId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  salesforceId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  salesforceId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  salesforceId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  salesforceId_starts_with?: InputMaybe<Scalars['String']>;
   ssoToken?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   ssoToken_contains?: InputMaybe<Scalars['String']>;
@@ -46422,8 +46700,16 @@ export type Get_Org_By_NameQueryVariables = Exact<{
 
 export type Get_Org_By_NameQuery = { __typename?: 'Query', org?: { __typename?: 'Org', id: string, name: string } | null };
 
+export type Get_Org_By_Salesforce_IdQueryVariables = Exact<{
+  salesforceId: Scalars['String'];
+}>;
+
+
+export type Get_Org_By_Salesforce_IdQuery = { __typename?: 'Query', orgs: Array<{ __typename?: 'Org', id: string, salesforceId?: string | null, name: string } | null> };
+
 
 export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"signInLogo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brands"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"priceVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isDemo"}},{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}},{"kind":"Field","name":{"kind":"Name","value":"isPartner"}},{"kind":"Field","name":{"kind":"Name","value":"isTrafficker"}},{"kind":"Field","name":{"kind":"Name","value":"exportData"}},{"kind":"Field","name":{"kind":"Name","value":"isSelfService"}},{"kind":"Field","name":{"kind":"Name","value":"hasInsights"}},{"kind":"Field","name":{"kind":"Name","value":"providersVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isProcessor"}},{"kind":"Field","name":{"kind":"Name","value":"canResetPasswords"}},{"kind":"Field","name":{"kind":"Name","value":"campaignSummary"}},{"kind":"Field","name":{"kind":"Name","value":"isPacing"}},{"kind":"Field","name":{"kind":"Name","value":"pastData"}},{"kind":"Field","name":{"kind":"Name","value":"segment"}},{"kind":"Field","name":{"kind":"Name","value":"technicalSupport"}},{"kind":"Field","name":{"kind":"Name","value":"articles"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dataConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reTargeting"}},{"kind":"Field","name":{"kind":"Name","value":"appIds"}},{"kind":"Field","name":{"kind":"Name","value":"tradeDeskIdentifier"}},{"kind":"Field","name":{"kind":"Name","value":"storageBucket"}},{"kind":"Field","name":{"kind":"Name","value":"googleCustomerId"}},{"kind":"Field","name":{"kind":"Name","value":"seo"}},{"kind":"Field","name":{"kind":"Name","value":"googleAnalytics"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"viewId"}},{"kind":"Field","name":{"kind":"Name","value":"isGA4"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"locations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"signInLogo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isMaster"}},{"kind":"Field","name":{"kind":"Name","value":"roleItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"feature"}},{"kind":"Field","name":{"kind":"Name","value":"actions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"domain"}},{"kind":"Field","name":{"kind":"Name","value":"parentOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"chatWootId"}},{"kind":"Field","name":{"kind":"Name","value":"cpm"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
 export const CreateDashboardUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createDashboardUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createDashboardUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"phone"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"orgId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"avatar"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"cognitoUserId"}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"roleItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"20"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"feature"}},{"kind":"Field","name":{"kind":"Name","value":"actions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"org"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"parentOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"avatar"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]}}]} as unknown as DocumentNode<CreateDashboardUserMutation, CreateDashboardUserMutationVariables>;
 export const GetOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id_not"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<GetOrgQuery, GetOrgQueryVariables>;
 export const Get_Org_By_NameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_ORG_BY_NAME"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"org"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<Get_Org_By_NameQuery, Get_Org_By_NameQueryVariables>;
+export const Get_Org_By_Salesforce_IdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GET_ORG_BY_SALESFORCE_ID"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<Get_Org_By_Salesforce_IdQuery, Get_Org_By_Salesforce_IdQueryVariables>;
