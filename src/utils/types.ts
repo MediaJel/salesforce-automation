@@ -2,7 +2,7 @@ import {
   CreateDashboardUserMutationVariables,
   CreateOrgMutationVariables,
   GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdQueryVariables,
+  GetUsersBySalesforceIdOrEmailQueryVariables,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
 
@@ -78,17 +78,13 @@ export type CreateOrgParams = Pick<
   CreateOrgMutationVariables,
   "name" | "description"
 > &
-  GetOrgBySalesforceIdParams;
+  GetOrgBySalesforceIdQueryVariables;
 
 export type CreateUserParams = Pick<
   CreateDashboardUserMutationVariables,
   "email" | "phone" | "name" | "username" | "orgId"
->;
-
-export type GetOrgBySalesforceIdParams = Pick<
-  GetOrgBySalesforceIdQueryVariables,
-  "salesforceId"
->;
+> &
+  GetUsersBySalesforceIdOrEmailQueryVariables;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 

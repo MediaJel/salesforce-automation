@@ -2,12 +2,13 @@ import { createClient } from "@urql/core";
 import {
   Feature,
   FeatureActions,
+  GetOrgBySalesforceIdQueryVariables,
+  GetUsersBySalesforceIdOrEmailQueryVariables,
   PartnerLevel,
 } from "@/services/graphql/generated/graphql";
 import {
   CreateOrgParams,
   CreateUserParams,
-  GetOrgBySalesforceIdParams,
   GraphQLConfig,
 } from "@/utils/types";
 
@@ -29,7 +30,9 @@ const createGraphqlService = (config: GraphQLConfig) => {
     },
   });
   return {
-    async getOrgBySalesforceId({ salesforceId }: GetOrgBySalesforceIdParams) {
+    async getOrgBySalesforceId({
+      salesforceId,
+    }: GetOrgBySalesforceIdQueryVariables) {
       const operation = await client
         .query(queries.GET_ORG_BY_SALESFORCE_ID, {
           salesforceId,
@@ -45,10 +48,14 @@ const createGraphqlService = (config: GraphQLConfig) => {
       return operation.data.orgs[0].id;
     },
 
-    async getUserBySalesforceId({ salesforceId }: GetOrgBySalesforceIdParams) {
+    async getUserBySalesforceIdOrEmail({
+      salesforceId,
+      email,
+    }: GetUsersBySalesforceIdOrEmailQueryVariables) {
       const operation = await client
-        .query(queries.GET_USER_BY_SALESFORCE_ID, {
-          salesforceId: "1",
+        .query(queries.GET_USER_BY_SALESFORCE_ID_OR_EMAIL, {
+          salesforceId,
+          email,
         })
         .toPromise()
         .catch((err) => {
@@ -57,13 +64,23 @@ const createGraphqlService = (config: GraphQLConfig) => {
         });
 
       logger.debug(
-        `getUserBySalesforceId result ${operation.data.users[0].id}`
+        `getUserBySalesforceIdOrEmail result ${operation.data.users[0].id}`
       );
 
       return operation.data.users[0].id;
     },
 
     async createUser(params: CreateUserParams) {
+      const isExistingUser = await this.getUserBySalesforceIdOrEmail({
+        salesforceId: params.salesforceId,
+        email: params.email,
+      });
+
+      if (isExistingUser) {
+        logger.debug(`User already exists`);
+        return;
+      }
+
       const operation = await client
         .mutation(mutations.CREATE_USER, {
           email: params.email,
@@ -98,11 +115,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
           logger.error("Error running createUser");
           throw err;
         });
-
-      if (!operation.data?.createDashboardUser) {
-        logger.warn(`Unable to create user: ${params.name}`);
-        return;
-      }
 
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
 

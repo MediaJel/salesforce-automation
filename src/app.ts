@@ -53,6 +53,7 @@ const createApp = (config: Config) => {
       if (!createdOrg) return logger.warn("No Org Created");
 
       const createdUser = await graphql.createUser({
+        salesforceId: contact.Id,
         email: contact.Email,
         name: `salesforce: ${contact.Name}`,
         phone: "+11234567894", // Always add a +1 for some reason
