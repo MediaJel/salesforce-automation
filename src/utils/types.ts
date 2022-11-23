@@ -1,7 +1,8 @@
 import {
   CreateDashboardUserMutationVariables,
   CreateOrgMutationVariables,
-  Get_Org_By_Salesforce_IdQueryVariables,
+  GetOrgBySalesforceIdQueryVariables,
+  GetUserBySalesforceIdQueryVariables,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
 
@@ -85,7 +86,7 @@ export type CreateUserParams = Pick<
 >;
 
 export type GetOrgBySalesforceIdParams = Pick<
-  Get_Org_By_Salesforce_IdQueryVariables,
+  GetOrgBySalesforceIdQueryVariables,
   "salesforceId"
 >;
 

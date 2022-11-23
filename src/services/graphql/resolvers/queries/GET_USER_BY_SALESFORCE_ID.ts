@@ -1,7 +1,7 @@
 import { graphql } from "@/services/graphql/generated";
 
 const GET_USER_BY_SALESFORCE_ID = graphql(`
-  query SalesforceUsers($salesforceId: String!) {
+  query getUserBySalesforceId($salesforceId: String!) {
     users(where: { salesforceId: $salesforceId }) {
       id
       email
