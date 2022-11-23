@@ -76,7 +76,8 @@ export interface SalesforceService {
 export type CreateOrgParams = Pick<
   CreateOrgMutationVariables,
   "name" | "description"
->;
+> &
+  GetOrgBySalesforceIdParams;
 
 export type CreateUserParams = Pick<
   CreateDashboardUserMutationVariables,

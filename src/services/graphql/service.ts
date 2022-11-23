@@ -94,15 +94,14 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       return operation.data.createDashboardUser;
     },
-    async createOrg({ name, description }: CreateOrgParams) {
+    async createOrg({ name, description, salesforceId }: CreateOrgParams) {
       const isExistingOrg = await this.getOrgBySalesforceId({
-        salesforceId: "1",
+        salesforceId,
       });
-      // const isExistingOrg = await this.getOrgByName(name);
 
       if (isExistingOrg) {
         logger.warn(`Org already exists: ${name}`);
-        return null;
+        return;
       }
 
       const operation = await client

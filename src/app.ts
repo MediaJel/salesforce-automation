@@ -51,6 +51,7 @@ const createApp = (config: Config) => {
       //! [] - NEED TO UPDATE SALESFORCE ID OF ORG AND USER
 
       const createdOrg = await graphql.createOrg({
+        salesforceId: account.Id,
         name: account.Name,
         description: `salesforce: ${account.Id}`,
       });
