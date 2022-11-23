@@ -7,6 +7,7 @@ import {
 import {
   CreateOrgParams,
   CreateUserParams,
+  GetOrgBySalesforceIdParams,
   GraphQLConfig,
 } from "@/utils/types";
 
@@ -28,6 +29,23 @@ const createGraphqlService = (config: GraphQLConfig) => {
     },
   });
   return {
+    async getOrgBySalesforceId({ salesforceId }: GetOrgBySalesforceIdParams) {
+      logger.debug(`Running getOrgBySalesforceId: ${salesforceId}`);
+
+      const operation = await client
+        .query(queries.GET_ORG_BY_SALESFORCE_ID, {
+          salesforceId,
+        })
+        .toPromise()
+        .catch((err) => {
+          logger.error("Error running getOrgBySalesforceId");
+          throw err;
+        });
+
+      logger.debug(`getOrgBySalesforceId result ${operation.data.orgs[0].id}`);
+
+      return operation.data.orgs[0].id;
+    },
     async getOrgByName(name: string) {
       logger.debug(`Running getOrgByName: ${name}`);
 
