@@ -18,4 +18,12 @@ export const match = <T extends {}>(
   return matched;
 };
 
+/**
+ * Removes whitespace from a string and converts it to lowercase
+ *
+ * @param str string
+ * @returns string
+ */
+export const format = (str: string) => str.replace(/\s/g, "").toLowerCase();
+
 export const isProduction = process.env.NODE_ENV === "production";

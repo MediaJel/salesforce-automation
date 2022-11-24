@@ -11,7 +11,7 @@ import createLimiter from "@/utils/limiter";
 
 const createGraphqlMutations = (client: Client, logger: Logger) => {
   const userLimiter = createLimiter<string>(10);
-  const orgLimiter = createLimiter<string>(5);
+  const orgLimiter = createLimiter<string>(10);
 
   return {
     async createUser(params: CreateUserParams) {
