@@ -8,7 +8,6 @@ COPY tsconfig.json .
 COPY src/ ./src/
 
 RUN yarn install --ignore-engines
-RUN yarn codegen
 
 
 ENTRYPOINT [ "yarn", "prod" ]
