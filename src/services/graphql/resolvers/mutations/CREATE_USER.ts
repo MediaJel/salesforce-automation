@@ -24,35 +24,8 @@ const CREATE_USER = graphql(`
       }
     ) {
       id
-      name
       username
       email
-      phone
-      cognitoUserId
-      roles(first: 5) {
-        id
-        roleItems(first: 20) {
-          id
-          feature
-          actions
-        }
-        org {
-          id
-          name
-          parentOrg {
-            id
-            name
-          }
-          logo {
-            id
-            key
-          }
-        }
-      }
-      avatar {
-        id
-        key
-      }
     }
   }
 `);
