@@ -5,6 +5,8 @@ import { ExpressServerConfig } from "@/utils/types";
 const app = express();
 const logger = createLogger("Server");
 
+const killSwitchHandler = (req: express.Request, res: express.Response) => {};
+
 const createServer = (config: ExpressServerConfig) => {
   app.get("/", (req, res) => {
     if (req.query.key === config.serverKey) {

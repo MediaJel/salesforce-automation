@@ -32,6 +32,8 @@ const createApp = (config: Config) => {
     },
 
     async subscriptionHandler(opp: Opportunity, svc: SalesforceService) {
+      if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
+
       const products = await svc.query.productsByOpportunityId({
         id: opp.Id,
         where: {
@@ -54,10 +56,9 @@ const createApp = (config: Config) => {
       if (!org) return logger.warn("No Org Found/Created");
       logger.info(`Found/Created Org: ${org.id}`);
 
-      if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-
       if (!contact?.Name) return logger.warn(`No Contact "Name" Found`);
+
       const user = await graphql.findOrCreateUser({
         salesforceId: contact.Id,
         email: contact?.Email || "",
