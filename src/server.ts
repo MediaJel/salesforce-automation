@@ -13,8 +13,8 @@ const createServer = (config: ExpressServerConfig) => {
 
   return {
     start() {
-      app.listen(3000, () => {
-        logger.info("Server started on port 3000");
+      app.listen(config.port, () => {
+        logger.info(`Server started on port ${config.port}`);
       });
     },
   };
