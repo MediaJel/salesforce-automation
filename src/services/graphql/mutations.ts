@@ -1,4 +1,4 @@
-import { Client } from "urql";
+import { Client } from "@urql/core";
 import { CreateOrgParams, CreateUserParams, Logger } from "@/utils/types";
 import {
   PartnerLevel,

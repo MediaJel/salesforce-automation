@@ -5,7 +5,7 @@ import {
   GetUserBySalesforceIdOrEmailQueryVariables,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
-import { ClientOptions } from "urql";
+import { ClientOptions } from "@urql/core";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";

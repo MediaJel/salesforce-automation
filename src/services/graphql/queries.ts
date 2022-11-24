@@ -1,4 +1,4 @@
-import { Client } from "urql";
+import { Client } from "@urql/core";
 import { Logger } from "@/utils/types";
 import {
   GetOrgBySalesforceIdQueryVariables,

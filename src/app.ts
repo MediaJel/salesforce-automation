@@ -58,11 +58,10 @@ const createApp = (config: Config) => {
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
 
       if (!contact?.Name) return logger.warn(`No Contact "Name" Found`);
-
       const user = await graphql.findOrCreateUser({
         salesforceId: contact.Id,
         email: contact?.Email || "",
-        name: `salesforce: ${contact.Name}`,
+        name: `salesforce: ${format(contact.Name)}`,
         phone: "+11234567894", // Always add a +1 for some reason
         username: format(contact.Name),
         orgId: org.id,
