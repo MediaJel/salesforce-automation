@@ -1,10 +1,11 @@
 import express from "express";
 import createLogger from "@/utils/logger";
+import { ExpressServerConfig } from "@/utils/types";
 
 const app = express();
 const logger = createLogger("Server");
 
-const createServer = () => {
+const createServer = (config: ExpressServerConfig) => {
   app.get("/", (req, res) => {
     logger.warn("Closing Application");
     process.exit(0);

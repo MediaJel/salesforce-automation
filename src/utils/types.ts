@@ -5,12 +5,12 @@ import {
   GetUserBySalesforceIdOrEmailQueryVariables,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
+import { ClientOptions } from "urql";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
 import createApp from "@/app";
-import { ClientOptions } from "urql";
-import createLogger from "./logger";
+import createLogger from "@/utils/logger";
 
 export enum SalesforceChannel {
   /**
@@ -91,11 +91,16 @@ export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 export interface Config {
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
+  server: ExpressServerConfig;
 }
 
 export type Logger = ReturnType<typeof createLogger>;
 
 export type SalesforceConfig = ConnectionOptions;
+
+export type ExpressServerConfig = {
+  port: number;
+};
 
 export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
 

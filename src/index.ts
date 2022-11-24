@@ -7,7 +7,7 @@ import config from "@/config";
 
 const startApp = async () => {
   const app: App = createApp(config);
-  const server = createServer();
+  const server = createServer(config.server);
   app.setupSubscription();
   server.start();
 };

@@ -16,6 +16,9 @@ const config: Config = {
     url: process.env.GRAPHQL_ENDPOINT,
     X_API_KEY: process.env.GRAPHQL_KEY,
   },
+  server: {
+    port: parseInt(process.env?.PORT) || 3000,
+  },
 };
 
 export default config;
