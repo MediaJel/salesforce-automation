@@ -11,7 +11,7 @@ const createLimiter = <T = any>(limit: number) => {
       if (isProduction) {
         return null;
       }
-      if (limit && list.length >= limit) {
+      if (list.length >= limit) {
         logger.warn("Limiter is full, Closing application");
         process.exit(0);
       }
