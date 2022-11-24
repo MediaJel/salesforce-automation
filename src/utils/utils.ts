@@ -26,3 +26,5 @@ export const match = <T extends {}>(
 
   return matched;
 };
+
+export const isProduction = process.env.NODE_ENV === "production";

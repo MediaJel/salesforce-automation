@@ -1,6 +1,7 @@
 import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
+import createLimiter from "@/utils/limiter";
 
 import {
   SalesforceStreamSubscriptionParams,
@@ -66,7 +67,6 @@ const createApp = (config: Config) => {
       });
 
       if (!user) return logger.warn("No User Found/Created Created");
-
       logger.info(`Found/Created User: ${user.id}`);
     },
   };
