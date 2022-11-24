@@ -22,7 +22,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (operation.data.orgs.length === 0) {
+      if (operation?.data?.orgs.length === 0) {
         logger.debug(`Org ${salesforceId} does not exist`);
         return null;
       }
@@ -47,7 +47,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (operation.data.users.length === 0) {
+      if (operation?.data?.users.length === 0) {
         logger.debug(`User ${salesforceId} does not exist`);
         return null;
       }

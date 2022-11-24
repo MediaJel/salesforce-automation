@@ -1,12 +1,5 @@
 import { createClient } from "@urql/core";
 import {
-  Feature,
-  FeatureActions,
-  GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdOrEmailQueryVariables,
-  PartnerLevel,
-} from "@/services/graphql/generated/graphql";
-import {
   CreateOrgParams,
   CreateUserParams,
   GraphQLConfig,
@@ -33,36 +26,32 @@ const createGraphqlService = (config: GraphQLConfig) => {
   const queries = createGraphQLQueries(client, logger);
   const mutations = createGraphqlMutations(client, logger);
   return {
-    async createUser(params: CreateUserParams) {
-      const isExistingUser = await queries.getUserBySalesforceIdOrEmail({
+    async findOrCreateUser(params: CreateUserParams) {
+      const foundUser = await queries.getUserBySalesforceIdOrEmail({
         salesforceId: params.salesforceId,
         email: params.email,
       });
 
-      if (isExistingUser) {
+      if (foundUser) {
         logger.debug(`User ${params.salesforceId} already exists`);
-        return null;
+        return foundUser;
       }
 
       const createdUser = await mutations.createUser(params);
 
-      logger.info(`Created User: ${createdUser.id}`);
-
       return createdUser;
     },
-    async createOrg(params: CreateOrgParams) {
-      const isExistingOrg = await queries.getOrgBySalesforceId({
+    async findOrCreateOrg(params: CreateOrgParams) {
+      const foundOrg = await queries.getOrgBySalesforceId({
         salesforceId: params.salesforceId,
       });
 
-      if (isExistingOrg) {
-        logger.warn(`Org ${isExistingOrg.salesforceId} already exists`);
-        return null;
+      if (foundOrg) {
+        logger.warn(`Org ${foundOrg.salesforceId} already exists`);
+        return foundOrg;
       }
 
       const createdOrg = await mutations.createOrg(params);
-
-      logger.info(`Created org ${createdOrg.id}`);
 
       return createdOrg;
     },

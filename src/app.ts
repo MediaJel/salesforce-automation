@@ -40,28 +40,34 @@ const createApp = (config: Config) => {
       });
 
       if (products.length === 0) return logger.warn("No Display products");
-      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
 
       const account = await svc.query.accountById(opp.AccountId);
 
-      const createdOrg = await graphql.createOrg({
+      const org = await graphql.findOrCreateOrg({
         salesforceId: account.Id,
         name: account.Name,
         description: `salesforce: ${account.Id}`,
       });
 
-      if (!createdOrg) return logger.warn("No Org Created");
+      if (!org) return logger.warn("No Org Found/Created");
+      logger.info(`Found/Created Org: ${org.id}`);
 
-      const createdUser = await graphql.createUser({
+      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+
+      const username = contact.Name.replace(/\s/g, "");
+
+      const user = await graphql.findOrCreateUser({
         salesforceId: contact.Id,
         email: contact.Email,
         name: `salesforce: ${contact.Name}`,
         phone: "+11234567894", // Always add a +1 for some reason
-        username: contact.Email, //! TODO: Username should be the "parsed name" of the contact
-        orgId: createdOrg.id,
+        username,
+        orgId: org.id,
       });
 
-      if (!createdUser) return logger.warn("No User Created");
+      if (!user) return logger.warn("No User Found/Created Created");
+
+      logger.info(`Found/Created User: ${user.id}`);
     },
   };
 };
