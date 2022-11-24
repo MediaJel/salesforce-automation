@@ -3,7 +3,7 @@ import { isProduction } from "@/utils/utils";
 
 const logger = createLogger("Limiter");
 
-const createLimiter = <T = {}>(limit: number) => {
+const createLimiter = <T = any>(limit: number) => {
   const list = [];
 
   return {

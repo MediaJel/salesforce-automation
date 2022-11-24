@@ -10,8 +10,8 @@ import mutations from "@/services/graphql/resolvers/mutations";
 import createLimiter from "@/utils/limiter";
 
 const createGraphqlMutations = (client: Client, logger: Logger) => {
-  const userLimiter = createLimiter(10);
-  const orgLimiter = createLimiter(5);
+  const userLimiter = createLimiter<string>(10);
+  const orgLimiter = createLimiter<string>(5);
 
   return {
     async createUser(params: CreateUserParams) {
