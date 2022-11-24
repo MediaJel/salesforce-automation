@@ -18,6 +18,7 @@ const config: Config = {
   },
   server: {
     port: parseInt(process.env?.PORT) || 3000,
+    serverKey: process.env.SERVER_KEY,
   },
 };
 

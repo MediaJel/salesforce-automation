@@ -100,6 +100,7 @@ export type SalesforceConfig = ConnectionOptions;
 
 export type ExpressServerConfig = {
   port: number;
+  serverKey: string;
 };
 
 export type GraphQLConfig = ClientOptions & { X_API_KEY: string };

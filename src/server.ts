@@ -7,8 +7,12 @@ const logger = createLogger("Server");
 
 const createServer = (config: ExpressServerConfig) => {
   app.get("/", (req, res) => {
-    logger.warn("Closing Application");
-    process.exit(0);
+    if (req.query.key === config.serverKey) {
+      logger.info("Closing Application...");
+      res.json({ message: "Closing Application..." }).status(200);
+      process.exit(0);
+    }
+    res.json({ message: "Invalid Key" }).status(401);
   });
 
   return {
