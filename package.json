@@ -21,7 +21,7 @@
     "ts-node": "^10.9.1"
   },
   "engines": {
-    "node": ">=14.18.0",
+    "node": ">=18.12.1",
     "yarn": ">=1.22.19",
     "npm": "===> PLEASE USE YARN >=1.22.19 WHEN  INSTALLING DEPENDENCIES <==="
   },
