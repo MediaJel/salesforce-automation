@@ -126,7 +126,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
-          region: 'us-east-1'
+          region: AWS_ECR_REGION
           repo: salesforce-automation
           tag: staging
           attach-workspace: false
@@ -151,7 +151,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: false
-          region: 'us-east-1'
+          region: AWS_ECR_REGION
           repo: salesforce-automation
           tag: production
           attach-workspace: true
