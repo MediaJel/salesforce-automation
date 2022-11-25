@@ -13,11 +13,11 @@ const logger = createLogger("GraphQL Service");
 
 const createGraphqlService = (config: GraphQLConfig) => {
   const client = createClient({
-    url: process.env.GRAPHQL_KEY,
+    url: process.env.GRAPHQL_ENDPOINT,
     fetchOptions: () => {
       return {
         headers: {
-          "X-API-KEY": process.env.X_API_KEY,
+          "X-API-KEY": process.env.GRAPHQL_KEY,
         },
       };
     },
