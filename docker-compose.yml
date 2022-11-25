@@ -3,5 +3,5 @@ services:
   app:
     container_name: salesforce-automation
     build:
-      context: .
+      context: ./docker/Dockerfile
     env_file: .env
