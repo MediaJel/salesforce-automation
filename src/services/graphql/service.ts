@@ -12,6 +12,13 @@ import createGraphqlMutations from "@/services/graphql/mutations";
 const logger = createLogger("GraphQL Service");
 
 const createGraphqlService = (config: GraphQLConfig) => {
+  console.log({
+    config,
+  });
+  console.log({
+    envendpoint: process.env.GRAPHQL_ENDPOINT,
+    envkey: process.env.GRAPHQL_KEY,
+  });
   const client = createClient({
     url: process.env.GRAPHQL_ENDPOINT,
     fetchOptions: () => {
