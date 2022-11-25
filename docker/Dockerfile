@@ -10,4 +10,4 @@ COPY src/ ./src/
 RUN yarn install --ignore-engines
 
 
-ENTRYPOINT [ "yarn", "prod" ]
+##ENTRYPOINT [ "yarn", "prod" ]
