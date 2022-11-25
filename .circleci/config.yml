@@ -19,7 +19,7 @@ jobs:
           paths: .
   deploy-staging:
     docker:
-      - image: cimg/node:14.18.0
+      - image: cimg/node:18.12.1
     working_directory: ~/salesforce-automation
     steps:
       - checkout
@@ -68,7 +68,7 @@ jobs:
             helm3 list
   deploy-production:
     docker:
-      - image: cimg/node:14.18.0
+      - image: cimg/node:18.12.1
     working_directory: ~/salesforce-automation
     steps:
       - checkout
