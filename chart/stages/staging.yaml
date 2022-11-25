@@ -1,6 +1,6 @@
 repoUrl: 105618632367.dkr.ecr.us-east-1.amazonaws.com
 tag: staging
-GRAPHQL_ENDPOINT: http://graphqlserver-dojo.default.svc.cluster.local:80
+GRAPHQL_ENDPOINT: https://graphql-dojo.dmp.mediajel.ninja/
 LOG_LEVEL: DEBUG
 NODE_ENV: development
 cpuRequest: 0.5
