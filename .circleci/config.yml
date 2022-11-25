@@ -18,7 +18,7 @@ jobs:
           paths: .
   deploy-staging:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:14.18.0
     working_directory: ~/salesforce-automation
     steps:
       - checkout
@@ -67,7 +67,7 @@ jobs:
             helm3 list
   deploy-production:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:14.18.0
     working_directory: ~/salesforce-automation
     steps:
       - checkout
@@ -128,7 +128,7 @@ workflows:
           region: AWS_ECR_REGION
           repo: salesforce-automation
           tag: staging
-          attach-workspace: true
+          attach-workspace: false
           workspace-root: .
           dockerfile: ./docker/Dockerfile
           filters:
