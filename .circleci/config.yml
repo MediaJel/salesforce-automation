@@ -5,7 +5,8 @@ executors:
       - image: node:18.12.1-slim
     working_directory: ~/salesforce-automation
 orbs:
-  aws-ecr: circleci/aws-ecr@8.1.2
+  aws-ecr: circleci/aws-ecr@7.0.0
+  aws-s3: circleci/aws-s3@2.0.0
 jobs:
   pre-integration-build:
     executor: the-executor
@@ -125,7 +126,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: true
-          region: 'us-east-1'
+          region: AWS_ECR_REGION
           repo: salesforce-automation
           tag: staging
           attach-workspace: false
@@ -150,7 +151,7 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           create-repo: false
-          region: 'us-east-1'
+          region: AWS_ECR_REGION
           repo: salesforce-automation
           tag: production
           attach-workspace: true
