@@ -73,6 +73,9 @@ spec:
             memory: |-
               {{ .Values.memoryRequest }}
         env:  
+        - name: VWI_SERVICE_ENDPOINT
+          value: |-
+            {{ .Values.GRAPHQL_ENDPOINT }}
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
