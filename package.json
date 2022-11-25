@@ -4,6 +4,7 @@
   "description": "Salesforce NodeJS Microservice that automates Mediajel dashboard tasks",
   "author": "Pacholo Amit <https://github.com/pacholoamit>",
   "main": "app/index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "nodemon",
     "preprod": "rimraf dist && tsc -p . ",

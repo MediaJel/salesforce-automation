@@ -1,8 +1,10 @@
 # Salesforce Automation Microservice
 
-Salesforce NodeJS Microservice that automates Mediajel dashboard tasks
+This microservice automatically creates Orgs, Users, Campaign Orders, and many
+other entities for the MediaJel platform. This microservice listens to events from Salesforce in
+real time and creates the appropriate entities.
 
-# Installation
+## Installation
 
 Ensure you have the following dependencies installed
 
@@ -18,8 +20,6 @@ git clone https://github.com/MediaJel/salesforce-automation.git
 cd salesforce-automation
 yarn install
 ```
-
-# Usage
 
 ## Environment Variables
 
