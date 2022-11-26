@@ -1,10 +1,9 @@
-import chalk from "chalk";
+import { LogLevel } from "@/utils/types";
 
-type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
+import chalk from "chalk";
+import config from "@/config";
 
 const createLogger = (name: string) => {
-  const logLevel: LogLevel = (process.env.LOG_LEVEL as LogLevel) || "INFO";
-
   const template = (level: LogLevel, message: string, ...args: any[]) => {
     const date = new Date().toISOString();
     return `${date} | ${level} | [${name}]: ${message} | ${args.join(" | ")}`;
@@ -12,7 +11,7 @@ const createLogger = (name: string) => {
 
   return {
     debug: (message: string) => {
-      if (logLevel === "DEBUG") {
+      if (config.logLevel === "DEBUG") {
         console.log(chalk.green(template("DEBUG", message)));
       }
     },

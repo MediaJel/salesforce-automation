@@ -92,7 +92,10 @@ export interface Config {
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;
+  logLevel;
 }
+
+export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 export type Logger = ReturnType<typeof createLogger>;
 

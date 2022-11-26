@@ -1,4 +1,4 @@
-import { Config } from "@/utils/types";
+import { Config, LogLevel } from "@/utils/types";
 
 const config: Config = {
   salesforce: {
@@ -20,6 +20,7 @@ const config: Config = {
     port: parseInt(process.env?.PORT) || 4000,
     serverKey: process.env.SERVER_KEY,
   },
+  logLevel: (process.env.LOG_LEVEL as LogLevel) || "INFO",
 };
 
 export default config;
