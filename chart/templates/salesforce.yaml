@@ -76,6 +76,12 @@ spec:
         - name: GRAPHQL_ENDPOINT
           value: |-
             {{ .Values.GRAPHQL_ENDPOINT }}
+        - name: LOG_LEVEL
+          value: |-
+            {{ .Values.LOG_LEVEL }}
+        - name: NODE_ENV
+          value: |-
+            {{ .Values.NODE_ENV }}
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
