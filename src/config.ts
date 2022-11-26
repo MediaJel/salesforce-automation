@@ -17,7 +17,7 @@ const config: Config = {
     X_API_KEY: process.env.GRAPHQL_KEY,
   },
   server: {
-    port: parseInt(process.env?.PORT) || 3000,
+    port: parseInt(process.env?.PORT) || 4000,
     serverKey: process.env.SERVER_KEY,
   },
 };
