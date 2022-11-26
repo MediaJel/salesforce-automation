@@ -1,5 +1,4 @@
 import { App } from "@/utils/types";
-import { tryCatch } from "@/utils/utils";
 
 import createLogger from "@/utils/logger";
 import createApp from "@/app";
@@ -16,4 +15,7 @@ const startApp = async () => {
   server.start();
 };
 
-(async () => tryCatch(startApp))();
+startApp().catch((err) => {
+  logger.error("Application Error", err);
+  process.exit(1);
+});
