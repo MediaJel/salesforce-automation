@@ -5,11 +5,12 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
   return {
     async authenticate(): Promise<Connection> {
       return new Promise<Connection>((resolve, reject) => {
+        logger.info("Authenticating/Reauthenticating to Salesforce");
         const client = new Connection(opts);
 
         client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
           if (err) {
-            logger.error("Error Refreshing Salesforce token");
+            logger.error("Error authenticating to Salesforce");
             reject(err);
           }
 
@@ -18,7 +19,7 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
             instanceUrl: res["instance_url"],
           });
 
-          logger.info("Authenticated to Salesforce");
+          logger.info("Authentication/Reauthentication Successful");
 
           resolve(newClient);
         });
