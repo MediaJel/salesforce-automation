@@ -22,7 +22,7 @@ const createApp = (config: Config) => {
 
         const subOptions: SalesforceStreamSubscriptionParams = {
           channel: SalesforceChannel.OpportunitiesUpdate,
-          replayId: -1,
+          replayId: -2,
         };
 
         svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
