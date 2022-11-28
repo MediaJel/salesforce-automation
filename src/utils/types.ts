@@ -106,11 +106,16 @@ export type CreateUserParams = Pick<
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
 export interface Config {
+  app: AppConfig;
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;
   logLevel;
 }
+
+export type AppConfig = {
+  subscription: () => SalesforceStreamSubscriptionParams;
+};
 
 export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 

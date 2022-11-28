@@ -14,30 +14,14 @@ import {
 const logger = createLogger("App");
 
 const createApp = (config: Config) => {
+  const { app } = config;
   const graphql = createGraphqlService(config.graphql);
   return {
-    configureSubscription(): SalesforceStreamSubscriptionParams {
-      // Subscription configuration if production or staging
-      if (isProduction || isStaging) {
-        return {
-          channel: SalesforceChannel.OpportunitiesUpdate,
-          replayId: -2,
-        };
-      }
-      // Subscription configuration if development
-      return {
-        channel: SalesforceChannel.OpportunitiesUpdateTest,
-        replayId: -1,
-      };
-    },
-
     async setupSubscription(): Promise<void> {
       createSalesforceService(config.salesforce, (client, svc) => {
         logger.info("Subscribing to Salesforce Opportunity Pushtopic");
 
-        const options = this.configureSubscription();
-
-        svc.stream.subscribe<Opportunity>(options, async (opp) => {
+        svc.stream.subscribe<Opportunity>(app.subscription(), async (opp) => {
           this.subscriptionHandler(opp, svc);
         });
       });

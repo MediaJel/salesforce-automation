@@ -1,6 +1,23 @@
-import { Config, LogLevel } from "@/utils/types";
+import { Config, LogLevel, SalesforceChannel } from "@/utils/types";
+import { isProduction, isStaging } from "@/utils/utils";
 
 const config: Config = {
+  app: {
+    subscription: () => {
+      // Subscription configuration if production or staging
+      if (isProduction || isStaging) {
+        return {
+          channel: SalesforceChannel.OpportunitiesUpdate,
+          replayId: -2,
+        };
+      }
+      // Subscription configuration if development
+      return {
+        channel: SalesforceChannel.OpportunitiesUpdateTest,
+        replayId: -1,
+      };
+    },
+  },
   salesforce: {
     oauth2: {
       clientId: process.env.SALESFORCE_CLIENT_ID,
