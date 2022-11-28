@@ -14,7 +14,7 @@ import createLogger from "@/utils/logger";
 
 export enum SalesforceChannel {
   /**
-   * SOQL for 'OppurtunitiesUpdate' PushTopic
+   * SOQL for 'OpportunitiesUpdate' PushTopic
    *
    * PushTopic pushTopic = new PushTopic();
    * pushTopic.Name = 'OpportunitiesUpdate';
@@ -28,6 +28,23 @@ export enum SalesforceChannel {
    * insert pushTopic;
    */
   OpportunitiesUpdate = "/topic/OpportunitiesUpdate",
+
+  /**
+   *
+   * SOQL for 'OpportunitiesUpdateTest' PushTopic
+   * PushTopic pushTopic = new PushTopic();
+   * pushTopic.Name = 'OpportunitiesUpdateTest';
+   * pushTopic.Query = 'SELECT Id, Name, Amount, AccountId, Deal_Signatory__c, RecordTypeId FROM Opportunity WHERE StageName = \'Closed Won\' AND Active__c = false';
+   * pushTopic.ApiVersion = 56.0;
+   * pushTopic.NotifyForOperationCreate = true;
+   * pushTopic.NotifyForOperationUpdate = true;
+   * pushTopic.NotifyForOperationUndelete = false;
+   * pushTopic.NotifyForOperationDelete = false;
+   * pushTopic.NotifyForFields = 'Referenced';
+   * insert pushTopic;
+   */
+
+  OpportunitiesUpdateTest = "/topic/OpportunitiesUpdateTest",
 }
 export interface Opportunity {
   Id: string;
