@@ -2,7 +2,7 @@ repoUrl: 105618632367.dkr.ecr.us-east-1.amazonaws.com
 tag: staging
 GRAPHQL_ENDPOINT: http://graphqlserver-dojo.default.svc.cluster.local:80
 LOG_LEVEL: DEBUG
-NODE_ENV: development
+NODE_ENV: staging
 cpuRequest: 0.5
 cpuLimit: 1.5
 memoryRequest: 1024Mi
