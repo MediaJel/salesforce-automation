@@ -2,7 +2,7 @@ import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
-import { format } from "./utils/utils";
+import { format, isProduction, isStaging } from "@/utils/utils";
 import {
   SalesforceStreamSubscriptionParams,
   SalesforceChannel,
@@ -11,21 +11,33 @@ import {
   Config,
 } from "@/utils/types";
 
+const logger = createLogger("App");
+
 const createApp = (config: Config) => {
   const graphql = createGraphqlService(config.graphql);
-  const logger = createLogger("App");
-
   return {
+    configureSubscription(): SalesforceStreamSubscriptionParams {
+      // Subscription configuration if production or staging
+      if (isProduction || isStaging) {
+        return {
+          channel: SalesforceChannel.OpportunitiesUpdate,
+          replayId: -2,
+        };
+      }
+      // Subscription configuration if development
+      return {
+        channel: SalesforceChannel.OpportunitiesUpdateTest,
+        replayId: -1,
+      };
+    },
+
     async setupSubscription(): Promise<void> {
       createSalesforceService(config.salesforce, (client, svc) => {
         logger.info("Subscribing to Salesforce Opportunity Pushtopic");
 
-        const subOptions: SalesforceStreamSubscriptionParams = {
-          channel: SalesforceChannel.OpportunitiesUpdate,
-          replayId: -2,
-        };
+        const options = this.configureSubscription();
 
-        svc.stream.subscribe<Opportunity>(subOptions, async (opp) => {
+        svc.stream.subscribe<Opportunity>(options, async (opp) => {
           this.subscriptionHandler(opp, svc);
         });
       });
