@@ -18,7 +18,7 @@ export enum SalesforceChannel {
    *
    * PushTopic pushTopic = new PushTopic();
    * pushTopic.Name = 'OpportunitiesUpdate';
-   * pushTopic.Query = 'SELECT Id, Name, Amount, AccountId, Deal_Signatory__c, RecordTypeId FROM Opportunity WHERE StageName = \'Closed Won\'';
+   * pushTopic.Query = 'SELECT Id, Name, Amount, AccountId, Deal_Signatory__c, RecordTypeId FROM Opportunity WHERE StageName = \'Closed Won\' AND Active__c = true';
    * pushTopic.ApiVersion = 56.0;
    * pushTopic.NotifyForOperationCreate = true;
    * pushTopic.NotifyForOperationUpdate = true;
