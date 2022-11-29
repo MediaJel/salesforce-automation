@@ -21,8 +21,6 @@ const createApp = (config: Config) => {
       createSalesforceService(config.salesforce, (client, svc) => {
         logger.info("Subscribing to Salesforce Opportunity Pushtopic");
 
-        console.log(app.subscription())
-
         svc.stream.subscribe<Opportunity>(app.subscription(), async (opp) => {
           this.subscriptionHandler(opp, svc);
         });
