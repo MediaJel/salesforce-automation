@@ -2,20 +2,15 @@ import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
-import { format, isProduction, isStaging } from "@/utils/utils";
-import {
-  SalesforceStreamSubscriptionParams,
-  SalesforceChannel,
-  Opportunity,
-  SalesforceService,
-  Config,
-} from "@/utils/types";
+import { format, isProduction } from "@/utils/utils";
+import { Opportunity, SalesforceService, Config } from "@/utils/types";
 
 const logger = createLogger("App");
 
 const createApp = (config: Config) => {
   const { app } = config;
   const graphql = createGraphqlService(config.graphql);
+
   return {
     async setupSubscription(): Promise<void> {
       createSalesforceService(config.salesforce, (client, svc) => {
@@ -57,7 +52,7 @@ const createApp = (config: Config) => {
 
       const user = await graphql.findOrCreateUser({
         salesforceId: contact.Id,
-        email: contact?.Email || "",
+        email: isProduction ? contact.Email : "pacholo@mediajel.com",
         name: `salesforce: ${format(contact.Name)}`,
         phone: "+11234567894", // Always add a +1 for some reason
         username: format(contact.Name),

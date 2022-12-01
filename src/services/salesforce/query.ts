@@ -51,6 +51,9 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
         logger.error("Error running contactById", err);
         throw err;
       });
+      if (!contact.Email) {
+        contact.Email = "pacholo@mediajel.com";
+      }
       logger.debug(`Found contact ${contact.Name}`);
       return contact;
     },
