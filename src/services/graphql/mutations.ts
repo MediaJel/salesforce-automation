@@ -46,13 +46,11 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         })
         .toPromise()
         .catch((err) => {
-          logger.error("Error running createUser");
           throw err;
         });
 
       if (!operation?.data?.createDashboardUser) {
-        logger.error("Error running createUser");
-        throw "Error running createUser";
+        throw "createDashboardUser failed, please check graphql server logs";
       }
 
       logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
@@ -94,13 +92,11 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         })
         .toPromise()
         .catch((err) => {
-          logger.error("Error running createOrg");
           throw err;
         });
 
       if (!operation?.data?.createOrg) {
-        logger.error("Error running createOrg");
-        throw "Error running createOrg";
+        throw "createOrg failed, please check graphql server logs";
       }
 
       logger.debug(`Created Org: ${operation.data.createOrg.id}`);

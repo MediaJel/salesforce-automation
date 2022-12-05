@@ -37,7 +37,9 @@ const createGraphqlService = (config: GraphQLConfig) => {
         return foundUser;
       }
 
-      const createdUser = await mutations.createUser(params);
+      const createdUser = await mutations.createUser(params).catch((err) => {
+        logger.error("Error running createUser", err);
+      });
 
       return createdUser;
     },
@@ -51,7 +53,9 @@ const createGraphqlService = (config: GraphQLConfig) => {
         return foundOrg;
       }
 
-      const createdOrg = await mutations.createOrg(params);
+      const createdOrg = await mutations.createOrg(params).catch((err) => {
+        logger.error("Error running createOrg", err);
+      });
 
       return createdOrg;
     },

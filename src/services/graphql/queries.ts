@@ -18,11 +18,10 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         })
         .toPromise()
         .catch((err) => {
-          logger.error("Error running getOrgBySalesforceId");
           throw err;
         });
 
-      if (operation?.data?.orgs.length === 0) {
+      if (!!operation?.data?.orgs) {
         logger.debug(`Org ${salesforceId} does not exist`);
         return null;
       }
@@ -43,11 +42,10 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         })
         .toPromise()
         .catch((err) => {
-          logger.error("Error running getUserBySalesforceIdOrEmail");
           throw err;
         });
 
-      if (operation?.data?.users.length === 0) {
+      if (!!operation?.data?.users) {
         logger.debug(`User ${salesforceId} does not exist`);
         return null;
       }

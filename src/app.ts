@@ -17,10 +17,13 @@ const createApp = (config: Config) => {
         logger.info("Subscribing to Salesforce Opportunity Pushtopic");
 
         svc.stream.subscribe<Opportunity>(app.subscription(), async (opp) => {
-          this.subscriptionHandler(opp, svc);
+          this.testSubscription(opp, svc);
+          // this.subscriptionHandler(opp, svc);
         });
       });
     },
+
+    async testSubscription(opp: Opportunity, svc: SalesforceService) {},
 
     async subscriptionHandler(opp: Opportunity, svc: SalesforceService) {
       if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
@@ -36,6 +39,8 @@ const createApp = (config: Config) => {
       if (products.length === 0) return logger.warn("No Display products");
 
       const account = await svc.query.accountById(opp.AccountId);
+      console.log(account);
+
       if (!account) return logger.warn("No Account");
 
       const org = await graphql.findOrCreateOrg({
@@ -50,6 +55,14 @@ const createApp = (config: Config) => {
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
       if (!contact?.Name) return logger.warn(`No Contact "Name" Found`);
 
+      console.log({
+        salesforceId: contact.Id,
+        email: isProduction ? contact.Email : "pacholo@mediajel.com",
+        name: `salesforce: ${format(contact.Name)}`,
+        phone: "+11234567894", // Always add a +1 for some reason
+        username: format(contact.Name),
+        orgId: org.id,
+      });
       const user = await graphql.findOrCreateUser({
         salesforceId: contact.Id,
         email: isProduction ? contact.Email : "pacholo@mediajel.com",

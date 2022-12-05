@@ -4,24 +4,24 @@ import chalk from "chalk";
 import config from "@/config";
 
 const createLogger = (name: string) => {
-  const template = (level: LogLevel, message: string, ...args: any[]) => {
+  const template = <T>(level: LogLevel, message: T, ...args: any[]) => {
     const date = new Date().toISOString();
     return `${date} | ${level} | [${name}]: ${message} | ${args.join(" | ")}`;
   };
 
   return {
-    debug: (message: string) => {
+    debug: <T>(message: T) => {
       if (config.logLevel === "DEBUG") {
         console.log(chalk.green(template("DEBUG", message)));
       }
     },
-    warn: (message: string) => {
+    warn: <T>(message: T) => {
       console.log(chalk.yellow(template("WARN", message)));
     },
-    info: (message: string) => {
+    info: <T>(message: T) => {
       console.log(chalk.blue(template("INFO", message)));
     },
-    error: (message: string, ...args: any[]) => {
+    error: <T>(message: T, ...args: any[]) => {
       console.log(chalk.red(template("ERROR", message, ...args)));
     },
   };
