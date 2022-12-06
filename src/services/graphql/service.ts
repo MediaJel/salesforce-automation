@@ -27,6 +27,8 @@ const createGraphqlService = (config: GraphQLConfig) => {
   const queries = createGraphQLQueries(client, logger);
   const mutations = createGraphqlMutations(client, logger);
   return {
+    queries,
+    mutations,
     async findOrCreateUser(params: CreateUserParams) {
       const foundUser = await queries.getUserBySalesforceIdOrEmail({
         salesforceId: params.salesforceId,
@@ -54,15 +56,11 @@ const createGraphqlService = (config: GraphQLConfig) => {
         return foundOrg;
       }
 
-      const parentOrg = await queries.getOrgBySalesforceId({
-        salesforceId: params.salesforceParentId,
-      });
-
       const createOrg: CreateOrgParams = {
         name: params.name,
         salesforceId: params.salesforceId,
         description: params.description,
-        parentOrgId: parentOrg?.id ?? "cjlwwzv86hn3q0726mqm60q3f", // Mediajel default org
+        parentOrgId: params.salesforceParentId ?? "cjoq2t7g4yzca07347pug25ck", // !NOTE CHANGE THIS TO PARENT ORG
       };
 
       const createdOrg = await mutations.createOrg(createOrg).catch((err) => {

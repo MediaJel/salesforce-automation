@@ -1,7 +1,7 @@
 import { graphql } from "@/services/graphql/generated";
 
 const GET_USER_BY_SALESFORCE_ID_OR_EMAIL = graphql(`
-  query getUserBySalesforceIdOrEmail($salesforceId: String!, $email: String!) {
+  query getUserBySalesforceIdOrEmail($salesforceId: String, $email: String) {
     users(where: { OR: [{ salesforceId: $salesforceId }, { email: $email }] }) {
       id
       username

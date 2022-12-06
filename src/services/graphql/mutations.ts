@@ -60,6 +60,7 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
     },
     async createOrg(params: CreateOrgParams) {
       const { salesforceId, name, description, parentOrgId } = params;
+      console.log(params);
 
       const operation = await client
         .mutation(mutations.CREATE_ORG, {
