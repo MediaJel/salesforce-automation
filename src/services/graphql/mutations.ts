@@ -58,7 +58,9 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
 
       return operation.data.createDashboardUser;
     },
-    async createOrg({ name, description, salesforceId }: CreateOrgParams) {
+    async createOrg(params: CreateOrgParams) {
+      const { salesforceId, name, description, parentOrgId } = params;
+
       const operation = await client
         .mutation(mutations.CREATE_ORG, {
           name,
@@ -88,7 +90,7 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           tradeDeskIdentifier: null,
           viewId: null,
           isGA4: false,
-          parentOrgs: [{ id: "cjlwwzv86hn3q0726mqm60q3f" }],
+          parentOrgs: [{ id: parentOrgId }],
         })
         .toPromise()
         .catch((err) => {

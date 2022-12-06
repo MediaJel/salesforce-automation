@@ -10593,23 +10593,23 @@ export type CannatypeWhereUniqueInput = {
 };
 
 export enum CartProvider {
-  Drupal = 'DRUPAL',
+  Buddi = 'BUDDI',
   Dutchie = 'DUTCHIE',
   Dutchiejs = 'DUTCHIEJS',
+  Grassdoor = 'GRASSDOOR',
   Greenrush = 'GREENRUSH',
   Jane = 'JANE',
-  Joomla = 'JOOMLA',
-  Magento = 'MAGENTO',
+  Lightspeed = 'LIGHTSPEED',
   Meadow = 'MEADOW',
   Nocart = 'NOCART',
   Olla = 'OLLA',
   Shopify = 'SHOPIFY',
   Shopifyuniversal = 'SHOPIFYUNIVERSAL',
-  Squarespace = 'SQUARESPACE',
   Thirdparty = 'THIRDPARTY',
   Treez = 'TREEZ',
   Tymber = 'TYMBER',
   Webjoint = 'WEBJOINT',
+  Wefunder = 'WEFUNDER',
   Woocommerce = 'WOOCOMMERCE'
 }
 
@@ -13805,6 +13805,7 @@ export type DistributionConfig = Node & {
   audience?: Maybe<Audience>;
   id: Scalars['ID'];
   providerSegmentId: Scalars['String'];
+  reportType?: Maybe<ReportType>;
 };
 
 export type DistributionConfigCreateManyWithoutAudienceInput = {
@@ -13815,6 +13816,7 @@ export type DistributionConfigCreateManyWithoutAudienceInput = {
 export type DistributionConfigCreateWithoutAudienceInput = {
   DSP: DemandSidePlatform;
   providerSegmentId: Scalars['String'];
+  reportType?: InputMaybe<ReportType>;
 };
 
 export enum DistributionConfigOrderByInput {
@@ -13826,6 +13828,8 @@ export enum DistributionConfigOrderByInput {
   IdDesc = 'id_DESC',
   ProviderSegmentIdAsc = 'providerSegmentId_ASC',
   ProviderSegmentIdDesc = 'providerSegmentId_DESC',
+  ReportTypeAsc = 'reportType_ASC',
+  ReportTypeDesc = 'reportType_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC'
 }
@@ -13847,6 +13851,7 @@ export type DistributionConfigUpdateWithWhereUniqueWithoutAudienceInput = {
 export type DistributionConfigUpdateWithoutAudienceDataInput = {
   DSP?: InputMaybe<DemandSidePlatform>;
   providerSegmentId?: InputMaybe<Scalars['String']>;
+  reportType?: InputMaybe<ReportType>;
 };
 
 export type DistributionConfigUpsertWithWhereUniqueWithoutAudienceInput = {
@@ -13924,6 +13929,13 @@ export type DistributionConfigWhereInput = {
   providerSegmentId_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   providerSegmentId_starts_with?: InputMaybe<Scalars['String']>;
+  reportType?: InputMaybe<ReportType>;
+  /** All values that are contained in given list. */
+  reportType_in?: InputMaybe<Array<ReportType>>;
+  /** All values that are not equal to given value. */
+  reportType_not?: InputMaybe<ReportType>;
+  /** All values that are not contained in given list. */
+  reportType_not_in?: InputMaybe<Array<ReportType>>;
 };
 
 export type DistributionConfigWhereUniqueInput = {
@@ -36861,6 +36873,9 @@ export type Query = {
   getPaidSearchKeywords?: Maybe<Scalars['JSON']>;
   getPaidSearchLocations?: Maybe<Scalars['JSON']>;
   getPaidSearchOrganic?: Maybe<Scalars['JSON']>;
+  getPaidSearchPacing: Array<Maybe<PaidSearchSummary>>;
+  getPaidSearchPacingBing: Array<Maybe<PaidSearchSummary>>;
+  getPaidSearchPacingGoogle: Array<Maybe<PaidSearchSummary>>;
   getPaidSearchReports?: Maybe<PaidSearchReports>;
   getPaidSearchSummary?: Maybe<Org>;
   getRecommendationPercent: RecommendationValue;
@@ -36879,7 +36894,9 @@ export type Query = {
   getSharingRecord: AppNexusSharingRecord;
   getSharingRecords: Array<AppNexusSharingRecord>;
   getSignedURL?: Maybe<Scalars['String']>;
+  getSignupImpressions?: Maybe<Scalars['JSON']>;
   getSummaryDeviceClicks?: Maybe<Scalars['JSON']>;
+  getTransactionImpressions?: Maybe<Scalars['JSON']>;
   iABCategoryGroups: Array<Maybe<IabCategoryGroup>>;
   license?: Maybe<License>;
   licenses: Array<Maybe<License>>;
@@ -37350,6 +37367,27 @@ export type QueryGetPaidSearchOrganicArgs = {
 };
 
 
+export type QueryGetPaidSearchPacingArgs = {
+  advertiserIds: Array<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  orgId: Scalars['String'];
+};
+
+
+export type QueryGetPaidSearchPacingBingArgs = {
+  advertiserIds: Array<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  orgId: Scalars['String'];
+};
+
+
+export type QueryGetPaidSearchPacingGoogleArgs = {
+  advertiserIds: Array<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  orgId: Scalars['String'];
+};
+
+
 export type QueryGetPaidSearchReportsArgs = {
   where: OrgWhereUniqueInput;
 };
@@ -37463,11 +37501,25 @@ export type QueryGetSignedUrlArgs = {
 };
 
 
+export type QueryGetSignupImpressionsArgs = {
+  campaignOrderId: Scalars['String'];
+  reportName: Scalars['String'];
+  signupId: Scalars['String'];
+};
+
+
 export type QueryGetSummaryDeviceClicksArgs = {
   advertiserIds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   campaignOrderIds?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   orgId: Scalars['String'];
   parentOrgId?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetTransactionImpressionsArgs = {
+  campaignOrderId: Scalars['String'];
+  reportName: Scalars['String'];
+  transactionId: Scalars['String'];
 };
 
 

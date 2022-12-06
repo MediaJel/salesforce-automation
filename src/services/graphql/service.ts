@@ -2,6 +2,7 @@ import { createClient } from "@urql/core";
 import {
   CreateOrgParams,
   CreateUserParams,
+  FindOrCreateOrgParams,
   GraphQLConfig,
 } from "@/utils/types";
 
@@ -43,7 +44,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       return createdUser;
     },
-    async findOrCreateOrg(params: CreateOrgParams) {
+    async findOrCreateOrg(params: FindOrCreateOrgParams) {
       const foundOrg = await queries.getOrgBySalesforceId({
         salesforceId: params.salesforceId,
       });
@@ -53,7 +54,18 @@ const createGraphqlService = (config: GraphQLConfig) => {
         return foundOrg;
       }
 
-      const createdOrg = await mutations.createOrg(params).catch((err) => {
+      const parentOrg = await queries.getOrgBySalesforceId({
+        salesforceId: params.salesforceParentId,
+      });
+
+      const createOrg: CreateOrgParams = {
+        name: params.name,
+        salesforceId: params.salesforceId,
+        description: params.description,
+        parentOrgId: parentOrg?.id ?? "cjlwwzv86hn3q0726mqm60q3f", // Mediajel default org
+      };
+
+      const createdOrg = await mutations.createOrg(createOrg).catch((err) => {
         logger.error("Error running createOrg", err);
       });
 

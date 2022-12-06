@@ -92,11 +92,21 @@ export interface SalesforceService {
   stream: ReturnType<typeof createSalesforceStream>;
 }
 
+export type FindOrCreateOrgParams = Pick<
+  CreateOrgMutationVariables,
+  "name" | "description" | "salesforceId"
+> &
+  GetOrgBySalesforceIdQueryVariables & {
+    salesforceParentId?: string;
+  };
+
 export type CreateOrgParams = Pick<
   CreateOrgMutationVariables,
-  "name" | "description"
+  "name" | "description" | "salesforceId"
 > &
-  GetOrgBySalesforceIdQueryVariables;
+  GetOrgBySalesforceIdQueryVariables & {
+    parentOrgId?: string;
+  };
 
 export type CreateUserParams = Pick<
   CreateDashboardUserMutationVariables,

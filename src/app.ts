@@ -23,7 +23,33 @@ const createApp = (config: Config) => {
       });
     },
 
-    async testSubscription(opp: Opportunity, svc: SalesforceService) {},
+    async testSubscription(opp: Opportunity, svc: SalesforceService) {
+      if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
+
+      const products = await svc.query.productsByOpportunityId({
+        id: opp.Id,
+        where: {
+          Family: "Display Advertising",
+          Name: "*Standard Display Awareness",
+        },
+      });
+
+      if (products.length === 0) return logger.warn("No Display products");
+
+      const account = await svc.query.accountById(opp.AccountId);
+      console.log(account);
+
+      if (!account) return logger.warn("No Account");
+
+      const org = await graphql.findOrCreateOrg({
+        salesforceId: account.Id,
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+        salesforceParentId: account.ParentId,
+      });
+
+      console.log(org);
+    },
 
     async subscriptionHandler(opp: Opportunity, svc: SalesforceService) {
       if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
