@@ -8,6 +8,7 @@ import {
   SalesforceService,
   Config,
   FindOrCreateOrgParams,
+  Account,
 } from "@/utils/types";
 
 const logger = createLogger("App");
@@ -32,22 +33,7 @@ const createApp = (config: Config) => {
 
           if (!account) return logger.warn("No Account");
 
-          let parentId = "";
-          if (account?.ParentId) {
-            const parent = await this.ensureParentExists(
-              opp,
-              svc,
-              account.ParentId
-            );
-            parent && (parentId = parent);
-          }
-
-          const org = await graphql.findOrCreateOrg({
-            salesforceId: account.Id,
-            name: account.Name,
-            description: `salesforce: ${account.Id}`,
-            salesforceParentId: parentId ?? "", // !Should be Org ID instead of Salesforce
-          });
+          const org = await this.ensureOrg(svc, account);
 
           if (!org) return logger.warn("No Org Found/Created");
 
@@ -84,45 +70,74 @@ const createApp = (config: Config) => {
         })
         .catch((err) => {
           logger.error("Error running productsFromOpportunity", err);
+          throw err;
         });
     },
 
     async accountFromOpportunity(opp: Opportunity, svc: SalesforceService) {
       return await svc.query.accountById(opp.AccountId).catch((err) => {
         logger.error("Error running accountFromOpportunity", err);
+        throw err;
       });
     },
 
-    async ensureParentExists(
-      opp: Opportunity,
-      svc: SalesforceService,
-      parentId: string
-    ): Promise<void | string> {
-      // Verify if parent Org exists in the database
-      logger.info(`Verifying Parent Org: ${parentId} exists`);
+    async ensureOrg(svc: SalesforceService, account: Account) {
+      //! If no parent, create Child org
+      if (!account.ParentId) {
+        const org = await graphql.findOrCreateOrg({
+          salesforceId: account.Id,
+          name: account.Name,
+          description: `salesforce: ${account.Id}`,
+          salesforceParentId: account.ParentId,
+        });
+
+        logger.info(`Created Org: ${org.name}`);
+        return org;
+      }
+
+      logger.debug(`Verifying Parent Org: ${account.ParentId} exists`);
 
       const existingParent = await graphql.queries.getOrgBySalesforceId({
-        salesforceId: parentId,
+        salesforceId: account.ParentId,
       });
 
-      if (existingParent) return existingParent.id;
+      //! If parent already exists create child only
+      if (existingParent) {
+        logger.info(`Parent Org: ${existingParent.name} exists`);
 
-      const parentAccount = await svc.query.accountById(parentId);
+        const childOrg = await graphql.findOrCreateOrg({
+          salesforceId: account.Id,
+          name: account.Name,
+          description: `salesforce: ${account.Id}`,
+          salesforceParentId: existingParent.id,
+        });
 
-      if (!parentAccount) return logger.info("No Parent Account Found");
+        logger.info(`Created Child Org: ${childOrg.name}`);
+        return childOrg;
+      }
 
-      logger.info(`Creating Parent Org: ${parentId}`);
+      //! If parent doesn't exist, create parent and child
+      const parentAccount = await svc.query.accountById(account.ParentId);
 
-      const createdParent = await graphql.findOrCreateOrg({
+      const parentOrg = await graphql.findOrCreateOrg({
         name: parentAccount.Name,
         salesforceId: parentAccount.Id,
         description: `salesforce: ${parentAccount.Id}`,
         salesforceParentId: parentAccount.ParentId,
       });
 
-      if (!createdParent) return logger.info("No Parent Org Created");
+      logger.info(`Created Parent Org: ${parentOrg.name}`);
 
-      return createdParent.id;
+      const childOrg = await graphql.findOrCreateOrg({
+        salesforceId: account.Id,
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+        salesforceParentId: parentOrg.id,
+      });
+
+      logger.info(`Created Child Org: ${childOrg.name}`);
+
+      return childOrg;
     },
   };
 };

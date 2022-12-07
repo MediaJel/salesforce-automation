@@ -30,26 +30,37 @@ const createGraphqlService = (config: GraphQLConfig) => {
     queries,
     mutations,
     async findOrCreateUser(params: CreateUserParams) {
-      const foundUser = await queries.getUserBySalesforceIdOrEmail({
-        salesforceId: params.salesforceId,
-        email: params.email,
-      });
+      const foundUser = await queries
+        .getUserBySalesforceIdOrEmail({
+          salesforceId: params.salesforceId,
+          email: params.email,
+        })
+        .catch((err) => {
+          logger.error("Error running getUserBySalesforceIdOrEmail", err);
+          throw err;
+        });
 
       if (foundUser) {
-        logger.debug(`User ${params.salesforceId} already exists`);
+        logger.info(`User ${params.salesforceId} already exists`);
         return foundUser;
       }
 
       const createdUser = await mutations.createUser(params).catch((err) => {
         logger.error("Error running createUser", err);
+        throw err;
       });
 
       return createdUser;
     },
     async findOrCreateOrg(params: FindOrCreateOrgParams) {
-      const foundOrg = await queries.getOrgBySalesforceId({
-        salesforceId: params.salesforceId,
-      });
+      const foundOrg = await queries
+        .getOrgBySalesforceId({
+          salesforceId: params.salesforceId,
+        })
+        .catch((err) => {
+          logger.error("Error running getOrgBySalesforceId", err);
+          throw err;
+        });
 
       if (foundOrg) {
         logger.warn(`Org ${foundOrg.salesforceId} already exists`);
@@ -65,6 +76,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       const createdOrg = await mutations.createOrg(createOrg).catch((err) => {
         logger.error("Error running createOrg", err);
+        throw err;
       });
 
       return createdOrg;
