@@ -10,7 +10,7 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
 
         client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
           if (err) {
-            logger.error("Error authenticating to Salesforce");
+            logger.error({ message: "Error authenticating to Salesforce" });
             reject(err);
           }
 

@@ -69,15 +69,14 @@ const createApp = (config: Config) => {
           },
         })
         .catch((err) => {
-          logger.error("Error running productsFromOpportunity", err);
+          logger.error(err);
           throw err;
         });
     },
 
     async accountFromOpportunity(opp: Opportunity, svc: SalesforceService) {
       return await svc.query.accountById(opp.AccountId).catch((err) => {
-        logger.error("Error running accountFromOpportunity", err);
-        throw err;
+        logger.error(err);
       });
     },
 

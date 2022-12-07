@@ -30,13 +30,12 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
-        logger.error("Error running productsByOpportunityId", err);
-        throw err;
+        logger.error({ message: "Products by Opportunity ID error", err });
       });
 
-      if (!where) return products;
+      if (!where || !products) return [];
 
-      const matches = products.filter((product) => match(product, where));
+      const matches = products?.filter((product) => match(product, where));
 
       logger.debug(
         `${matches.length} Display products from Opportunity: ${id}`
@@ -48,8 +47,8 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     contactById: async (id: string): Promise<Contact> => {
       const soql = `SELECT Id, Name, Email, Phone FROM Contact WHERE Id = '${id}'`;
       const [contact] = await query<Contact>(client, soql).catch((err) => {
-        logger.error("Error running contactById", err);
-        throw err;
+        logger.error({ message: "Products by Opportunity ID error", err });
+        return [];
       });
 
       if (!contact.Email) {
@@ -64,8 +63,8 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     accountById: async (id: string): Promise<Account> => {
       const soql = `SELECT Id, Name, ParentId  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
-        logger.error("Error running accountById", err);
-        throw err;
+       logger.error({ message: "Products by Opportunity ID error", err });
+        return [];
       });
 
       logger.debug(`Found account ${account.Name}`);

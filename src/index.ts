@@ -16,6 +16,6 @@ const startApp = async () => {
 };
 
 startApp().catch((err) => {
-  logger.error("Application Error", err);
+  logger.error({ message: "Application Error", err });
   process.exit(1);
 });
