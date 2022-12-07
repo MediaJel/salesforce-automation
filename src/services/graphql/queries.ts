@@ -9,12 +9,10 @@ import queries from "@/services/graphql/resolvers/queries";
 
 const createGraphQLQueries = (client: Client, logger: Logger) => {
   return {
-    async getOrgBySalesforceId({
-      salesforceId,
-    }: GetOrgBySalesforceIdQueryVariables) {
+    async getOrgBySalesforceId(params: GetOrgBySalesforceIdQueryVariables) {
       const operation = await client
         .query(queries.GET_ORG_BY_SALESFORCE_ID, {
-          salesforceId,
+          salesforceId: params.salesforceId,
         })
         .toPromise()
         .catch((err) => {
@@ -22,25 +20,26 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         });
 
       if (operation?.error) {
-        throw operation.error;
+        logger.error({ message: "getOrgBySalesforceId failed", ...params });
+        logger.error(operation.error);
+        return null;
       }
 
-      if (operation?.data?.orgs.length) {
-        logger.debug(`Org ${salesforceId} does not exist`);
+      if (!operation?.data?.orgs.length) {
+        logger.debug(`Org ${params.salesforceId} does not exist`);
         return null;
       }
 
       return operation.data.orgs[0];
     },
 
-    async getUserBySalesforceIdOrEmail({
-      salesforceId,
-      email,
-    }: GetUserBySalesforceIdOrEmailQueryVariables) {
+    async getUserBySalesforceIdOrEmail(
+      params: GetUserBySalesforceIdOrEmailQueryVariables
+    ) {
       const operation = await client
         .query(queries.GET_USER_BY_SALESFORCE_ID_OR_EMAIL, {
-          salesforceId,
-          email,
+          salesforceId: params.salesforceId,
+          email: params.email,
         })
         .toPromise()
         .catch((err) => {
@@ -48,11 +47,16 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         });
 
       if (operation?.error) {
-        throw operation.error;
+        logger.error({
+          message: "getUserBySalesforceIdOrEmail failed",
+          ...params,
+        });
+        logger.error(operation.error);
+        return null;
       }
 
       if (!operation?.data?.users.length) {
-        logger.debug(`User ${salesforceId} does not exist`);
+        logger.debug(`User ${params.salesforceId} does not exist`);
         return null;
       }
 

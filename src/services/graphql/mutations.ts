@@ -55,10 +55,6 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         return null;
       }
 
-      // if (!operation?.data?.createDashboardUser) {
-      //   throw "createDashboardUser failed, please check graphql server logs";
-      // }
-
       userLimiter.add(operation.data.createDashboardUser.id);
 
       return operation.data.createDashboardUser;
