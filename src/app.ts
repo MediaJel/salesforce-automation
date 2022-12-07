@@ -47,7 +47,7 @@ const createApp = (config: Config) => {
             salesforceId: contact.Id,
             email: isProduction ? contact.Email : "pacholo@mediajel.com",
             name: `salesforce: ${format(contact.Name)}`,
-            phone: "+11234567894", // Always add a +1 for some reason
+            phone: "+11234567894", // Always add a +1
             username: format(contact.Name),
             orgId: org.id,
           });
