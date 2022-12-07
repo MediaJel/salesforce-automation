@@ -25,24 +25,36 @@ const createApp = (config: Config) => {
           if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
 
           const products = await this.productsFromOpportunity(opp, svc);
+
           if (!products) return logger.warn("No Display Products");
 
           const account = await this.accountFromOpportunity(opp, svc);
+
           if (!account) return logger.warn("No Account");
 
+          let parentId = "";
           if (account?.ParentId) {
-            await this.ensureParentExists(opp, svc, account.ParentId);
+            const parent = await this.ensureParentExists(
+              opp,
+              svc,
+              account.ParentId
+            );
+            parent && (parentId = parent);
           }
+
           const org = await graphql.findOrCreateOrg({
             salesforceId: account.Id,
             name: account.Name,
             description: `salesforce: ${account.Id}`,
-            salesforceParentId: account.ParentId, // !Should be Org ID instead of Salesforce
+            salesforceParentId: parentId ?? "", // !Should be Org ID instead of Salesforce
           });
+
           if (!org) return logger.warn("No Org Found/Created");
+
           logger.info(`Found/Created Org: ${org.id}`);
 
           const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+
           if (!contact?.Name) return logger.warn(`No Contact "Name" Found`);
 
           const user = await graphql.findOrCreateUser({
@@ -55,6 +67,7 @@ const createApp = (config: Config) => {
           });
 
           if (!user) return logger.warn("No User Found/Created Created");
+
           logger.info(`Found/Created User: ${user.id}`);
         });
       });
@@ -84,27 +97,32 @@ const createApp = (config: Config) => {
       opp: Opportunity,
       svc: SalesforceService,
       parentId: string
-    ) {
+    ): Promise<void | string> {
       // Verify if parent Org exists in the database
       logger.info(`Verifying Parent Org: ${parentId} exists`);
-      const isParentExists = graphql.queries.getOrgBySalesforceId({
+
+      const existingParent = await graphql.queries.getOrgBySalesforceId({
         salesforceId: parentId,
       });
 
-      if (isParentExists) return logger.info(`Parent Org: ${parentId} exists`);
+      if (existingParent) return existingParent.id;
 
-      logger.info(`Creating Parent Org: ${parentId}`);
       const parentAccount = await svc.query.accountById(parentId);
 
-      if (!parentAccount) return logger.warn("No Parent Account Found");
-      await graphql.findOrCreateOrg({
+      if (!parentAccount) return logger.info("No Parent Account Found");
+
+      logger.info(`Creating Parent Org: ${parentId}`);
+
+      const createdParent = await graphql.findOrCreateOrg({
         name: parentAccount.Name,
         salesforceId: parentAccount.Id,
         description: `salesforce: ${parentAccount.Id}`,
         salesforceParentId: parentAccount.ParentId,
       });
 
-      return await this.ensureParentExists(opp, svc, parentAccount.ParentId);
+      if (!createdParent) return logger.info("No Parent Org Created");
+
+      return createdParent.id;
     },
   };
 };

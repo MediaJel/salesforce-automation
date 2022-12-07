@@ -49,18 +49,20 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (!operation?.data?.createDashboardUser) {
-        throw "createDashboardUser failed, please check graphql server logs";
+      if (operation?.error) {
+        throw operation.error;
       }
 
-      logger.debug(`Created User: ${operation.data.createDashboardUser.id}`);
+      // if (!operation?.data?.createDashboardUser) {
+      //   throw "createDashboardUser failed, please check graphql server logs";
+      // }
+
       userLimiter.add(operation.data.createDashboardUser.id);
 
       return operation.data.createDashboardUser;
     },
     async createOrg(params: CreateOrgParams) {
       const { salesforceId, name, description, parentOrgId } = params;
-      console.log(params);
 
       const operation = await client
         .mutation(mutations.CREATE_ORG, {
@@ -98,11 +100,13 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           throw err;
         });
 
-      if (!operation?.data?.createOrg) {
-        throw "createOrg failed, please check graphql server logs";
+      if (operation.error) {
+        throw operation.error;
       }
+      // if (!operation?.data?.createOrg) {
+      //   throw "createOrg failed, please check graphql server logs";
+      // }
 
-      logger.debug(`Created Org: ${operation.data.createOrg.id}`);
       orgLimiter.add(operation.data.createOrg.id);
 
       return operation.data.createOrg;

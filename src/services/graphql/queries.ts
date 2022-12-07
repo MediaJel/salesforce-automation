@@ -21,12 +21,14 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
           throw err;
         });
 
+      if (operation?.error) {
+        throw operation.error;
+      }
+
       if (!!operation?.data?.orgs) {
         logger.debug(`Org ${salesforceId} does not exist`);
         return null;
       }
-
-      logger.debug(`getOrgBySalesforceId result ${operation.data.orgs[0].id}`);
 
       return operation.data.orgs[0];
     },
@@ -45,14 +47,14 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
           throw err;
         });
 
+      if (operation?.error) {
+        throw operation.error;
+      }
+
       if (!!operation?.data?.users) {
         logger.debug(`User ${salesforceId} does not exist`);
         return null;
       }
-
-      logger.debug(
-        `getUserBySalesforceIdOrEmail result ${operation.data.users[0].id}`
-      );
 
       return operation.data.users[0];
     },
