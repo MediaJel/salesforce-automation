@@ -6,7 +6,12 @@ import config from "@/config";
 const createLogger = (name: string) => {
   const template = <T>(level: LogLevel, message: T, ...args: any[]) => {
     const date = new Date().toISOString();
-    return `${date} | ${level} | [${name}]: ${message} | ${args.join(" | ")}`;
+    if (typeof message !== "object") {
+      return `${date} | ${level} | [${name}]: ${message} | ${args.join(" | ")}`;
+    }
+    const json = JSON.stringify(message, null, 2);
+
+    return `${date} | ${level} | [${name}]: ${json} | ${args.join(" | ")}`;
   };
 
   return {

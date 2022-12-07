@@ -50,6 +50,7 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         });
 
       if (operation?.error) {
+        logger.error({ message: "createUser failed", ...params });
         throw operation.error;
       }
 
@@ -101,11 +102,9 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         });
 
       if (operation.error) {
+        logger.error({ message: "createOrg failed", ...params });
         throw operation.error;
       }
-      // if (!operation?.data?.createOrg) {
-      //   throw "createOrg failed, please check graphql server logs";
-      // }
 
       orgLimiter.add(operation.data.createOrg.id);
 
