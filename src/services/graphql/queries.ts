@@ -25,7 +25,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         throw operation.error;
       }
 
-      if (!!operation?.data?.orgs) {
+      if (operation?.data?.orgs.length) {
         logger.debug(`Org ${salesforceId} does not exist`);
         return null;
       }
@@ -51,7 +51,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         throw operation.error;
       }
 
-      if (!!operation?.data?.users) {
+      if (!operation?.data?.users.length) {
         logger.debug(`User ${salesforceId} does not exist`);
         return null;
       }

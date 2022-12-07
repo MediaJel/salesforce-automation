@@ -84,6 +84,7 @@ const createApp = (config: Config) => {
     async ensureOrg(svc: SalesforceService, account: Account) {
       //! If no parent, create Child org
       if (!account.ParentId) {
+        logger.debug(`No Parent Org for ${account.Name} exists`);
         const org = await graphql.findOrCreateOrg({
           salesforceId: account.Id,
           name: account.Name,
@@ -105,6 +106,8 @@ const createApp = (config: Config) => {
       if (existingParent) {
         logger.info(`Parent Org: ${existingParent.name} exists`);
 
+        logger.debug(`Creating Child Org: ${account.Name}`);
+
         const childOrg = await graphql.findOrCreateOrg({
           salesforceId: account.Id,
           name: account.Name,
@@ -117,6 +120,8 @@ const createApp = (config: Config) => {
         logger.info(`Created Child Org: ${childOrg.name}`);
         return childOrg;
       }
+
+      logger.debug(`Parent: ${account.ParentId} does not exist, creating...`);
 
       //! If parent doesn't exist, create parent and child
       const parentAccount = await svc.query.accountById(account.ParentId);

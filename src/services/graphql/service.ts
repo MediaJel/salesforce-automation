@@ -30,34 +30,24 @@ const createGraphqlService = (config: GraphQLConfig) => {
     queries,
     mutations,
     async findOrCreateUser(params: CreateUserParams) {
-      const foundUser = await queries
-        .getUserBySalesforceIdOrEmail({
-          salesforceId: params.salesforceId,
-          email: params.email,
-        })
-        .catch((err) => {
-          logger.error("Error running getUserBySalesforceIdOrEmail", err);
-        });
+      const foundUser = await queries.getUserBySalesforceIdOrEmail({
+        salesforceId: params.salesforceId,
+        email: params.email,
+      });
 
       if (foundUser) {
         logger.info(`User ${params.salesforceId} already exists`);
         return foundUser;
       }
 
-      const createdUser = await mutations.createUser(params).catch((err) => {
-        logger.error("Error running createUser", err);
-      });
+      const createdUser = await mutations.createUser(params);
 
       return createdUser;
     },
     async findOrCreateOrg(params: FindOrCreateOrgParams) {
-      const foundOrg = await queries
-        .getOrgBySalesforceId({
-          salesforceId: params.salesforceId,
-        })
-        .catch((err) => {
-          logger.error("Error running getOrgBySalesforceId", err);
-        });
+      const foundOrg = await queries.getOrgBySalesforceId({
+        salesforceId: params.salesforceId,
+      });
 
       if (foundOrg) {
         logger.warn(`Org ${foundOrg.salesforceId} already exists`);
@@ -71,9 +61,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
         parentOrgId: params.salesforceParentId ?? "cjoq2t7g4yzca07347pug25ck", // !NOTE CHANGE THIS TO PARENT ORG
       };
 
-      const createdOrg = await mutations.createOrg(createOrg).catch((err) => {
-        logger.error("Error running createOrg", err);
-      });
+      const createdOrg = await mutations.createOrg(createOrg);
 
       return createdOrg;
     },
