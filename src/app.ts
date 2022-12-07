@@ -91,7 +91,7 @@ const createApp = (config: Config) => {
           salesforceParentId: account.ParentId,
         });
 
-        logger.info(`Created Org: ${org.name}`);
+        if (!org) return logger.warn("No Org Found/Created Created");
         return org;
       }
 
@@ -112,6 +112,8 @@ const createApp = (config: Config) => {
           salesforceParentId: existingParent.id,
         });
 
+        if (!childOrg) return logger.warn("No Child Org Found/Created Created");
+
         logger.info(`Created Child Org: ${childOrg.name}`);
         return childOrg;
       }
@@ -126,6 +128,8 @@ const createApp = (config: Config) => {
         salesforceParentId: parentAccount.ParentId,
       });
 
+      if (!parentOrg) return logger.warn("No Parent Org Found/Created Created");
+
       logger.info(`Created Parent Org: ${parentOrg.name}`);
 
       const childOrg = await graphql.findOrCreateOrg({
@@ -134,6 +138,8 @@ const createApp = (config: Config) => {
         description: `salesforce: ${account.Id}`,
         salesforceParentId: parentOrg.id,
       });
+
+      if (!childOrg) return logger.warn("No Child Org Found/Created Created");
 
       logger.info(`Created Child Org: ${childOrg.name}`);
 

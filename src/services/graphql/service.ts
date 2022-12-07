@@ -37,7 +37,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
         })
         .catch((err) => {
           logger.error("Error running getUserBySalesforceIdOrEmail", err);
-          throw err;
         });
 
       if (foundUser) {
@@ -47,7 +46,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       const createdUser = await mutations.createUser(params).catch((err) => {
         logger.error("Error running createUser", err);
-        throw err;
       });
 
       return createdUser;
@@ -59,7 +57,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
         })
         .catch((err) => {
           logger.error("Error running getOrgBySalesforceId", err);
-          throw err;
         });
 
       if (foundOrg) {
@@ -76,7 +73,6 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       const createdOrg = await mutations.createOrg(createOrg).catch((err) => {
         logger.error("Error running createOrg", err);
-        throw err;
       });
 
       return createdOrg;
