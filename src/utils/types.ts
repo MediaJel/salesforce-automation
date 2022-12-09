@@ -121,7 +121,7 @@ export interface Config {
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;
-  logLevel;
+  logLevel: LogLevel;
 }
 
 export type AppConfig = {
