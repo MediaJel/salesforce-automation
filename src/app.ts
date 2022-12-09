@@ -3,7 +3,13 @@ import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
 import { format, isProduction } from "@/utils/utils";
-import { Opportunity, SalesforceService, Config, Account } from "@/utils/types";
+import {
+  Opportunity,
+  SalesforceService,
+  Config,
+  Account,
+  FindOrCreateOrgParams,
+} from "@/utils/types";
 
 const logger = createLogger("App");
 
@@ -76,13 +82,18 @@ const createApp = (config: Config) => {
     },
 
     async ensureOrg(svc: SalesforceService, account: Account) {
+      const childOrgOptions: FindOrCreateOrgParams = {
+        salesforceId: account.Id,
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+      };
+
       //! If no parent, create Child org
       if (!account.ParentId) {
         logger.debug(`No Parent Org for ${account.Name} exists`);
+
         const org = await graphql.findOrCreateOrg({
-          salesforceId: account.Id,
-          name: account.Name,
-          description: `salesforce: ${account.Id}`,
+          ...childOrgOptions,
           salesforceParentId: account.ParentId,
         });
 
@@ -103,9 +114,7 @@ const createApp = (config: Config) => {
         logger.debug(`Creating Child Org: ${account.Name}`);
 
         const childOrg = await graphql.findOrCreateOrg({
-          salesforceId: account.Id,
-          name: account.Name,
-          description: `salesforce: ${account.Id}`,
+          ...childOrgOptions,
           salesforceParentId: existingParent.id,
         });
 
@@ -132,9 +141,7 @@ const createApp = (config: Config) => {
       logger.info(`Created Parent Org: ${parentOrg.name}`);
 
       const childOrg = await graphql.findOrCreateOrg({
-        salesforceId: account.Id,
-        name: account.Name,
-        description: `salesforce: ${account.Id}`,
+        ...childOrgOptions,
         salesforceParentId: parentOrg.id,
       });
 
