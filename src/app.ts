@@ -82,7 +82,7 @@ const createApp = (config: Config) => {
     },
 
     async ensureOrg(svc: SalesforceService, account: Account) {
-      const childOrgOptions: FindOrCreateOrgParams = {
+      const orgOptions: FindOrCreateOrgParams = {
         salesforceId: account.Id,
         name: account.Name,
         description: `salesforce: ${account.Id}`,
@@ -93,7 +93,7 @@ const createApp = (config: Config) => {
         logger.debug(`No Parent Org for ${account.Name} exists`);
 
         const org = await graphql.findOrCreateOrg({
-          ...childOrgOptions,
+          ...orgOptions,
           salesforceParentId: account.ParentId,
         });
 
@@ -113,15 +113,15 @@ const createApp = (config: Config) => {
 
         logger.debug(`Creating Child Org: ${account.Name}`);
 
-        const childOrg = await graphql.findOrCreateOrg({
-          ...childOrgOptions,
+        const org = await graphql.findOrCreateOrg({
+          ...orgOptions,
           salesforceParentId: existingParent.id,
         });
 
-        if (!childOrg) return logger.warn("No Child Org Found/Created Created");
+        if (!org) return logger.warn("No Child Org Found/Created Created");
 
-        logger.info(`Created Child Org: ${childOrg.name}`);
-        return childOrg;
+        logger.info(`Created Org: ${org.name}`);
+        return org;
       }
 
       logger.debug(`Parent: ${account.ParentId} does not exist, creating...`);
@@ -140,16 +140,16 @@ const createApp = (config: Config) => {
 
       logger.info(`Created Parent Org: ${parentOrg.name}`);
 
-      const childOrg = await graphql.findOrCreateOrg({
-        ...childOrgOptions,
+      const org = await graphql.findOrCreateOrg({
+        ...orgOptions,
         salesforceParentId: parentOrg.id,
       });
 
-      if (!childOrg) return logger.warn("No Child Org Found/Created Created");
+      if (!org) return logger.warn("No Child Org Found/Created");
 
-      logger.info(`Created Child Org: ${childOrg.name}`);
+      logger.info(`Created Child Org: ${org.name}`);
 
-      return childOrg;
+      return org;
     },
   };
 };
