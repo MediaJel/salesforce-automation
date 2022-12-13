@@ -23078,6 +23078,7 @@ export type Org = Node & {
   signInLogo?: Maybe<Media>;
   tableConfig?: Maybe<OrgTableConfig>;
   tagsConfig?: Maybe<OrgTagsConfig>;
+  tagsMultipleConfig?: Maybe<Array<OrgTagsMultipleConfig>>;
   themeConfig?: Maybe<OrgThemeConfig>;
   updatedAt: Scalars['DateTime'];
   website?: Maybe<Scalars['String']>;
@@ -23269,6 +23270,17 @@ export type OrgRolesArgs = {
   orderBy?: InputMaybe<RoleOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<RoleWhereInput>;
+};
+
+
+export type OrgTagsMultipleConfigArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<OrgTagsMultipleConfigOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<OrgTagsMultipleConfigWhereInput>;
 };
 
 export type OrgConfig = Node & {
@@ -23546,6 +23558,7 @@ export type OrgCreateInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23700,6 +23713,7 @@ export type OrgCreateWithoutAdGroupCreativesInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23744,6 +23758,7 @@ export type OrgCreateWithoutAdvertiserCampaignOrdersInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23788,6 +23803,7 @@ export type OrgCreateWithoutAudiencesInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23832,6 +23848,7 @@ export type OrgCreateWithoutCampaignOrdersInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23876,6 +23893,7 @@ export type OrgCreateWithoutCampaignsInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23920,6 +23938,7 @@ export type OrgCreateWithoutCustomersInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -23964,6 +23983,7 @@ export type OrgCreateWithoutDataConfigInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24008,6 +24028,7 @@ export type OrgCreateWithoutEventInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24052,6 +24073,7 @@ export type OrgCreateWithoutEventsTargetInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24096,6 +24118,7 @@ export type OrgCreateWithoutIabCategoryGroupInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24140,6 +24163,7 @@ export type OrgCreateWithoutLogoInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24184,6 +24208,7 @@ export type OrgCreateWithoutLoyaltyCampaignsInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24228,6 +24253,7 @@ export type OrgCreateWithoutMediaInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24272,6 +24298,7 @@ export type OrgCreateWithoutOffersInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24316,6 +24343,7 @@ export type OrgCreateWithoutOrgSummaryInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24360,6 +24388,7 @@ export type OrgCreateWithoutPaidSearchSummaryInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24404,6 +24433,7 @@ export type OrgCreateWithoutPaidSearchSummarySharedOrgsInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24448,6 +24478,7 @@ export type OrgCreateWithoutRegionGroupInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24492,6 +24523,7 @@ export type OrgCreateWithoutRolesInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24536,6 +24568,7 @@ export type OrgCreateWithoutSeoSummaryInput = {
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -24580,6 +24613,7 @@ export type OrgCreateWithoutTagsConfigInput = {
   sendEmailConfig?: InputMaybe<SendEmailConfigCreateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaCreateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigCreateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigCreateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigCreateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -26661,6 +26695,330 @@ export type OrgTagsConfigWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
+export type OrgTagsMultipleConfig = Node & {
+  __typename?: 'OrgTagsMultipleConfig';
+  appId?: Maybe<Scalars['String']>;
+  cart?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  org?: Maybe<Org>;
+  retailId?: Maybe<Scalars['String']>;
+  tag?: Maybe<Scalars['Json']>;
+  tagPageViews?: Maybe<Scalars['String']>;
+  tagTransactions?: Maybe<Scalars['String']>;
+  tagUpdateDate?: Maybe<Scalars['String']>;
+  test: Scalars['Boolean'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type OrgTagsMultipleConfigCreateManyWithoutOrgInput = {
+  connect?: InputMaybe<Array<OrgTagsMultipleConfigWhereUniqueInput>>;
+  create?: InputMaybe<Array<OrgTagsMultipleConfigCreateWithoutOrgInput>>;
+};
+
+export type OrgTagsMultipleConfigCreateWithoutOrgInput = {
+  appId?: InputMaybe<Scalars['String']>;
+  cart?: InputMaybe<Scalars['String']>;
+  retailId?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['Json']>;
+  tagPageViews?: InputMaybe<Scalars['String']>;
+  tagTransactions?: InputMaybe<Scalars['String']>;
+  tagUpdateDate?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['Boolean']>;
+};
+
+export enum OrgTagsMultipleConfigOrderByInput {
+  AppIdAsc = 'appId_ASC',
+  AppIdDesc = 'appId_DESC',
+  CartAsc = 'cart_ASC',
+  CartDesc = 'cart_DESC',
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  RetailIdAsc = 'retailId_ASC',
+  RetailIdDesc = 'retailId_DESC',
+  TagPageViewsAsc = 'tagPageViews_ASC',
+  TagPageViewsDesc = 'tagPageViews_DESC',
+  TagTransactionsAsc = 'tagTransactions_ASC',
+  TagTransactionsDesc = 'tagTransactions_DESC',
+  TagUpdateDateAsc = 'tagUpdateDate_ASC',
+  TagUpdateDateDesc = 'tagUpdateDate_DESC',
+  TagAsc = 'tag_ASC',
+  TagDesc = 'tag_DESC',
+  TestAsc = 'test_ASC',
+  TestDesc = 'test_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC'
+}
+
+export type OrgTagsMultipleConfigUpdateManyWithoutOrgInput = {
+  connect?: InputMaybe<Array<OrgTagsMultipleConfigWhereUniqueInput>>;
+  create?: InputMaybe<Array<OrgTagsMultipleConfigCreateWithoutOrgInput>>;
+  delete?: InputMaybe<Array<OrgTagsMultipleConfigWhereUniqueInput>>;
+  disconnect?: InputMaybe<Array<OrgTagsMultipleConfigWhereUniqueInput>>;
+  update?: InputMaybe<Array<OrgTagsMultipleConfigUpdateWithWhereUniqueWithoutOrgInput>>;
+  upsert?: InputMaybe<Array<OrgTagsMultipleConfigUpsertWithWhereUniqueWithoutOrgInput>>;
+};
+
+export type OrgTagsMultipleConfigUpdateWithWhereUniqueWithoutOrgInput = {
+  data: OrgTagsMultipleConfigUpdateWithoutOrgDataInput;
+  where: OrgTagsMultipleConfigWhereUniqueInput;
+};
+
+export type OrgTagsMultipleConfigUpdateWithoutOrgDataInput = {
+  appId?: InputMaybe<Scalars['String']>;
+  cart?: InputMaybe<Scalars['String']>;
+  retailId?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['Json']>;
+  tagPageViews?: InputMaybe<Scalars['String']>;
+  tagTransactions?: InputMaybe<Scalars['String']>;
+  tagUpdateDate?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type OrgTagsMultipleConfigUpsertWithWhereUniqueWithoutOrgInput = {
+  create: OrgTagsMultipleConfigCreateWithoutOrgInput;
+  update: OrgTagsMultipleConfigUpdateWithoutOrgDataInput;
+  where: OrgTagsMultipleConfigWhereUniqueInput;
+};
+
+export type OrgTagsMultipleConfigWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<OrgTagsMultipleConfigWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<OrgTagsMultipleConfigWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<OrgTagsMultipleConfigWhereInput>>;
+  appId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  appId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  appId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  appId_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  appId_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  appId_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  appId_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  appId_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  appId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  appId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  appId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  appId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  appId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  appId_starts_with?: InputMaybe<Scalars['String']>;
+  cart?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  cart_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  cart_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  cart_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  cart_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  cart_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  cart_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  cart_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  cart_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  cart_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  cart_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  cart_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  cart_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  cart_starts_with?: InputMaybe<Scalars['String']>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: InputMaybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: InputMaybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: InputMaybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  org?: InputMaybe<OrgWhereInput>;
+  retailId?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  retailId_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  retailId_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  retailId_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  retailId_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  retailId_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  retailId_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  retailId_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  retailId_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  retailId_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  retailId_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  retailId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  retailId_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  retailId_starts_with?: InputMaybe<Scalars['String']>;
+  tagPageViews?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tagPageViews_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tagPageViews_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  tagPageViews_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  tagPageViews_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tagPageViews_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  tagPageViews_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  tagPageViews_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  tagPageViews_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tagPageViews_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  tagPageViews_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tagPageViews_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  tagPageViews_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tagPageViews_starts_with?: InputMaybe<Scalars['String']>;
+  tagTransactions?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tagTransactions_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tagTransactions_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  tagTransactions_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  tagTransactions_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tagTransactions_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  tagTransactions_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  tagTransactions_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  tagTransactions_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tagTransactions_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  tagTransactions_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tagTransactions_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  tagTransactions_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tagTransactions_starts_with?: InputMaybe<Scalars['String']>;
+  tagUpdateDate?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  tagUpdateDate_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  tagUpdateDate_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  tagUpdateDate_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  tagUpdateDate_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  tagUpdateDate_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  tagUpdateDate_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  tagUpdateDate_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  tagUpdateDate_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  tagUpdateDate_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  tagUpdateDate_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  tagUpdateDate_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  tagUpdateDate_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  tagUpdateDate_starts_with?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  test_not?: InputMaybe<Scalars['Boolean']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type OrgTagsMultipleConfigWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
 export type OrgThemeConfig = Node & {
   __typename?: 'OrgThemeConfig';
   id: Scalars['ID'];
@@ -26857,6 +27215,7 @@ export type OrgUpdateDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -26902,6 +27261,7 @@ export type OrgUpdateInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27200,6 +27560,7 @@ export type OrgUpdateWithoutAdGroupCreativesDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27244,6 +27605,7 @@ export type OrgUpdateWithoutAdvertiserCampaignOrdersDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27288,6 +27650,7 @@ export type OrgUpdateWithoutAudiencesDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27332,6 +27695,7 @@ export type OrgUpdateWithoutCampaignOrdersDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27376,6 +27740,7 @@ export type OrgUpdateWithoutCampaignsDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27420,6 +27785,7 @@ export type OrgUpdateWithoutCustomersDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27464,6 +27830,7 @@ export type OrgUpdateWithoutEventDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27508,6 +27875,7 @@ export type OrgUpdateWithoutEventsTargetDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27552,6 +27920,7 @@ export type OrgUpdateWithoutIabCategoryGroupDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27596,6 +27965,7 @@ export type OrgUpdateWithoutLogoDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27640,6 +28010,7 @@ export type OrgUpdateWithoutLoyaltyCampaignsDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27684,6 +28055,7 @@ export type OrgUpdateWithoutMediaDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27728,6 +28100,7 @@ export type OrgUpdateWithoutOffersDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27772,6 +28145,7 @@ export type OrgUpdateWithoutOrgSummaryDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27816,6 +28190,7 @@ export type OrgUpdateWithoutPaidSearchSummaryDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27860,6 +28235,7 @@ export type OrgUpdateWithoutPaidSearchSummarySharedOrgsDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27904,6 +28280,7 @@ export type OrgUpdateWithoutRegionGroupDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27948,6 +28325,7 @@ export type OrgUpdateWithoutRolesDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -27992,6 +28370,7 @@ export type OrgUpdateWithoutSeoSummaryDataInput = {
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -28036,6 +28415,7 @@ export type OrgUpdateWithoutTagsConfigDataInput = {
   sendEmailConfig?: InputMaybe<SendEmailConfigUpdateOneWithoutOrgsInput>;
   signInLogo?: InputMaybe<MediaUpdateOneInput>;
   tableConfig?: InputMaybe<OrgTableConfigUpdateOneWithoutOrgsInput>;
+  tagsMultipleConfig?: InputMaybe<OrgTagsMultipleConfigUpdateManyWithoutOrgInput>;
   themeConfig?: InputMaybe<OrgThemeConfigUpdateOneWithoutOrgsInput>;
   website?: InputMaybe<Scalars['String']>;
   zone?: InputMaybe<Scalars['String']>;
@@ -28475,6 +28855,9 @@ export type OrgWhereInput = {
   signInLogo?: InputMaybe<MediaWhereInput>;
   tableConfig?: InputMaybe<OrgTableConfigWhereInput>;
   tagsConfig?: InputMaybe<OrgTagsConfigWhereInput>;
+  tagsMultipleConfig_every?: InputMaybe<OrgTagsMultipleConfigWhereInput>;
+  tagsMultipleConfig_none?: InputMaybe<OrgTagsMultipleConfigWhereInput>;
+  tagsMultipleConfig_some?: InputMaybe<OrgTagsMultipleConfigWhereInput>;
   themeConfig?: InputMaybe<OrgThemeConfigWhereInput>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -46723,7 +47106,7 @@ export type CreateOrgMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrgMutation = { __typename?: 'Mutation', createOrg: { __typename?: 'Org', salesforceId?: string | null, id: string, name: string, description?: string | null, level: PartnerLevel, website?: string | null, domain?: string | null, chatWootId?: string | null, cpm?: string | null, brands?: Array<{ __typename?: 'Brand', name?: string | null, logo?: { __typename?: 'Media', key: string } | null }> | null, config?: { __typename?: 'OrgConfig', priceVisible?: boolean | null, isDemo?: boolean | null, isAdmin?: boolean | null, isPartner?: boolean | null, isTrafficker?: boolean | null, exportData?: boolean | null, isSelfService?: boolean | null, hasInsights?: boolean | null, providersVisible?: boolean | null, isProcessor?: boolean | null, canResetPasswords?: boolean | null, campaignSummary?: boolean | null, isPacing?: boolean | null, pastData?: boolean | null, segment?: boolean | null, technicalSupport?: boolean | null, articles?: boolean | null } | null, dataConfig?: { __typename?: 'OrgDataConfig', reTargeting: boolean, appIds: Array<string>, tradeDeskIdentifier?: string | null, storageBucket?: string | null, googleCustomerId?: string | null, seo?: boolean | null, googleAnalytics?: { __typename?: 'GoogleAnalytics', viewId?: string | null, isGA4?: boolean | null } | null } | null, locations?: Array<{ __typename?: 'Location', street: string, city: string, state?: StateType | null }> | null, logo?: { __typename?: 'Media', id: string, key: string } | null, signInLogo?: { __typename?: 'Media', id: string, key: string } | null, roles?: Array<{ __typename?: 'Role', id: string, name?: string | null, isMaster?: boolean | null, roleItems?: Array<{ __typename?: 'RoleItem', id: string, feature: Feature, actions: Array<FeatureActions> }> | null, users?: Array<{ __typename?: 'User', id: string }> | null }> | null, parentOrg?: Array<{ __typename?: 'Org', name: string, id: string }> | null } };
+export type CreateOrgMutation = { __typename?: 'Mutation', createOrg: { __typename?: 'Org', id: string, salesforceId?: string | null, name: string } };
 
 export type CreateDashboardUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -46755,7 +47138,7 @@ export type GetUserBySalesforceIdOrEmailQueryVariables = Exact<{
 export type GetUserBySalesforceIdOrEmailQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, username: string, email?: string | null } | null> };
 
 
-export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"signInLogo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"brands"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"config"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"priceVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isDemo"}},{"kind":"Field","name":{"kind":"Name","value":"isAdmin"}},{"kind":"Field","name":{"kind":"Name","value":"isPartner"}},{"kind":"Field","name":{"kind":"Name","value":"isTrafficker"}},{"kind":"Field","name":{"kind":"Name","value":"exportData"}},{"kind":"Field","name":{"kind":"Name","value":"isSelfService"}},{"kind":"Field","name":{"kind":"Name","value":"hasInsights"}},{"kind":"Field","name":{"kind":"Name","value":"providersVisible"}},{"kind":"Field","name":{"kind":"Name","value":"isProcessor"}},{"kind":"Field","name":{"kind":"Name","value":"canResetPasswords"}},{"kind":"Field","name":{"kind":"Name","value":"campaignSummary"}},{"kind":"Field","name":{"kind":"Name","value":"isPacing"}},{"kind":"Field","name":{"kind":"Name","value":"pastData"}},{"kind":"Field","name":{"kind":"Name","value":"segment"}},{"kind":"Field","name":{"kind":"Name","value":"technicalSupport"}},{"kind":"Field","name":{"kind":"Name","value":"articles"}}]}},{"kind":"Field","name":{"kind":"Name","value":"dataConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reTargeting"}},{"kind":"Field","name":{"kind":"Name","value":"appIds"}},{"kind":"Field","name":{"kind":"Name","value":"tradeDeskIdentifier"}},{"kind":"Field","name":{"kind":"Name","value":"storageBucket"}},{"kind":"Field","name":{"kind":"Name","value":"googleCustomerId"}},{"kind":"Field","name":{"kind":"Name","value":"seo"}},{"kind":"Field","name":{"kind":"Name","value":"googleAnalytics"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"viewId"}},{"kind":"Field","name":{"kind":"Name","value":"isGA4"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"locations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}}]}},{"kind":"Field","name":{"kind":"Name","value":"logo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"signInLogo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"key"}}]}},{"kind":"Field","name":{"kind":"Name","value":"roles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"5"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"isMaster"}},{"kind":"Field","name":{"kind":"Name","value":"roleItems"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"feature"}},{"kind":"Field","name":{"kind":"Name","value":"actions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"users"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"website"}},{"kind":"Field","name":{"kind":"Name","value":"domain"}},{"kind":"Field","name":{"kind":"Name","value":"parentOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"chatWootId"}},{"kind":"Field","name":{"kind":"Name","value":"cpm"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
+export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"signInLogo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
 export const CreateDashboardUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createDashboardUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createDashboardUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"phone"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"orgId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"avatar"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<CreateDashboardUserMutation, CreateDashboardUserMutationVariables>;
 export const GetOrgBySalesforceIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrgBySalesforceId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrgBySalesforceIdQuery, GetOrgBySalesforceIdQueryVariables>;
 export const GetUserBySalesforceIdOrEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUserBySalesforceIdOrEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"OR"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<GetUserBySalesforceIdOrEmailQuery, GetUserBySalesforceIdOrEmailQueryVariables>;

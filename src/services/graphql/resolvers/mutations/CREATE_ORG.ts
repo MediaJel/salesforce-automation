@@ -58,82 +58,9 @@ const CREATE_ORG = graphql(`
         }
       }
     ) {
-      salesforceId
       id
-      brands(first: 5) {
-        name
-        logo {
-          key
-        }
-      }
-      config {
-        priceVisible
-        isDemo
-        isAdmin
-        isPartner
-        isTrafficker
-        exportData
-        isSelfService
-        hasInsights
-        providersVisible
-        isProcessor
-        canResetPasswords
-        campaignSummary
-        isPacing
-        pastData
-        segment
-        technicalSupport
-        articles
-      }
-      dataConfig {
-        reTargeting
-        appIds
-        tradeDeskIdentifier
-        storageBucket
-        googleCustomerId
-        seo
-        googleAnalytics {
-          viewId
-          isGA4
-        }
-      }
+      salesforceId
       name
-      description
-      locations(first: 5) {
-        street
-        city
-        state
-      }
-      logo {
-        id
-        key
-      }
-      signInLogo {
-        id
-        key
-      }
-      roles(first: 5) {
-        id
-        name
-        isMaster
-        roleItems(first: 10) {
-          id
-          feature
-          actions
-        }
-        users {
-          id
-        }
-      }
-      level
-      website
-      domain
-      parentOrg {
-        name
-        id
-      }
-      chatWootId
-      cpm
     }
   }
 `);
