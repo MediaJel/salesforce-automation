@@ -75,37 +75,49 @@ const createApp = (config: Config) => {
 
       // Check if the parent org already exists
       if (account.ParentId) {
+        logger.info(`Checking for Parent: ${account.ParentId}`);
+
         parentOrg = await graphql.queries.getOrgBySalesforceId({
           salesforceId: account.ParentId,
         });
 
-        // If the parent org doesn't exist, create it
-        if (!parentOrg) {
-          const parentAccount = await svc.query.accountById(account.ParentId);
-          const { ParentId = "cjoq2t7g4yzca07347pug25ck" } = parentAccount; // Defaults to MJ org, set this to env variable
-
-          parentOrg = await graphql.findOrCreateOrg({
-            name: parentAccount.Name,
-            salesforceId: parentAccount.Id,
-            description: `salesforce: ${parentAccount.Id}`,
-            salesforceParentId: ParentId,
-          });
+        if (parentOrg) {
+          logger.info(`Found Parent ${parentOrg?.name} for ${account.Name}`);
         }
       }
+
+      // If the parent org doesn't exist, create it
+      if (!parentOrg) {
+        logger.debug(`Parent with Salesforce ID ${account.ParentId} not found`);
+
+        const parentAccount = await svc.query.accountById(account.ParentId);
+        const { ParentId = "cjoq2t7g4yzca07347pug25ck" } = parentAccount; // Defaults to MJ org, set this to env variable
+
+        parentOrg = await graphql.findOrCreateOrg({
+          name: parentAccount.Name,
+          salesforceId: parentAccount.Id,
+          description: `salesforce: ${parentAccount.Id}`,
+          salesforceParentId: ParentId,
+        });
+
+        logger.info(`Created Parent ${parentOrg.name} for ${account.Name}`);
+      }
+
+      logger.debug(`Finding or Creating Org for ${account.Name}`);
 
       // Create the org, either with a parent org or without
       const org = await graphql.findOrCreateOrg({
         salesforceId: account.Id,
         name: account.Name,
         description: `salesforce: ${account.Id}`,
-        salesforceParentId: parentOrg?.id,
+        salesforceParentId: parentOrg?.id ?? "",
       });
 
       if (!org) {
-        return logger.warn("No Org Found/Created Created");
+        return logger.warn(`No Org Found/Created for ${account.Name}`);
       }
 
-      logger.info(`Created Org: ${org.name}`);
+      logger.info(`Created/Found Org: ${org.name}`);
       return org;
     },
   };
