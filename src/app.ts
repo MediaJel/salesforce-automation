@@ -25,8 +25,9 @@ const createApp = (config: Config) => {
         svc.stream.subscribe<Opportunity>(
           app.subscription(),
           async (opp): Promise<void> => {
-            if (!opp?.Deal_Signatory__c)
+            if (!opp?.Deal_Signatory__c) {
               return logger.warn("No Deal Signatory");
+            }
 
             const products = await svc.query.productsByOpportunityId({
               id: opp.Id,
@@ -81,11 +82,13 @@ const createApp = (config: Config) => {
         // If the parent org doesn't exist, create it
         if (!parentOrg) {
           const parentAccount = await svc.query.accountById(account.ParentId);
+          const { ParentId = "cjoq2t7g4yzca07347pug25ck" } = parentAccount; // Defaults to MJ org, set this to env variable
+
           parentOrg = await graphql.findOrCreateOrg({
             name: parentAccount.Name,
             salesforceId: parentAccount.Id,
             description: `salesforce: ${parentAccount.Id}`,
-            salesforceParentId: parentAccount.ParentId,
+            salesforceParentId: ParentId,
           });
         }
       }

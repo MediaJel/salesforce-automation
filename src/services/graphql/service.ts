@@ -58,7 +58,7 @@ const createGraphqlService = (config: GraphQLConfig) => {
         name: params.name,
         salesforceId: params.salesforceId,
         description: params.description,
-        parentOrgId: params.salesforceParentId ?? "cjoq2t7g4yzca07347pug25ck", // !NOTE CHANGE THIS TO PARENT ORG
+        parentOrgId: params.salesforceParentId,
       };
 
       const createdOrg = await mutations.createOrg(createOrg);
