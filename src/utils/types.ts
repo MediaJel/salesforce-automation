@@ -9,6 +9,7 @@ import { ClientOptions } from "@urql/core";
 
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
+import createGraphqlService from "@/services/graphql";
 import createApp from "@/app";
 import createLogger from "@/utils/logger";
 
@@ -140,5 +141,12 @@ export type ExpressServerConfig = {
 };
 
 export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
+
+export type GraphQLService = ReturnType<typeof createGraphqlService>;
+
+export type ParentOrg = Awaited<
+  | ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]>
+  | ReturnType<GraphQLService["mutations"]["createOrg"]>
+>;
 
 export type App = ReturnType<typeof createApp>;

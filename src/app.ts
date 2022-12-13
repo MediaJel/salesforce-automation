@@ -8,7 +8,7 @@ import {
   SalesforceService,
   Config,
   Account,
-  FindOrCreateOrgParams,
+  ParentOrg,
 } from "@/utils/types";
 
 const logger = createLogger("App");
@@ -70,9 +70,9 @@ const createApp = (config: Config) => {
     },
 
     async ensureOrg(svc: SalesforceService, account: Account) {
-      // Check if the parent org already exists
-      let parentOrg = null;
+      let parentOrg: ParentOrg | null = null;
 
+      // Check if the parent org already exists
       if (account.ParentId) {
         parentOrg = await graphql.queries.getOrgBySalesforceId({
           salesforceId: account.ParentId,
