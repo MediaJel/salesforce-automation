@@ -3730,6 +3730,7 @@ export enum AudienceOrderByInput {
 }
 
 export enum AudienceType {
+  Address = 'ADDRESS',
   Attribution = 'ATTRIBUTION',
   Retargeting = 'RETARGETING',
   Seo = 'SEO',
@@ -4413,7 +4414,7 @@ export type BrandCreateInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaCreateOneInput>;
+  logo?: InputMaybe<MediaCreateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateOneInput>;
   products?: InputMaybe<ProductCreateManyWithoutBrandInput>;
@@ -4440,6 +4441,11 @@ export type BrandCreateOneInput = {
   create?: InputMaybe<BrandCreateInput>;
 };
 
+export type BrandCreateOneWithoutLogoInput = {
+  connect?: InputMaybe<BrandWhereUniqueInput>;
+  create?: InputMaybe<BrandCreateWithoutLogoInput>;
+};
+
 export type BrandCreateOneWithoutProductsInput = {
   connect?: InputMaybe<BrandWhereUniqueInput>;
   create?: InputMaybe<BrandCreateWithoutProductsInput>;
@@ -4451,7 +4457,7 @@ export type BrandCreateWithoutCampaignOrderInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaCreateOneInput>;
+  logo?: InputMaybe<MediaCreateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateOneInput>;
   products?: InputMaybe<ProductCreateManyWithoutBrandInput>;
@@ -4464,7 +4470,20 @@ export type BrandCreateWithoutCustomerInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaCreateOneInput>;
+  logo?: InputMaybe<MediaCreateOneWithoutBrandLogoInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgCreateOneInput>;
+  products?: InputMaybe<ProductCreateManyWithoutBrandInput>;
+  reviews?: InputMaybe<ReviewCreateManyInput>;
+};
+
+export type BrandCreateWithoutLogoInput = {
+  campaignOrder?: InputMaybe<CampaignOrderCreateOneWithoutBrandsInput>;
+  createdBy?: InputMaybe<UserCreateOneInput>;
+  customer?: InputMaybe<CustomerCreateOneWithoutBrandsInput>;
+  description?: InputMaybe<Scalars['String']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
+  isPublished?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateOneInput>;
   products?: InputMaybe<ProductCreateManyWithoutBrandInput>;
@@ -4478,7 +4497,7 @@ export type BrandCreateWithoutProductsInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaCreateOneInput>;
+  logo?: InputMaybe<MediaCreateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateOneInput>;
   reviews?: InputMaybe<ReviewCreateManyInput>;
@@ -4508,7 +4527,7 @@ export type BrandUpdateDataInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaUpdateOneInput>;
+  logo?: InputMaybe<MediaUpdateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateOneInput>;
   products?: InputMaybe<ProductUpdateManyWithoutBrandInput>;
@@ -4522,7 +4541,7 @@ export type BrandUpdateInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaUpdateOneInput>;
+  logo?: InputMaybe<MediaUpdateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateOneInput>;
   products?: InputMaybe<ProductUpdateManyWithoutBrandInput>;
@@ -4565,6 +4584,15 @@ export type BrandUpdateOneInput = {
   upsert?: InputMaybe<BrandUpsertNestedInput>;
 };
 
+export type BrandUpdateOneWithoutLogoInput = {
+  connect?: InputMaybe<BrandWhereUniqueInput>;
+  create?: InputMaybe<BrandCreateWithoutLogoInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<BrandUpdateWithoutLogoDataInput>;
+  upsert?: InputMaybe<BrandUpsertWithoutLogoInput>;
+};
+
 export type BrandUpdateOneWithoutProductsInput = {
   connect?: InputMaybe<BrandWhereUniqueInput>;
   create?: InputMaybe<BrandCreateWithoutProductsInput>;
@@ -4595,7 +4623,7 @@ export type BrandUpdateWithoutCampaignOrderDataInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaUpdateOneInput>;
+  logo?: InputMaybe<MediaUpdateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateOneInput>;
   products?: InputMaybe<ProductUpdateManyWithoutBrandInput>;
@@ -4608,7 +4636,20 @@ export type BrandUpdateWithoutCustomerDataInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaUpdateOneInput>;
+  logo?: InputMaybe<MediaUpdateOneWithoutBrandLogoInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgUpdateOneInput>;
+  products?: InputMaybe<ProductUpdateManyWithoutBrandInput>;
+  reviews?: InputMaybe<ReviewUpdateManyInput>;
+};
+
+export type BrandUpdateWithoutLogoDataInput = {
+  campaignOrder?: InputMaybe<CampaignOrderUpdateOneWithoutBrandsInput>;
+  createdBy?: InputMaybe<UserUpdateOneInput>;
+  customer?: InputMaybe<CustomerUpdateOneWithoutBrandsInput>;
+  description?: InputMaybe<Scalars['String']>;
+  featured?: InputMaybe<Scalars['Boolean']>;
+  isPublished?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateOneInput>;
   products?: InputMaybe<ProductUpdateManyWithoutBrandInput>;
@@ -4622,7 +4663,7 @@ export type BrandUpdateWithoutProductsDataInput = {
   description?: InputMaybe<Scalars['String']>;
   featured?: InputMaybe<Scalars['Boolean']>;
   isPublished?: InputMaybe<Scalars['Boolean']>;
-  logo?: InputMaybe<MediaUpdateOneInput>;
+  logo?: InputMaybe<MediaUpdateOneWithoutBrandLogoInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateOneInput>;
   reviews?: InputMaybe<ReviewUpdateManyInput>;
@@ -4649,6 +4690,11 @@ export type BrandUpsertWithWhereUniqueWithoutCustomerInput = {
   create: BrandCreateWithoutCustomerInput;
   update: BrandUpdateWithoutCustomerDataInput;
   where: BrandWhereUniqueInput;
+};
+
+export type BrandUpsertWithoutLogoInput = {
+  create: BrandCreateWithoutLogoInput;
+  update: BrandUpdateWithoutLogoDataInput;
 };
 
 export type BrandUpsertWithoutProductsInput = {
@@ -20244,6 +20290,7 @@ export type Media = Node & {
   __typename?: 'Media';
   adGroupCreative?: Maybe<Array<AdGroupCreatives>>;
   brand?: Maybe<Brand>;
+  brandLogo?: Maybe<Brand>;
   catalogItem?: Maybe<CatalogItem>;
   createdAt: Scalars['DateTime'];
   creatives?: Maybe<Array<Creative>>;
@@ -20264,6 +20311,7 @@ export type Media = Node & {
   type: MediaType;
   updatedAt: Scalars['DateTime'];
   url: Scalars['String'];
+  users?: Maybe<Array<User>>;
   width?: Maybe<Scalars['Int']>;
 };
 
@@ -20300,9 +20348,21 @@ export type MediaSharedWithArgs = {
   where?: InputMaybe<OrgWhereInput>;
 };
 
+
+export type MediaUsersArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<UserOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<UserWhereInput>;
+};
+
 export type MediaCreateInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20320,6 +20380,7 @@ export type MediaCreateInput = {
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
@@ -20348,6 +20409,11 @@ export type MediaCreateOneInput = {
   create?: InputMaybe<MediaCreateInput>;
 };
 
+export type MediaCreateOneWithoutBrandLogoInput = {
+  connect?: InputMaybe<MediaWhereUniqueInput>;
+  create?: InputMaybe<MediaCreateWithoutBrandLogoInput>;
+};
+
 export type MediaCreateOneWithoutCreativesInput = {
   connect?: InputMaybe<MediaWhereUniqueInput>;
   create?: InputMaybe<MediaCreateWithoutCreativesInput>;
@@ -20358,7 +20424,37 @@ export type MediaCreateOneWithoutOrgInput = {
   create?: InputMaybe<MediaCreateWithoutOrgInput>;
 };
 
+export type MediaCreateOneWithoutUsersInput = {
+  connect?: InputMaybe<MediaWhereUniqueInput>;
+  create?: InputMaybe<MediaCreateWithoutUsersInput>;
+};
+
 export type MediaCreateWithoutAdGroupCreativeInput = {
+  brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
+  catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
+  creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
+  fileType?: InputMaybe<FileType>;
+  flag?: InputMaybe<Scalars['Boolean']>;
+  height?: InputMaybe<Scalars['Int']>;
+  key: Scalars['String'];
+  length?: InputMaybe<Scalars['Int']>;
+  locationAvatar?: InputMaybe<LocationCreateOneInput>;
+  locationMedia?: InputMaybe<LocationCreateOneInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgCreateOneWithoutLogoInput>;
+  product?: InputMaybe<ProductCreateOneInput>;
+  productMedia?: InputMaybe<ProductCreateOneInput>;
+  sharedWith?: InputMaybe<OrgCreateManyWithoutMediaInput>;
+  size?: InputMaybe<Scalars['Int']>;
+  type: MediaType;
+  url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
+  width?: InputMaybe<Scalars['Int']>;
+};
+
+export type MediaCreateWithoutBrandLogoInput = {
+  adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
   catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
@@ -20377,12 +20473,14 @@ export type MediaCreateWithoutAdGroupCreativeInput = {
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaCreateWithoutCatalogItemInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
   creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
   flag?: InputMaybe<Scalars['Boolean']>;
@@ -20399,12 +20497,14 @@ export type MediaCreateWithoutCatalogItemInput = {
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaCreateWithoutCreativesInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
   fileType?: InputMaybe<FileType>;
   flag?: InputMaybe<Scalars['Boolean']>;
@@ -20421,12 +20521,14 @@ export type MediaCreateWithoutCreativesInput = {
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaCreateWithoutOrgInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20443,12 +20545,14 @@ export type MediaCreateWithoutOrgInput = {
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaCreateWithoutSharedWithInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20462,6 +20566,31 @@ export type MediaCreateWithoutSharedWithInput = {
   org?: InputMaybe<OrgCreateOneWithoutLogoInput>;
   product?: InputMaybe<ProductCreateOneInput>;
   productMedia?: InputMaybe<ProductCreateOneInput>;
+  size?: InputMaybe<Scalars['Int']>;
+  type: MediaType;
+  url: Scalars['String'];
+  users?: InputMaybe<UserCreateManyWithoutAvatarInput>;
+  width?: InputMaybe<Scalars['Int']>;
+};
+
+export type MediaCreateWithoutUsersInput = {
+  adGroupCreative?: InputMaybe<AdGroupCreativesCreateManyWithoutMediasInput>;
+  brand?: InputMaybe<BrandCreateOneInput>;
+  brandLogo?: InputMaybe<BrandCreateOneWithoutLogoInput>;
+  catalogItem?: InputMaybe<CatalogItemCreateOneWithoutMediasInput>;
+  creatives?: InputMaybe<CreativeCreateManyWithoutMediaInput>;
+  fileType?: InputMaybe<FileType>;
+  flag?: InputMaybe<Scalars['Boolean']>;
+  height?: InputMaybe<Scalars['Int']>;
+  key: Scalars['String'];
+  length?: InputMaybe<Scalars['Int']>;
+  locationAvatar?: InputMaybe<LocationCreateOneInput>;
+  locationMedia?: InputMaybe<LocationCreateOneInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgCreateOneWithoutLogoInput>;
+  product?: InputMaybe<ProductCreateOneInput>;
+  productMedia?: InputMaybe<ProductCreateOneInput>;
+  sharedWith?: InputMaybe<OrgCreateManyWithoutMediaInput>;
   size?: InputMaybe<Scalars['Int']>;
   type: MediaType;
   url: Scalars['String'];
@@ -20507,6 +20636,7 @@ export enum MediaType {
 export type MediaUpdateDataInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20524,12 +20654,14 @@ export type MediaUpdateDataInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaUpdateInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20547,6 +20679,7 @@ export type MediaUpdateInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
@@ -20602,6 +20735,15 @@ export type MediaUpdateOneRequiredWithoutCreativesInput = {
   upsert?: InputMaybe<MediaUpsertWithoutCreativesInput>;
 };
 
+export type MediaUpdateOneWithoutBrandLogoInput = {
+  connect?: InputMaybe<MediaWhereUniqueInput>;
+  create?: InputMaybe<MediaCreateWithoutBrandLogoInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<MediaUpdateWithoutBrandLogoDataInput>;
+  upsert?: InputMaybe<MediaUpsertWithoutBrandLogoInput>;
+};
+
 export type MediaUpdateOneWithoutOrgInput = {
   connect?: InputMaybe<MediaWhereUniqueInput>;
   create?: InputMaybe<MediaCreateWithoutOrgInput>;
@@ -20609,6 +20751,15 @@ export type MediaUpdateOneWithoutOrgInput = {
   disconnect?: InputMaybe<Scalars['Boolean']>;
   update?: InputMaybe<MediaUpdateWithoutOrgDataInput>;
   upsert?: InputMaybe<MediaUpsertWithoutOrgInput>;
+};
+
+export type MediaUpdateOneWithoutUsersInput = {
+  connect?: InputMaybe<MediaWhereUniqueInput>;
+  create?: InputMaybe<MediaCreateWithoutUsersInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<MediaUpdateWithoutUsersDataInput>;
+  upsert?: InputMaybe<MediaUpsertWithoutUsersInput>;
 };
 
 export type MediaUpdateWithWhereUniqueNestedInput = {
@@ -20633,6 +20784,7 @@ export type MediaUpdateWithWhereUniqueWithoutSharedWithInput = {
 
 export type MediaUpdateWithoutAdGroupCreativeDataInput = {
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20650,12 +20802,38 @@ export type MediaUpdateWithoutAdGroupCreativeDataInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
+  width?: InputMaybe<Scalars['Int']>;
+};
+
+export type MediaUpdateWithoutBrandLogoDataInput = {
+  adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
+  brand?: InputMaybe<BrandUpdateOneInput>;
+  catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
+  creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
+  fileType?: InputMaybe<FileType>;
+  flag?: InputMaybe<Scalars['Boolean']>;
+  height?: InputMaybe<Scalars['Int']>;
+  key?: InputMaybe<Scalars['String']>;
+  length?: InputMaybe<Scalars['Int']>;
+  locationAvatar?: InputMaybe<LocationUpdateOneInput>;
+  locationMedia?: InputMaybe<LocationUpdateOneInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgUpdateOneWithoutLogoInput>;
+  product?: InputMaybe<ProductUpdateOneInput>;
+  productMedia?: InputMaybe<ProductUpdateOneInput>;
+  sharedWith?: InputMaybe<OrgUpdateManyWithoutMediaInput>;
+  size?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<MediaType>;
+  url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaUpdateWithoutCatalogItemDataInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
   flag?: InputMaybe<Scalars['Boolean']>;
@@ -20672,12 +20850,14 @@ export type MediaUpdateWithoutCatalogItemDataInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaUpdateWithoutCreativesDataInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   fileType?: InputMaybe<FileType>;
   flag?: InputMaybe<Scalars['Boolean']>;
@@ -20694,12 +20874,14 @@ export type MediaUpdateWithoutCreativesDataInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaUpdateWithoutOrgDataInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20716,12 +20898,14 @@ export type MediaUpdateWithoutOrgDataInput = {
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
   width?: InputMaybe<Scalars['Int']>;
 };
 
 export type MediaUpdateWithoutSharedWithDataInput = {
   adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
   brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
   catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
   creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
   fileType?: InputMaybe<FileType>;
@@ -20735,6 +20919,31 @@ export type MediaUpdateWithoutSharedWithDataInput = {
   org?: InputMaybe<OrgUpdateOneWithoutLogoInput>;
   product?: InputMaybe<ProductUpdateOneInput>;
   productMedia?: InputMaybe<ProductUpdateOneInput>;
+  size?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<MediaType>;
+  url?: InputMaybe<Scalars['String']>;
+  users?: InputMaybe<UserUpdateManyWithoutAvatarInput>;
+  width?: InputMaybe<Scalars['Int']>;
+};
+
+export type MediaUpdateWithoutUsersDataInput = {
+  adGroupCreative?: InputMaybe<AdGroupCreativesUpdateManyWithoutMediasInput>;
+  brand?: InputMaybe<BrandUpdateOneInput>;
+  brandLogo?: InputMaybe<BrandUpdateOneWithoutLogoInput>;
+  catalogItem?: InputMaybe<CatalogItemUpdateOneWithoutMediasInput>;
+  creatives?: InputMaybe<CreativeUpdateManyWithoutMediaInput>;
+  fileType?: InputMaybe<FileType>;
+  flag?: InputMaybe<Scalars['Boolean']>;
+  height?: InputMaybe<Scalars['Int']>;
+  key?: InputMaybe<Scalars['String']>;
+  length?: InputMaybe<Scalars['Int']>;
+  locationAvatar?: InputMaybe<LocationUpdateOneInput>;
+  locationMedia?: InputMaybe<LocationUpdateOneInput>;
+  name?: InputMaybe<Scalars['String']>;
+  org?: InputMaybe<OrgUpdateOneWithoutLogoInput>;
+  product?: InputMaybe<ProductUpdateOneInput>;
+  productMedia?: InputMaybe<ProductUpdateOneInput>;
+  sharedWith?: InputMaybe<OrgUpdateManyWithoutMediaInput>;
   size?: InputMaybe<Scalars['Int']>;
   type?: InputMaybe<MediaType>;
   url?: InputMaybe<Scalars['String']>;
@@ -20770,6 +20979,11 @@ export type MediaUpsertWithWhereUniqueWithoutSharedWithInput = {
   where: MediaWhereUniqueInput;
 };
 
+export type MediaUpsertWithoutBrandLogoInput = {
+  create: MediaCreateWithoutBrandLogoInput;
+  update: MediaUpdateWithoutBrandLogoDataInput;
+};
+
 export type MediaUpsertWithoutCreativesInput = {
   create: MediaCreateWithoutCreativesInput;
   update: MediaUpdateWithoutCreativesDataInput;
@@ -20778,6 +20992,11 @@ export type MediaUpsertWithoutCreativesInput = {
 export type MediaUpsertWithoutOrgInput = {
   create: MediaCreateWithoutOrgInput;
   update: MediaUpdateWithoutOrgDataInput;
+};
+
+export type MediaUpsertWithoutUsersInput = {
+  create: MediaCreateWithoutUsersInput;
+  update: MediaUpdateWithoutUsersDataInput;
 };
 
 export type MediaWhereInput = {
@@ -20791,6 +21010,7 @@ export type MediaWhereInput = {
   adGroupCreative_none?: InputMaybe<AdGroupCreativesWhereInput>;
   adGroupCreative_some?: InputMaybe<AdGroupCreativesWhereInput>;
   brand?: InputMaybe<BrandWhereInput>;
+  brandLogo?: InputMaybe<BrandWhereInput>;
   catalogItem?: InputMaybe<CatalogItemWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
@@ -21003,6 +21223,9 @@ export type MediaWhereInput = {
   url_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   url_starts_with?: InputMaybe<Scalars['String']>;
+  users_every?: InputMaybe<UserWhereInput>;
+  users_none?: InputMaybe<UserWhereInput>;
+  users_some?: InputMaybe<UserWhereInput>;
   width?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   width_gt?: InputMaybe<Scalars['Int']>;
@@ -23285,6 +23508,7 @@ export type OrgTagsMultipleConfigArgs = {
 
 export type OrgConfig = Node & {
   __typename?: 'OrgConfig';
+  amplify?: Maybe<Scalars['Boolean']>;
   articles?: Maybe<Scalars['Boolean']>;
   campaignSummary?: Maybe<Scalars['Boolean']>;
   canResetPasswords?: Maybe<Scalars['Boolean']>;
@@ -23326,6 +23550,7 @@ export type OrgConfigCreateOneWithoutOrgsInput = {
 };
 
 export type OrgConfigCreateWithoutOrgsInput = {
+  amplify?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   campaignSummary?: InputMaybe<Scalars['Boolean']>;
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
@@ -23356,6 +23581,7 @@ export type OrgConfigUpdateOneWithoutOrgsInput = {
 };
 
 export type OrgConfigUpdateWithoutOrgsDataInput = {
+  amplify?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   campaignSummary?: InputMaybe<Scalars['Boolean']>;
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
@@ -23388,6 +23614,9 @@ export type OrgConfigWhereInput = {
   NOT?: InputMaybe<Array<OrgConfigWhereInput>>;
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<OrgConfigWhereInput>>;
+  amplify?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  amplify_not?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   articles_not?: InputMaybe<Scalars['Boolean']>;
@@ -26701,6 +26930,7 @@ export type OrgTagsMultipleConfig = Node & {
   cart?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
   org?: Maybe<Org>;
   retailId?: Maybe<Scalars['String']>;
   tag?: Maybe<Scalars['Json']>;
@@ -26719,6 +26949,7 @@ export type OrgTagsMultipleConfigCreateManyWithoutOrgInput = {
 export type OrgTagsMultipleConfigCreateWithoutOrgInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
   tagPageViews?: InputMaybe<Scalars['String']>;
@@ -26736,6 +26967,8 @@ export enum OrgTagsMultipleConfigOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
   RetailIdAsc = 'retailId_ASC',
   RetailIdDesc = 'retailId_DESC',
   TagPageViewsAsc = 'tagPageViews_ASC',
@@ -26769,6 +27002,7 @@ export type OrgTagsMultipleConfigUpdateWithWhereUniqueWithoutOrgInput = {
 export type OrgTagsMultipleConfigUpdateWithoutOrgDataInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
   tagPageViews?: InputMaybe<Scalars['String']>;
@@ -26886,6 +27120,33 @@ export type OrgTagsMultipleConfigWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgWhereInput>;
   retailId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
@@ -31011,6 +31272,7 @@ export type PaidSearchCampaign = Node & {
   id: Scalars['ID'];
   locations?: Maybe<PaidSearchLocationUnit>;
   name: Scalars['String'];
+  pacing?: Maybe<PaidSearchCampaignsPacingData>;
   paidSearchSummary: PaidSearchSummary;
   reportId?: Maybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
@@ -31043,6 +31305,7 @@ export type PaidSearchCampaignCreateWithoutCommerceInput = {
   endDate: Scalars['DateTime'];
   locations?: InputMaybe<PaidSearchLocationUnitCreateOneWithoutPaidSearchCampaignInput>;
   name: Scalars['String'];
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataCreateOneWithoutCampaignInput>;
   paidSearchSummary: PaidSearchSummaryCreateOneWithoutPaidSearchCampaignsInput;
   reportId?: InputMaybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
@@ -31055,6 +31318,7 @@ export type PaidSearchCampaignCreateWithoutDataInput = {
   endDate: Scalars['DateTime'];
   locations?: InputMaybe<PaidSearchLocationUnitCreateOneWithoutPaidSearchCampaignInput>;
   name: Scalars['String'];
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataCreateOneWithoutCampaignInput>;
   paidSearchSummary: PaidSearchSummaryCreateOneWithoutPaidSearchCampaignsInput;
   reportId?: InputMaybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
@@ -31067,6 +31331,7 @@ export type PaidSearchCampaignCreateWithoutLocationsInput = {
   data?: InputMaybe<PaidSearchUnitCreateOneWithoutPaidSearchCampaignInput>;
   endDate: Scalars['DateTime'];
   name: Scalars['String'];
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataCreateOneWithoutCampaignInput>;
   paidSearchSummary: PaidSearchSummaryCreateOneWithoutPaidSearchCampaignsInput;
   reportId?: InputMaybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
@@ -31080,6 +31345,7 @@ export type PaidSearchCampaignCreateWithoutPaidSearchSummaryInput = {
   endDate: Scalars['DateTime'];
   locations?: InputMaybe<PaidSearchLocationUnitCreateOneWithoutPaidSearchCampaignInput>;
   name: Scalars['String'];
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataCreateOneWithoutCampaignInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
   status?: InputMaybe<ServingStatus>;
@@ -31153,6 +31419,7 @@ export type PaidSearchCampaignUpdateWithoutCommerceDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   locations?: InputMaybe<PaidSearchLocationUnitUpdateOneWithoutPaidSearchCampaignInput>;
   name?: InputMaybe<Scalars['String']>;
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataUpdateOneWithoutCampaignInput>;
   paidSearchSummary?: InputMaybe<PaidSearchSummaryUpdateOneRequiredWithoutPaidSearchCampaignsInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -31165,6 +31432,7 @@ export type PaidSearchCampaignUpdateWithoutDataDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   locations?: InputMaybe<PaidSearchLocationUnitUpdateOneWithoutPaidSearchCampaignInput>;
   name?: InputMaybe<Scalars['String']>;
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataUpdateOneWithoutCampaignInput>;
   paidSearchSummary?: InputMaybe<PaidSearchSummaryUpdateOneRequiredWithoutPaidSearchCampaignsInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -31177,6 +31445,7 @@ export type PaidSearchCampaignUpdateWithoutLocationsDataInput = {
   data?: InputMaybe<PaidSearchUnitUpdateOneWithoutPaidSearchCampaignInput>;
   endDate?: InputMaybe<Scalars['DateTime']>;
   name?: InputMaybe<Scalars['String']>;
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataUpdateOneWithoutCampaignInput>;
   paidSearchSummary?: InputMaybe<PaidSearchSummaryUpdateOneRequiredWithoutPaidSearchCampaignsInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['DateTime']>;
@@ -31190,6 +31459,7 @@ export type PaidSearchCampaignUpdateWithoutPaidSearchSummaryDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   locations?: InputMaybe<PaidSearchLocationUnitUpdateOneWithoutPaidSearchCampaignInput>;
   name?: InputMaybe<Scalars['String']>;
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataUpdateOneWithoutCampaignInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['DateTime']>;
   status?: InputMaybe<ServingStatus>;
@@ -31322,6 +31592,7 @@ export type PaidSearchCampaignWhereInput = {
   name_not_starts_with?: InputMaybe<Scalars['String']>;
   /** All values starting with the given string. */
   name_starts_with?: InputMaybe<Scalars['String']>;
+  pacing?: InputMaybe<PaidSearchCampaignsPacingDataWhereInput>;
   paidSearchSummary?: InputMaybe<PaidSearchSummaryWhereInput>;
   reportId?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
@@ -31376,6 +31647,254 @@ export type PaidSearchCampaignWhereInput = {
 
 export type PaidSearchCampaignWhereUniqueInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type PaidSearchCampaignsPacingData = Node & {
+  __typename?: 'PaidSearchCampaignsPacingData';
+  campaign: PaidSearchCampaign;
+  clicks?: Maybe<Scalars['Int']>;
+  createdAt: Scalars['DateTime'];
+  dailyRemainSpend?: Maybe<Scalars['Float']>;
+  date?: Maybe<Scalars['DateTime']>;
+  dayInMonth?: Maybe<Scalars['Int']>;
+  dayOfMonth?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  impressions?: Maybe<Scalars['Int']>;
+  pace?: Maybe<Scalars['Float']>;
+  spend?: Maybe<Scalars['Float']>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type PaidSearchCampaignsPacingDataCreateOneWithoutCampaignInput = {
+  connect?: InputMaybe<PaidSearchCampaignsPacingDataWhereUniqueInput>;
+  create?: InputMaybe<PaidSearchCampaignsPacingDataCreateWithoutCampaignInput>;
+};
+
+export type PaidSearchCampaignsPacingDataCreateWithoutCampaignInput = {
+  clicks?: InputMaybe<Scalars['Int']>;
+  dailyRemainSpend?: InputMaybe<Scalars['Float']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+  dayInMonth?: InputMaybe<Scalars['Int']>;
+  dayOfMonth?: InputMaybe<Scalars['Int']>;
+  impressions?: InputMaybe<Scalars['Int']>;
+  pace?: InputMaybe<Scalars['Float']>;
+  spend?: InputMaybe<Scalars['Float']>;
+};
+
+export type PaidSearchCampaignsPacingDataUpdateOneWithoutCampaignInput = {
+  connect?: InputMaybe<PaidSearchCampaignsPacingDataWhereUniqueInput>;
+  create?: InputMaybe<PaidSearchCampaignsPacingDataCreateWithoutCampaignInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<PaidSearchCampaignsPacingDataUpdateWithoutCampaignDataInput>;
+  upsert?: InputMaybe<PaidSearchCampaignsPacingDataUpsertWithoutCampaignInput>;
+};
+
+export type PaidSearchCampaignsPacingDataUpdateWithoutCampaignDataInput = {
+  clicks?: InputMaybe<Scalars['Int']>;
+  dailyRemainSpend?: InputMaybe<Scalars['Float']>;
+  date?: InputMaybe<Scalars['DateTime']>;
+  dayInMonth?: InputMaybe<Scalars['Int']>;
+  dayOfMonth?: InputMaybe<Scalars['Int']>;
+  impressions?: InputMaybe<Scalars['Int']>;
+  pace?: InputMaybe<Scalars['Float']>;
+  spend?: InputMaybe<Scalars['Float']>;
+};
+
+export type PaidSearchCampaignsPacingDataUpsertWithoutCampaignInput = {
+  create: PaidSearchCampaignsPacingDataCreateWithoutCampaignInput;
+  update: PaidSearchCampaignsPacingDataUpdateWithoutCampaignDataInput;
+};
+
+export type PaidSearchCampaignsPacingDataWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<PaidSearchCampaignsPacingDataWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<PaidSearchCampaignsPacingDataWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<PaidSearchCampaignsPacingDataWhereInput>>;
+  campaign?: InputMaybe<PaidSearchCampaignWhereInput>;
+  clicks?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  clicks_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  clicks_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  clicks_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  clicks_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  clicks_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  clicks_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  dailyRemainSpend?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  dailyRemainSpend_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  dailyRemainSpend_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  dailyRemainSpend_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  dailyRemainSpend_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  dailyRemainSpend_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  dailyRemainSpend_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  dailyRemainSpend_not_in?: InputMaybe<Array<Scalars['Float']>>;
+  date?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  date_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  date_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  date_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  date_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  date_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  date_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  date_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  dayInMonth?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  dayInMonth_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  dayInMonth_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  dayInMonth_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  dayInMonth_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  dayInMonth_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  dayInMonth_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  dayInMonth_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  dayOfMonth?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  dayOfMonth_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  dayOfMonth_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  dayOfMonth_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  dayOfMonth_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  dayOfMonth_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  dayOfMonth_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  dayOfMonth_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: InputMaybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: InputMaybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: InputMaybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  impressions?: InputMaybe<Scalars['Int']>;
+  /** All values greater than the given value. */
+  impressions_gt?: InputMaybe<Scalars['Int']>;
+  /** All values greater than or equal the given value. */
+  impressions_gte?: InputMaybe<Scalars['Int']>;
+  /** All values that are contained in given list. */
+  impressions_in?: InputMaybe<Array<Scalars['Int']>>;
+  /** All values less than the given value. */
+  impressions_lt?: InputMaybe<Scalars['Int']>;
+  /** All values less than or equal the given value. */
+  impressions_lte?: InputMaybe<Scalars['Int']>;
+  /** All values that are not equal to given value. */
+  impressions_not?: InputMaybe<Scalars['Int']>;
+  /** All values that are not contained in given list. */
+  impressions_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  pace?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  pace_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  pace_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  pace_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  pace_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  pace_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  pace_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  pace_not_in?: InputMaybe<Array<Scalars['Float']>>;
+  spend?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  spend_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  spend_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  spend_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  spend_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  spend_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  spend_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  spend_not_in?: InputMaybe<Array<Scalars['Float']>>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+};
+
+export type PaidSearchCampaignsPacingDataWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -33831,6 +34350,12 @@ export type PaidSearchReports = {
   organicReport?: Maybe<Scalars['JSON']>;
 };
 
+export enum PaidSearchStatus {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE',
+  NoAccess = 'NO_ACCESS'
+}
+
 export type PaidSearchSummary = Node & {
   __typename?: 'PaidSearchSummary';
   aggregateData?: Maybe<PaidSearchAggregatedUnit>;
@@ -33852,6 +34377,7 @@ export type PaidSearchSummary = Node & {
   reportId?: Maybe<Scalars['String']>;
   sharedOrgs?: Maybe<Array<Org>>;
   startDate: Scalars['DateTime'];
+  status?: Maybe<PaidSearchStatus>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -33916,6 +34442,7 @@ export type PaidSearchSummaryCreateInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateManyWithoutSharedOrgsInput = {
@@ -33980,6 +34507,7 @@ export type PaidSearchSummaryCreateWithoutOrgInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutOverallBingInput = {
@@ -33999,6 +34527,7 @@ export type PaidSearchSummaryCreateWithoutOverallBingInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutOverallBingLocationsInput = {
@@ -34018,6 +34547,7 @@ export type PaidSearchSummaryCreateWithoutOverallBingLocationsInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutOverallCommerceInput = {
@@ -34037,6 +34567,7 @@ export type PaidSearchSummaryCreateWithoutOverallCommerceInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutOverallDataInput = {
@@ -34056,6 +34587,7 @@ export type PaidSearchSummaryCreateWithoutOverallDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutOverallLocationsInput = {
@@ -34075,6 +34607,7 @@ export type PaidSearchSummaryCreateWithoutOverallLocationsInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutPaidSearchCampaignsInput = {
@@ -34094,6 +34627,7 @@ export type PaidSearchSummaryCreateWithoutPaidSearchCampaignsInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgCreateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryCreateWithoutSharedOrgsInput = {
@@ -34113,6 +34647,7 @@ export type PaidSearchSummaryCreateWithoutSharedOrgsInput = {
   paidSearchCampaigns?: InputMaybe<PaidSearchCampaignCreateManyWithoutPaidSearchSummaryInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate: Scalars['DateTime'];
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 /** An edge in a connection. */
@@ -34139,6 +34674,8 @@ export enum PaidSearchSummaryOrderByInput {
   ReportIdDesc = 'reportId_DESC',
   StartDateAsc = 'startDate_ASC',
   StartDateDesc = 'startDate_DESC',
+  StatusAsc = 'status_ASC',
+  StatusDesc = 'status_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC'
 }
@@ -34161,6 +34698,7 @@ export type PaidSearchSummaryUpdateDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateInput = {
@@ -34181,6 +34719,7 @@ export type PaidSearchSummaryUpdateInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateManyWithoutSharedOrgsInput = {
@@ -34282,6 +34821,7 @@ export type PaidSearchSummaryUpdateWithoutOrgDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutOverallBingDataInput = {
@@ -34301,6 +34841,7 @@ export type PaidSearchSummaryUpdateWithoutOverallBingDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutOverallBingLocationsDataInput = {
@@ -34320,6 +34861,7 @@ export type PaidSearchSummaryUpdateWithoutOverallBingLocationsDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutOverallCommerceDataInput = {
@@ -34339,6 +34881,7 @@ export type PaidSearchSummaryUpdateWithoutOverallCommerceDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutOverallDataDataInput = {
@@ -34358,6 +34901,7 @@ export type PaidSearchSummaryUpdateWithoutOverallDataDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutOverallLocationsDataInput = {
@@ -34377,6 +34921,7 @@ export type PaidSearchSummaryUpdateWithoutOverallLocationsDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutPaidSearchCampaignsDataInput = {
@@ -34396,6 +34941,7 @@ export type PaidSearchSummaryUpdateWithoutPaidSearchCampaignsDataInput = {
   reportId?: InputMaybe<Scalars['String']>;
   sharedOrgs?: InputMaybe<OrgUpdateManyWithoutPaidSearchSummarySharedOrgsInput>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpdateWithoutSharedOrgsDataInput = {
@@ -34415,6 +34961,7 @@ export type PaidSearchSummaryUpdateWithoutSharedOrgsDataInput = {
   paidSearchCampaigns?: InputMaybe<PaidSearchCampaignUpdateManyWithoutPaidSearchSummaryInput>;
   reportId?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['DateTime']>;
+  status?: InputMaybe<PaidSearchStatus>;
 };
 
 export type PaidSearchSummaryUpsertNestedInput = {
@@ -34587,6 +35134,13 @@ export type PaidSearchSummaryWhereInput = {
   startDate_not?: InputMaybe<Scalars['DateTime']>;
   /** All values that are not contained in given list. */
   startDate_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  status?: InputMaybe<PaidSearchStatus>;
+  /** All values that are contained in given list. */
+  status_in?: InputMaybe<Array<PaidSearchStatus>>;
+  /** All values that are not equal to given value. */
+  status_not?: InputMaybe<PaidSearchStatus>;
+  /** All values that are not contained in given list. */
+  status_not_in?: InputMaybe<Array<PaidSearchStatus>>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -37661,6 +38215,7 @@ export type QueryGetAudienceDevicesFromS3Args = {
 export type QueryGetBasicTagActivityArgs = {
   appId: Scalars['String'];
   orgId: Scalars['String'];
+  tagId: Scalars['String'];
 };
 
 
@@ -37754,6 +38309,7 @@ export type QueryGetPaidSearchPacingArgs = {
   advertiserIds: Array<Scalars['String']>;
   date?: InputMaybe<Scalars['String']>;
   orgId: Scalars['String'];
+  status?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -37761,6 +38317,7 @@ export type QueryGetPaidSearchPacingBingArgs = {
   advertiserIds: Array<Scalars['String']>;
   date?: InputMaybe<Scalars['String']>;
   orgId: Scalars['String'];
+  status?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -37768,6 +38325,7 @@ export type QueryGetPaidSearchPacingGoogleArgs = {
   advertiserIds: Array<Scalars['String']>;
   date?: InputMaybe<Scalars['String']>;
   orgId: Scalars['String'];
+  status?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -38833,6 +39391,7 @@ export enum ReportType {
   CampaignOrderSignups = 'CAMPAIGN_ORDER_SIGNUPS',
   CampaignOrderSummary = 'CAMPAIGN_ORDER_SUMMARY',
   CampaignOrderTransactions = 'CAMPAIGN_ORDER_TRANSACTIONS',
+  CampaignOrderTransactionsCsvReport = 'CAMPAIGN_ORDER_TRANSACTIONS_CSV_REPORT',
   CampaignOrderVisitors = 'CAMPAIGN_ORDER_VISITORS',
   CampignOrderOverallExport = 'CAMPIGN_ORDER_OVERALL_EXPORT',
   Demographics = 'DEMOGRAPHICS',
@@ -44603,6 +45162,7 @@ export type UserUpdatedRegionGroupsArgs = {
 
 export type UserConfig = Node & {
   __typename?: 'UserConfig';
+  amplify?: Maybe<Scalars['Boolean']>;
   articles?: Maybe<Scalars['Boolean']>;
   campaignSummary?: Maybe<Scalars['Boolean']>;
   canResetPasswords?: Maybe<Scalars['Boolean']>;
@@ -44640,6 +45200,7 @@ export type UserConfigUsersArgs = {
 };
 
 export type UserConfigCreateInput = {
+  amplify?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   campaignSummary?: InputMaybe<Scalars['Boolean']>;
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
@@ -44668,6 +45229,7 @@ export type UserConfigCreateOneWithoutUsersInput = {
 };
 
 export type UserConfigCreateWithoutUsersInput = {
+  amplify?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   campaignSummary?: InputMaybe<Scalars['Boolean']>;
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
@@ -44699,6 +45261,7 @@ export type UserConfigUpdateOneWithoutUsersInput = {
 };
 
 export type UserConfigUpdateWithoutUsersDataInput = {
+  amplify?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   campaignSummary?: InputMaybe<Scalars['Boolean']>;
   canResetPasswords?: InputMaybe<Scalars['Boolean']>;
@@ -44732,6 +45295,9 @@ export type UserConfigWhereInput = {
   NOT?: InputMaybe<Array<UserConfigWhereInput>>;
   /** Logical OR on all given filters. */
   OR?: InputMaybe<Array<UserConfigWhereInput>>;
+  amplify?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  amplify_not?: InputMaybe<Scalars['Boolean']>;
   articles?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   articles_not?: InputMaybe<Scalars['Boolean']>;
@@ -44857,7 +45423,7 @@ export type UserConfigWhereUniqueInput = {
 
 export type UserCreateInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -44888,6 +45454,11 @@ export type UserCreateInput = {
 export type UserCreateManyInput = {
   connect?: InputMaybe<Array<UserWhereUniqueInput>>;
   create?: InputMaybe<Array<UserCreateInput>>;
+};
+
+export type UserCreateManyWithoutAvatarInput = {
+  connect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserCreateWithoutAvatarInput>>;
 };
 
 export type UserCreateManyWithoutConfigInput = {
@@ -44975,9 +45546,38 @@ export type UserCreateOneWithoutUpdatedRegionGroupsInput = {
   create?: InputMaybe<UserCreateWithoutUpdatedRegionGroupsInput>;
 };
 
+export type UserCreateWithoutAvatarInput = {
+  address?: InputMaybe<LocationCreateOneInput>;
+  cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
+  changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
+  cognitoUserId: Scalars['String'];
+  config?: InputMaybe<UserConfigCreateOneWithoutUsersInput>;
+  conversation?: InputMaybe<ConversationCreateManyWithoutUserInput>;
+  createdIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutCreatedByInput>;
+  createdRegionGroups?: InputMaybe<RegionGroupCreateManyWithoutCreatedByInput>;
+  email?: InputMaybe<Scalars['String']>;
+  events?: InputMaybe<EventCreateManyWithoutCreatedByInput>;
+  messages?: InputMaybe<MessageCreateManyWithoutUserInput>;
+  msaStatus?: InputMaybe<MsaVersion>;
+  name?: InputMaybe<Scalars['String']>;
+  notifications?: InputMaybe<NotificationCreateManyWithoutUserInput>;
+  offers?: InputMaybe<OfferCreateManyWithoutCreatedByInput>;
+  orgs?: InputMaybe<OrgCreateManyInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  products?: InputMaybe<ProductCreateManyWithoutCreatedByInput>;
+  reviews?: InputMaybe<ReviewCreateManyWithoutCreatedByInput>;
+  roles?: InputMaybe<RoleCreateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
+  ssoToken?: InputMaybe<Scalars['String']>;
+  strains?: InputMaybe<StrainCreateManyWithoutCreatedByInput>;
+  updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupCreateManyWithoutUpdatedByInput>;
+  updatedRegionGroups?: InputMaybe<RegionGroupCreateManyWithoutUpdatedByInput>;
+  username: Scalars['String'];
+};
+
 export type UserCreateWithoutCannatypeInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
   config?: InputMaybe<UserConfigCreateOneWithoutUsersInput>;
@@ -45006,7 +45606,7 @@ export type UserCreateWithoutCannatypeInput = {
 
 export type UserCreateWithoutChangesInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   cognitoUserId: Scalars['String'];
   config?: InputMaybe<UserConfigCreateOneWithoutUsersInput>;
@@ -45035,7 +45635,7 @@ export type UserCreateWithoutChangesInput = {
 
 export type UserCreateWithoutConfigInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45064,7 +45664,7 @@ export type UserCreateWithoutConfigInput = {
 
 export type UserCreateWithoutConversationInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45093,7 +45693,7 @@ export type UserCreateWithoutConversationInput = {
 
 export type UserCreateWithoutCreatedIabCategoryGroupsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45122,7 +45722,7 @@ export type UserCreateWithoutCreatedIabCategoryGroupsInput = {
 
 export type UserCreateWithoutCreatedRegionGroupsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45151,7 +45751,7 @@ export type UserCreateWithoutCreatedRegionGroupsInput = {
 
 export type UserCreateWithoutEventsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45180,7 +45780,7 @@ export type UserCreateWithoutEventsInput = {
 
 export type UserCreateWithoutMessagesInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45209,7 +45809,7 @@ export type UserCreateWithoutMessagesInput = {
 
 export type UserCreateWithoutNotificationsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45238,7 +45838,7 @@ export type UserCreateWithoutNotificationsInput = {
 
 export type UserCreateWithoutOffersInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45267,7 +45867,7 @@ export type UserCreateWithoutOffersInput = {
 
 export type UserCreateWithoutProductsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45296,7 +45896,7 @@ export type UserCreateWithoutProductsInput = {
 
 export type UserCreateWithoutReviewsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45325,7 +45925,7 @@ export type UserCreateWithoutReviewsInput = {
 
 export type UserCreateWithoutRolesInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45354,7 +45954,7 @@ export type UserCreateWithoutRolesInput = {
 
 export type UserCreateWithoutStrainsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45383,7 +45983,7 @@ export type UserCreateWithoutStrainsInput = {
 
 export type UserCreateWithoutUpdatedIabCategoryGroupsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45412,7 +46012,7 @@ export type UserCreateWithoutUpdatedIabCategoryGroupsInput = {
 
 export type UserCreateWithoutUpdatedRegionGroupsInput = {
   address?: InputMaybe<LocationCreateOneInput>;
-  avatar?: InputMaybe<MediaCreateOneInput>;
+  avatar?: InputMaybe<MediaCreateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeCreateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeCreateManyWithoutChangedByInput>;
   cognitoUserId: Scalars['String'];
@@ -45507,7 +46107,7 @@ export type UserSubscriptionWhereInput = {
 
 export type UserUpdateDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45537,7 +46137,7 @@ export type UserUpdateDataInput = {
 
 export type UserUpdateInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45572,6 +46172,15 @@ export type UserUpdateManyInput = {
   disconnect?: InputMaybe<Array<UserWhereUniqueInput>>;
   update?: InputMaybe<Array<UserUpdateWithWhereUniqueNestedInput>>;
   upsert?: InputMaybe<Array<UserUpsertWithWhereUniqueNestedInput>>;
+};
+
+export type UserUpdateManyWithoutAvatarInput = {
+  connect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  create?: InputMaybe<Array<UserCreateWithoutAvatarInput>>;
+  delete?: InputMaybe<Array<UserWhereUniqueInput>>;
+  disconnect?: InputMaybe<Array<UserWhereUniqueInput>>;
+  update?: InputMaybe<Array<UserUpdateWithWhereUniqueWithoutAvatarInput>>;
+  upsert?: InputMaybe<Array<UserUpsertWithWhereUniqueWithoutAvatarInput>>;
 };
 
 export type UserUpdateManyWithoutRolesInput = {
@@ -45721,14 +46330,48 @@ export type UserUpdateWithWhereUniqueNestedInput = {
   where: UserWhereUniqueInput;
 };
 
+export type UserUpdateWithWhereUniqueWithoutAvatarInput = {
+  data: UserUpdateWithoutAvatarDataInput;
+  where: UserWhereUniqueInput;
+};
+
 export type UserUpdateWithWhereUniqueWithoutRolesInput = {
   data: UserUpdateWithoutRolesDataInput;
   where: UserWhereUniqueInput;
 };
 
+export type UserUpdateWithoutAvatarDataInput = {
+  address?: InputMaybe<LocationUpdateOneInput>;
+  cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
+  changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
+  cognitoUserId?: InputMaybe<Scalars['String']>;
+  config?: InputMaybe<UserConfigUpdateOneWithoutUsersInput>;
+  conversation?: InputMaybe<ConversationUpdateManyWithoutUserInput>;
+  createdIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutCreatedByInput>;
+  createdRegionGroups?: InputMaybe<RegionGroupUpdateManyWithoutCreatedByInput>;
+  email?: InputMaybe<Scalars['String']>;
+  events?: InputMaybe<EventUpdateManyWithoutCreatedByInput>;
+  messages?: InputMaybe<MessageUpdateManyWithoutUserInput>;
+  msaStatus?: InputMaybe<MsaVersion>;
+  name?: InputMaybe<Scalars['String']>;
+  notifications?: InputMaybe<NotificationUpdateManyWithoutUserInput>;
+  offers?: InputMaybe<OfferUpdateManyWithoutCreatedByInput>;
+  orgs?: InputMaybe<OrgUpdateManyInput>;
+  phone?: InputMaybe<Scalars['String']>;
+  products?: InputMaybe<ProductUpdateManyWithoutCreatedByInput>;
+  reviews?: InputMaybe<ReviewUpdateManyWithoutCreatedByInput>;
+  roles?: InputMaybe<RoleUpdateManyWithoutUsersInput>;
+  salesforceId?: InputMaybe<Scalars['String']>;
+  ssoToken?: InputMaybe<Scalars['String']>;
+  strains?: InputMaybe<StrainUpdateManyWithoutCreatedByInput>;
+  updatedIabCategoryGroups?: InputMaybe<IabCategoryGroupUpdateManyWithoutUpdatedByInput>;
+  updatedRegionGroups?: InputMaybe<RegionGroupUpdateManyWithoutUpdatedByInput>;
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type UserUpdateWithoutCannatypeDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
   config?: InputMaybe<UserConfigUpdateOneWithoutUsersInput>;
@@ -45757,7 +46400,7 @@ export type UserUpdateWithoutCannatypeDataInput = {
 
 export type UserUpdateWithoutChangesDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
   config?: InputMaybe<UserConfigUpdateOneWithoutUsersInput>;
@@ -45786,7 +46429,7 @@ export type UserUpdateWithoutChangesDataInput = {
 
 export type UserUpdateWithoutConversationDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45815,7 +46458,7 @@ export type UserUpdateWithoutConversationDataInput = {
 
 export type UserUpdateWithoutCreatedIabCategoryGroupsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45844,7 +46487,7 @@ export type UserUpdateWithoutCreatedIabCategoryGroupsDataInput = {
 
 export type UserUpdateWithoutCreatedRegionGroupsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45873,7 +46516,7 @@ export type UserUpdateWithoutCreatedRegionGroupsDataInput = {
 
 export type UserUpdateWithoutEventsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45902,7 +46545,7 @@ export type UserUpdateWithoutEventsDataInput = {
 
 export type UserUpdateWithoutMessagesDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45931,7 +46574,7 @@ export type UserUpdateWithoutMessagesDataInput = {
 
 export type UserUpdateWithoutNotificationsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45960,7 +46603,7 @@ export type UserUpdateWithoutNotificationsDataInput = {
 
 export type UserUpdateWithoutOffersDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -45989,7 +46632,7 @@ export type UserUpdateWithoutOffersDataInput = {
 
 export type UserUpdateWithoutProductsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46018,7 +46661,7 @@ export type UserUpdateWithoutProductsDataInput = {
 
 export type UserUpdateWithoutReviewsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46047,7 +46690,7 @@ export type UserUpdateWithoutReviewsDataInput = {
 
 export type UserUpdateWithoutRolesDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46076,7 +46719,7 @@ export type UserUpdateWithoutRolesDataInput = {
 
 export type UserUpdateWithoutStrainsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46105,7 +46748,7 @@ export type UserUpdateWithoutStrainsDataInput = {
 
 export type UserUpdateWithoutUpdatedIabCategoryGroupsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46134,7 +46777,7 @@ export type UserUpdateWithoutUpdatedIabCategoryGroupsDataInput = {
 
 export type UserUpdateWithoutUpdatedRegionGroupsDataInput = {
   address?: InputMaybe<LocationUpdateOneInput>;
-  avatar?: InputMaybe<MediaUpdateOneInput>;
+  avatar?: InputMaybe<MediaUpdateOneWithoutUsersInput>;
   cannatype?: InputMaybe<CannatypeUpdateOneWithoutUserInput>;
   changes?: InputMaybe<ChangeUpdateManyWithoutChangedByInput>;
   cognitoUserId?: InputMaybe<Scalars['String']>;
@@ -46169,6 +46812,12 @@ export type UserUpsertNestedInput = {
 export type UserUpsertWithWhereUniqueNestedInput = {
   create: UserCreateInput;
   update: UserUpdateDataInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserUpsertWithWhereUniqueWithoutAvatarInput = {
+  create: UserCreateWithoutAvatarInput;
+  update: UserUpdateWithoutAvatarDataInput;
   where: UserWhereUniqueInput;
 };
 
@@ -47096,17 +47745,16 @@ export type CreateOrgMutationVariables = Exact<{
   tradeDeskIdentifier?: InputMaybe<Scalars['String']>;
   storageBucket?: InputMaybe<Scalars['String']>;
   googleCustomerId?: InputMaybe<Scalars['String']>;
-  signInLogoId?: InputMaybe<MediaCreateOneInput>;
   viewId?: InputMaybe<Scalars['String']>;
   seo: Scalars['Boolean'];
   chatWootId?: InputMaybe<Scalars['String']>;
   cpm?: InputMaybe<Scalars['String']>;
   isGA4?: InputMaybe<Scalars['Boolean']>;
-  salesforceId: Scalars['String'];
+  salesforceId?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type CreateOrgMutation = { __typename?: 'Mutation', createOrg: { __typename?: 'Org', id: string, salesforceId?: string | null, name: string } };
+export type CreateOrgMutation = { __typename?: 'Mutation', createOrg: { __typename?: 'Org', id: string, name: string, salesforceId?: string | null } };
 
 export type CreateDashboardUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -47138,7 +47786,7 @@ export type GetUserBySalesforceIdOrEmailQueryVariables = Exact<{
 export type GetUserBySalesforceIdOrEmailQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: string, username: string, email?: string | null } | null> };
 
 
-export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"signInLogo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"signInLogoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
+export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
 export const CreateDashboardUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createDashboardUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createDashboardUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"phone"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"orgId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"avatar"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<CreateDashboardUserMutation, CreateDashboardUserMutationVariables>;
 export const GetOrgBySalesforceIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrgBySalesforceId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrgBySalesforceIdQuery, GetOrgBySalesforceIdQueryVariables>;
 export const GetUserBySalesforceIdOrEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUserBySalesforceIdOrEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"OR"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<GetUserBySalesforceIdOrEmailQuery, GetUserBySalesforceIdOrEmailQueryVariables>;

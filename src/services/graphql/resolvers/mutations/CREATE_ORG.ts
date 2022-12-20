@@ -16,13 +16,12 @@ const CREATE_ORG = graphql(`
     $tradeDeskIdentifier: String
     $storageBucket: String
     $googleCustomerId: String
-    $signInLogoId: MediaCreateOneInput
     $viewId: String
     $seo: Boolean!
     $chatWootId: String
     $cpm: String
     $isGA4: Boolean
-    $salesforceId: String!
+    $salesforceId: String
   ) {
     createOrg(
       data: {
@@ -32,7 +31,6 @@ const CREATE_ORG = graphql(`
         website: $website
         domain: $domain
         logo: $logoId
-        signInLogo: $signInLogoId
         level: $level
         chatWootId: $chatWootId
         cpm: $cpm
@@ -59,8 +57,8 @@ const CREATE_ORG = graphql(`
       }
     ) {
       id
-      salesforceId
       name
+      salesforceId
     }
   }
 `);

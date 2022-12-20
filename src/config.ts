@@ -1,5 +1,6 @@
 import { Config, LogLevel, SalesforceChannel } from "@/utils/types";
 import { isProduction, isStaging } from "@/utils/utils";
+import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from "@/constants";
 
 const config: Config = {
   app: {
@@ -34,10 +35,10 @@ const config: Config = {
     X_API_KEY: process.env.GRAPHQL_KEY,
   },
   server: {
-    port: parseInt(process.env?.PORT) || 4000,
+    port: parseInt(process.env?.PORT) || DEFAULT_SERVER_PORT,
     serverKey: process.env.SERVER_KEY,
   },
-  logLevel: (process.env.LOG_LEVEL as LogLevel) || "INFO",
+  logLevel: (process.env.LOG_LEVEL as LogLevel) || DEFAULT_LOG_LEVEL,
 };
 
 export default config;

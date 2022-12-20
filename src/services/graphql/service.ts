@@ -36,32 +36,29 @@ const createGraphqlService = (config: GraphQLConfig) => {
       });
 
       if (foundUser) {
-        logger.info(`User ${params.salesforceId} already exists`);
+        logger.info(`User ${foundUser.username} already exists`);
         return foundUser;
       }
 
       const createdUser = await mutations.createUser(params);
 
+      logger.info(`User ${createdUser.username} created`);
+
       return createdUser;
     },
-    async findOrCreateOrg(params: FindOrCreateOrgParams) {
+    async findOrCreateOrg(params: CreateOrgParams) {
       const foundOrg = await queries.getOrgBySalesforceId({
         salesforceId: params.salesforceId,
       });
 
       if (foundOrg) {
-        logger.warn(`Org ${foundOrg.salesforceId} already exists`);
+        logger.warn(`Org ${foundOrg.name} already exists`);
         return foundOrg;
       }
 
-      const createOrg: CreateOrgParams = {
-        name: params.name,
-        salesforceId: params.salesforceId,
-        description: params.description,
-        parentOrgId: params.salesforceParentId,
-      };
+      const createdOrg = await mutations.createOrg(params);
 
-      const createdOrg = await mutations.createOrg(createOrg);
+      logger.info(`Org ${createdOrg.name} created`);
 
       return createdOrg;
     },

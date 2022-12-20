@@ -3,14 +3,14 @@ import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
 import { format, isProduction } from "@/utils/utils";
+import { DEFAULT_EMAIL, DEFAULT_ORG } from "@/constants";
 import {
   Opportunity,
   SalesforceService,
   Config,
   Account,
-  ParentOrg,
+  Org,
 } from "@/utils/types";
-import { Org } from "./services/graphql/generated/graphql";
 
 const logger = createLogger("App");
 
@@ -37,104 +37,148 @@ const createApp = (config: Config) => {
                 Name: "*Standard Display Awareness",
               },
             });
-
             if (!products) return logger.warn("No Display Products");
 
             const account = await svc.query.accountById(opp.AccountId);
-
             if (!account) return logger.warn("No Account");
 
             const org = await this.ensureOrg(svc, account);
-
             if (!org) return logger.warn("No Org Found/Created");
 
-            logger.info(`Found/Created Org: ${org.id}`);
+            logger.info(`Found/Created Org: ${org.name}`);
 
             const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-
             if (!contact?.Name) return logger.warn(`No Contact "Name" Found`);
 
             const user = await graphql.findOrCreateUser({
               salesforceId: contact.Id,
-              email: isProduction ? contact.Email : "pacholo@mediajel.com",
+              email: isProduction ? contact.Email : DEFAULT_EMAIL,
               name: `salesforce: ${format(contact.Name)}`,
               phone: "+11234567894", // Always add a +1
               username: format(contact.Name),
               orgId: org.id,
             });
-
             if (!user) return logger.warn("No User Found/Created Created");
 
-            logger.info(`Found/Created User: ${user.id}`);
+            logger.info(`Found/Created User: ${user.username}`);
           }
         );
       });
     },
-    async ensureOrg(svc: SalesforceService, account: Account) {
-      logger.debug(`Evaluating Parent Org for ${account.Name}`);
-      const parentOrg: ParentOrg | null = await this.findOrCreateParentOrg(
-        svc,
-        account
-      );
+    // async ensureOrg(svc: SalesforceService, account: Account) {
+    //   //! If no parent, create Child org
+    //   if (!account.ParentId) {
+    //     logger.debug(`No Parent Org for ${account.Name} exists`);
+    //     const org = await graphql.findOrCreateOrg({
+    //       salesforceId: account.Id,
+    //       name: account.Name,
+    //       description: `salesforce: ${account.Id}`,
+    //       salesforceParentId: account.ParentId,
+    //     });
 
-      // Create the org, either with a parent org or without
-      logger.debug(`Finding or Creating Org for ${account.Name}`);
-      const org = await graphql.findOrCreateOrg({
-        salesforceId: account.Id,
-        name: account.Name,
-        description: `salesforce: ${account.Id}`,
-        salesforceParentId: parentOrg?.id ?? "cjoq2t7g4yzca07347pug25ck", // Defaults to MJ org, set this to env variable
-      });
+    //     if (!org) return logger.warn("No Org Found/Created Created");
+    //     return org;
+    //   }
 
-      if (!org) {
-        return logger.warn(`No Org Found/Created for ${account.Name}`);
-      }
+    //   logger.debug(`Verifying Parent Org: ${account.ParentId}`);
 
-      return org;
-    },
+    //   const existingParent = await graphql.queries.getOrgBySalesforceId({
+    //     salesforceId: account.ParentId,
+    //   });
 
-    async findOrCreateParentOrg(svc: SalesforceService, account: Account) {
-      let parentOrg: ParentOrg | null = null;
+    //   //! If parent already exists create child only
+    //   if (existingParent) {
+    //     logger.info(`Parent Org: ${existingParent.name} exists`);
 
-      // If no parent id then return
-      if (!account.ParentId) {
-        logger.info("No Parent Org provided");
-        return parentOrg;
-      }
+    //     logger.debug(`Creating Child Org: ${account.Name}`);
 
-      // Check if the parent org already exists
-      logger.debug(`Checking for Parent: ${account.ParentId}`);
-      parentOrg = await graphql.queries.getOrgBySalesforceId({
+    //     const childOrg = await graphql.findOrCreateOrg({
+    //       salesforceId: account.Id,
+    //       name: account.Name,
+    //       description: `salesforce: ${account.Id}`,
+    //       salesforceParentId: existingParent.id,
+    //     });
+
+    //     if (!childOrg) return logger.warn("No Child Org Found/Created Created");
+
+    //     logger.info(`Created Child Org: ${childOrg.name}`);
+    //     return childOrg;
+    //   }
+
+    //   logger.debug(`Parent: ${account.ParentId} does not exist, creating...`);
+
+    //   //! If parent doesn't exist, create parent and child
+    //   const parentAccount = await svc.query.accountById(account.ParentId);
+
+    //   const parentOrg = await graphql.findOrCreateOrg({
+    //     name: parentAccount.Name,
+    //     salesforceId: parentAccount.Id,
+    //     description: `salesforce: ${parentAccount.Id}`,
+    //     salesforceParentId: parentAccount.ParentId,
+    //   });
+
+    //   if (!parentOrg) return logger.warn("No Parent Org Found/Created Created");
+
+    //   logger.info(`Created Parent Org: ${parentOrg.name}`);
+
+    //   const childOrg = await graphql.findOrCreateOrg({
+    //     salesforceId: account.Id,
+    //     name: account.Name,
+    //     description: `salesforce: ${account.Id}`,
+    //     salesforceParentId: parentOrg.id,
+    //   });
+
+    //   if (!childOrg) return logger.warn("No Child Org Found/Created Created");
+
+    //   logger.info(`Created Child Org: ${childOrg.name}`);
+
+    //   return childOrg;
+    // },
+
+    // async ensureOrg(svc: SalesforceService, account: Account) {
+    //   const parentOrg = await this.ensureParentOrg(svc, account);
+
+    //   const org = await graphql.findOrCreateOrg({
+    //     salesforceId: account.Id,
+    //     name: account.Name,
+    //     description: `salesforce: ${account.Id}`,
+    //     parentOrgId: parentOrg?.id ?? DEFAULT_ORG,
+    //   });
+
+    //   if (!org) {
+    //     return logger.warn("No Org Found/Created Created");
+    //   }
+
+    //   logger.info(`Created Org: ${org.name}`);
+    //   return org;
+    // },
+
+    async ensureOrg(svc: SalesforceService, account: Account): Promise<Org> {
+      let parentOrg: Org = await graphql.queries.getOrgBySalesforceId({
         salesforceId: account.ParentId,
       });
+      // If parentOrg already exists in db, return it
+      if (parentOrg) return parentOrg;
 
-      if (parentOrg) {
-        logger.info(`Found Parent ${parentOrg?.name} for ${account.Name}`);
-        return parentOrg;
-      }
-
-      // If the parent org doesn't exist, create it
-      logger.info(`Parent with Salesforce ID ${account.ParentId} not found`);
+      // otherwise, create it
       const parentAccount = await svc.query.accountById(account.ParentId);
-      const { ParentId = "cjoq2t7g4yzca07347pug25ck" } = parentAccount; // Defaults to MJ org, set this to env variable
-
       parentOrg = await graphql.findOrCreateOrg({
         name: parentAccount.Name,
         salesforceId: parentAccount.Id,
         description: `salesforce: ${parentAccount.Id}`,
-        salesforceParentId: ParentId,
+        parentOrgId: parentAccount?.ParentId ?? DEFAULT_ORG,
       });
 
-      if (parentOrg) {
-        logger.info(`Created Parent ${parentOrg.name} for ${account.Name}`);
-        return parentOrg;
-      }
-
-      // If the parent org still doesn't exist, log an error
-      logger.error({
-        message: `No Parent Org Found/Created for ${account.Name}`,
+      const childOrg = await graphql.findOrCreateOrg({
+        salesforceId: account.Id,
+        name: account.Name,
+        description: `salesforce: ${account.Id}`,
+        parentOrgId: parentOrg?.id ?? DEFAULT_ORG,
       });
-      return;
+
+      if (!parentAccount?.ParentId) return childOrg;
+
+      return await this.ensureOrg(svc, parentAccount);
     },
   };
 };

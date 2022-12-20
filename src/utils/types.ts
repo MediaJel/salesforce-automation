@@ -144,7 +144,7 @@ export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
 
 export type GraphQLService = ReturnType<typeof createGraphqlService>;
 
-export type ParentOrg = Awaited<
+export type Org = Awaited<
   | ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]>
   | ReturnType<GraphQLService["mutations"]["createOrg"]>
 >;

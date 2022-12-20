@@ -79,6 +79,12 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
           reTargeting: false,
           roleitems: [
             {
+              feature: Feature.Orgs,
+              actions: {
+                set: [FeatureActions.Read, FeatureActions.Write],
+              },
+            },
+            {
               feature: Feature.Enabled,
               actions: {
                 set: [FeatureActions.Read, FeatureActions.Write],
@@ -86,7 +92,6 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
             },
           ], //! THESE MUST BE ENABLED OTHERWISE USER CANT BE DELETED
           seo: false,
-          signInLogoId: null,
           storageBucket: null,
           tradeDeskIdentifier: null,
           viewId: null,
@@ -101,6 +106,8 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
       if (operation.error) {
         logger.error({ message: "createOrg failed", ...params });
         logger.error(operation.error);
+        console.log(operation);
+
         return null;
       }
 
