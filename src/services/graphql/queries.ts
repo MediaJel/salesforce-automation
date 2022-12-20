@@ -30,7 +30,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         return null;
       }
 
-      logger.info(`Org ${operation.data.orgs[0].name} exists`);
+      logger.info(`Org ${operation.data.orgs[0].name} already exists`);
 
       return operation.data.orgs[0];
     },
