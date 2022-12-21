@@ -67,7 +67,18 @@ const createApp = (config: Config) => {
     },
 
     async ensureOrg(svc: SalesforceService, account: Account): Promise<Org> {
-      let parentOrg: Org = await graphql.queries.getOrgBySalesforceId({
+      // If no parent, return child org org
+      if (!account.ParentId) {
+        return await graphql.findOrCreateOrg({
+          salesforceId: account.Id,
+          name: account.Name,
+          description: `salesforce: ${account.Id}`,
+          parentOrgId: DEFAULT_ORG,
+        });
+      }
+
+      let parentOrg: Org | null = null;
+      parentOrg = await graphql.queries.getOrgBySalesforceId({
         salesforceId: account.ParentId,
       });
       // If parentOrg already exists in db, return it
