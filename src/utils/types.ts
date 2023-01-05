@@ -3,6 +3,7 @@ import {
   CreateOrgMutationVariables,
   GetOrgBySalesforceIdQueryVariables,
   GetUserBySalesforceIdOrEmailQueryVariables,
+  UpdateOrgMutationVariables,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
 import { ClientOptions } from "@urql/core";
@@ -114,6 +115,8 @@ export type CreateUserParams = Pick<
   "email" | "phone" | "name" | "username" | "orgId"
 > &
   GetUserBySalesforceIdOrEmailQueryVariables;
+
+export type UpdateOrgParams = UpdateOrgMutationVariables;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
