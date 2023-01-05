@@ -58,9 +58,18 @@ const createGraphqlService = (config: GraphQLConfig) => {
 
       const createdOrg = await mutations.createOrg(params);
 
-      logger.info(`Org ${createdOrg.name} created`);
+      if (createdOrg) {
+        logger.info(`Org ${createdOrg.name} created`);
+        return createdOrg;
+      }
 
-      return createdOrg;
+      // If we get here, something went wrong, attempt to update Org's salesforce Id
+      const updatedOrg = await mutations.updateOrg(params);
+
+      logger.info(
+        `Updated org ${params.name} with Salesforce ID ${params.salesforceId}`
+      );
+      return updatedOrg;
     },
   };
 };

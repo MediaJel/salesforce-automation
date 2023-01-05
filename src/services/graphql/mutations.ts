@@ -111,8 +111,6 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
       if (operation.error) {
         logger.error({ message: "createOrg failed", ...params });
         logger.error(operation.error);
-        console.log(operation);
-
         return null;
       }
 
@@ -128,6 +126,14 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         .catch((err) => {
           throw err;
         });
+
+      if (operation.error) {
+        logger.error({ message: "updateOrg failed", ...params });
+        logger.error(operation.error);
+        return null;
+      }
+
+      return operation.data.updateOrg;
     },
   };
 };
