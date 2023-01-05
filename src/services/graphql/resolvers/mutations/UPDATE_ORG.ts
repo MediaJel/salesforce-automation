@@ -10,5 +10,4 @@ const UPDATE_ORG = graphql(`
   }
 `);
 
-
-export default
+export default UPDATE_ORG;

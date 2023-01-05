@@ -1,5 +1,10 @@
 import { Client } from "@urql/core";
-import { CreateOrgParams, CreateUserParams, Logger } from "@/utils/types";
+import {
+  CreateOrgParams,
+  CreateUserParams,
+  Logger,
+  UpdateOrgParams,
+} from "@/utils/types";
 import {
   PartnerLevel,
   Feature,
@@ -114,6 +119,15 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
       orgLimiter.add(operation.data.createOrg.id);
 
       return operation.data.createOrg;
+    },
+
+    async updateOrg(params: UpdateOrgParams) {
+      const operation = await client
+        .mutation(mutations.UPDATE_ORG, params)
+        .toPromise()
+        .catch((err) => {
+          throw err;
+        });
     },
   };
 };

@@ -29,6 +29,7 @@ export type AdGroupCreatives = Node & {
   createdAt: Scalars['DateTime'];
   flag?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
+  isAmplifyDefault?: Maybe<Scalars['Boolean']>;
   medias?: Maybe<Array<Media>>;
   name?: Maybe<Scalars['String']>;
   org?: Maybe<Array<Org>>;
@@ -60,6 +61,7 @@ export type AdGroupCreativesOrgArgs = {
 export type AdGroupCreativesCreateInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   medias?: InputMaybe<MediaCreateManyWithoutAdGroupCreativeInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateManyWithoutAdGroupCreativesInput>;
@@ -78,6 +80,7 @@ export type AdGroupCreativesCreateManyWithoutOrgInput = {
 export type AdGroupCreativesCreateWithoutMediasInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgCreateManyWithoutAdGroupCreativesInput>;
 };
@@ -85,6 +88,7 @@ export type AdGroupCreativesCreateWithoutMediasInput = {
 export type AdGroupCreativesCreateWithoutOrgInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   medias?: InputMaybe<MediaCreateManyWithoutAdGroupCreativeInput>;
   name?: InputMaybe<Scalars['String']>;
 };
@@ -98,6 +102,8 @@ export enum AdGroupCreativesOrderByInput {
   FlagDesc = 'flag_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  IsAmplifyDefaultAsc = 'isAmplifyDefault_ASC',
+  IsAmplifyDefaultDesc = 'isAmplifyDefault_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
@@ -107,9 +113,17 @@ export enum AdGroupCreativesOrderByInput {
 export type AdGroupCreativesUpdateInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   medias?: InputMaybe<MediaUpdateManyWithoutAdGroupCreativeInput>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateManyWithoutAdGroupCreativesInput>;
+};
+
+export type AdGroupCreativesUpdateManyMutationInput = {
+  adProviderId?: InputMaybe<Scalars['String']>;
+  flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type AdGroupCreativesUpdateManyWithoutMediasInput = {
@@ -143,6 +157,7 @@ export type AdGroupCreativesUpdateWithWhereUniqueWithoutOrgInput = {
 export type AdGroupCreativesUpdateWithoutMediasDataInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   org?: InputMaybe<OrgUpdateManyWithoutAdGroupCreativesInput>;
 };
@@ -150,6 +165,7 @@ export type AdGroupCreativesUpdateWithoutMediasDataInput = {
 export type AdGroupCreativesUpdateWithoutOrgDataInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   flag?: InputMaybe<Scalars['Boolean']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   medias?: InputMaybe<MediaUpdateManyWithoutAdGroupCreativeInput>;
   name?: InputMaybe<Scalars['String']>;
 };
@@ -245,6 +261,9 @@ export type AdGroupCreativesWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  isAmplifyDefault_not?: InputMaybe<Scalars['Boolean']>;
   medias_every?: InputMaybe<MediaWhereInput>;
   medias_none?: InputMaybe<MediaWhereInput>;
   medias_some?: InputMaybe<MediaWhereInput>;
@@ -3425,6 +3444,7 @@ export type Audience = Node & {
   eventsTargets?: Maybe<Array<EventsTarget>>;
   geoTargets?: Maybe<Array<GeoTarget>>;
   id: Scalars['ID'];
+  isAmplifyDefault?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   observationCount?: Maybe<Scalars['Int']>;
   orgs?: Maybe<Array<Org>>;
@@ -3532,6 +3552,7 @@ export type AudienceCreateInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3590,6 +3611,7 @@ export type AudienceCreateWithoutChangeLogInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3608,6 +3630,7 @@ export type AudienceCreateWithoutEventsTargetsInput = {
   distribution?: InputMaybe<DistributionConfigCreateManyWithoutAudienceInput>;
   endDate?: InputMaybe<Scalars['DateTime']>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3626,6 +3649,7 @@ export type AudienceCreateWithoutGeoTargetsInput = {
   distribution?: InputMaybe<DistributionConfigCreateManyWithoutAudienceInput>;
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3645,6 +3669,7 @@ export type AudienceCreateWithoutOrgsInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   reports?: InputMaybe<CampaignReportCreateManyWithoutAudienceInput>;
@@ -3663,6 +3688,7 @@ export type AudienceCreateWithoutReportsInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3681,6 +3707,7 @@ export type AudienceCreateWithoutRetargetAudiencesInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetCreateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetCreateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgCreateManyWithoutAudiencesInput>;
@@ -3715,6 +3742,8 @@ export enum AudienceOrderByInput {
   EndDateDesc = 'endDate_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  IsAmplifyDefaultAsc = 'isAmplifyDefault_ASC',
+  IsAmplifyDefaultDesc = 'isAmplifyDefault_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   ObservationCountAsc = 'observationCount_ASC',
@@ -3745,6 +3774,7 @@ export type AudienceUpdateDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3764,6 +3794,7 @@ export type AudienceUpdateInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3782,6 +3813,19 @@ export type AudienceUpdateManyInput = {
   disconnect?: InputMaybe<Array<AudienceWhereUniqueInput>>;
   update?: InputMaybe<Array<AudienceUpdateWithWhereUniqueNestedInput>>;
   upsert?: InputMaybe<Array<AudienceUpsertWithWhereUniqueNestedInput>>;
+};
+
+export type AudienceUpdateManyMutationInput = {
+  description?: InputMaybe<Scalars['String']>;
+  deviceIdCount?: InputMaybe<Scalars['Int']>;
+  endDate?: InputMaybe<Scalars['DateTime']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  observationCount?: InputMaybe<Scalars['Int']>;
+  startDate?: InputMaybe<Scalars['DateTime']>;
+  tags?: InputMaybe<AudienceUpdatetagsInput>;
+  type?: InputMaybe<AudienceType>;
+  uniqueCount?: InputMaybe<Scalars['Int']>;
 };
 
 export type AudienceUpdateManyWithoutEventsTargetsInput = {
@@ -3874,6 +3918,7 @@ export type AudienceUpdateWithoutChangeLogDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3892,6 +3937,7 @@ export type AudienceUpdateWithoutEventsTargetsDataInput = {
   distribution?: InputMaybe<DistributionConfigUpdateManyWithoutAudienceInput>;
   endDate?: InputMaybe<Scalars['DateTime']>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3910,6 +3956,7 @@ export type AudienceUpdateWithoutGeoTargetsDataInput = {
   distribution?: InputMaybe<DistributionConfigUpdateManyWithoutAudienceInput>;
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3929,6 +3976,7 @@ export type AudienceUpdateWithoutOrgsDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   reports?: InputMaybe<CampaignReportUpdateManyWithoutAudienceInput>;
@@ -3947,6 +3995,7 @@ export type AudienceUpdateWithoutReportsDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -3965,6 +4014,7 @@ export type AudienceUpdateWithoutRetargetAudiencesDataInput = {
   endDate?: InputMaybe<Scalars['DateTime']>;
   eventsTargets?: InputMaybe<EventsTargetUpdateManyWithoutAudiencesInput>;
   geoTargets?: InputMaybe<GeoTargetUpdateManyWithoutAudiencesInput>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   observationCount?: InputMaybe<Scalars['Int']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutAudiencesInput>;
@@ -4141,6 +4191,9 @@ export type AudienceWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  isAmplifyDefault_not?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -4247,6 +4300,253 @@ export type AudienceWhereInput = {
 };
 
 export type AudienceWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
+};
+
+export type AuditHistory = Node & {
+  __typename?: 'AuditHistory';
+  campaignOrder?: Maybe<CampaignOrder>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
+  newChange?: Maybe<Scalars['String']>;
+  oldChange?: Maybe<Scalars['String']>;
+  updatedAt: Scalars['DateTime'];
+  user?: Maybe<Scalars['String']>;
+};
+
+export type AuditHistoryCreateManyWithoutCampaignOrderInput = {
+  connect?: InputMaybe<Array<AuditHistoryWhereUniqueInput>>;
+  create?: InputMaybe<Array<AuditHistoryCreateWithoutCampaignOrderInput>>;
+};
+
+export type AuditHistoryCreateWithoutCampaignOrderInput = {
+  name?: InputMaybe<Scalars['String']>;
+  newChange?: InputMaybe<Scalars['String']>;
+  oldChange?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Scalars['String']>;
+};
+
+export enum AuditHistoryOrderByInput {
+  CreatedAtAsc = 'createdAt_ASC',
+  CreatedAtDesc = 'createdAt_DESC',
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
+  NewChangeAsc = 'newChange_ASC',
+  NewChangeDesc = 'newChange_DESC',
+  OldChangeAsc = 'oldChange_ASC',
+  OldChangeDesc = 'oldChange_DESC',
+  UpdatedAtAsc = 'updatedAt_ASC',
+  UpdatedAtDesc = 'updatedAt_DESC',
+  UserAsc = 'user_ASC',
+  UserDesc = 'user_DESC'
+}
+
+export type AuditHistoryUpdateManyWithoutCampaignOrderInput = {
+  connect?: InputMaybe<Array<AuditHistoryWhereUniqueInput>>;
+  create?: InputMaybe<Array<AuditHistoryCreateWithoutCampaignOrderInput>>;
+  delete?: InputMaybe<Array<AuditHistoryWhereUniqueInput>>;
+  disconnect?: InputMaybe<Array<AuditHistoryWhereUniqueInput>>;
+  update?: InputMaybe<Array<AuditHistoryUpdateWithWhereUniqueWithoutCampaignOrderInput>>;
+  upsert?: InputMaybe<Array<AuditHistoryUpsertWithWhereUniqueWithoutCampaignOrderInput>>;
+};
+
+export type AuditHistoryUpdateWithWhereUniqueWithoutCampaignOrderInput = {
+  data: AuditHistoryUpdateWithoutCampaignOrderDataInput;
+  where: AuditHistoryWhereUniqueInput;
+};
+
+export type AuditHistoryUpdateWithoutCampaignOrderDataInput = {
+  name?: InputMaybe<Scalars['String']>;
+  newChange?: InputMaybe<Scalars['String']>;
+  oldChange?: InputMaybe<Scalars['String']>;
+  user?: InputMaybe<Scalars['String']>;
+};
+
+export type AuditHistoryUpsertWithWhereUniqueWithoutCampaignOrderInput = {
+  create: AuditHistoryCreateWithoutCampaignOrderInput;
+  update: AuditHistoryUpdateWithoutCampaignOrderDataInput;
+  where: AuditHistoryWhereUniqueInput;
+};
+
+export type AuditHistoryWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<AuditHistoryWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<AuditHistoryWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<AuditHistoryWhereInput>>;
+  campaignOrder?: InputMaybe<CampaignOrderWhereInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  createdAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  createdAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  createdAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  createdAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  createdAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  createdAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: InputMaybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: InputMaybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: InputMaybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  newChange?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  newChange_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  newChange_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  newChange_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  newChange_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  newChange_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  newChange_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  newChange_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  newChange_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  newChange_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  newChange_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  newChange_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  newChange_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  newChange_starts_with?: InputMaybe<Scalars['String']>;
+  oldChange?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  oldChange_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  oldChange_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  oldChange_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  oldChange_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  oldChange_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  oldChange_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  oldChange_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  oldChange_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  oldChange_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  oldChange_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  oldChange_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  oldChange_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  oldChange_starts_with?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than the given value. */
+  updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
+  /** All values greater than or equal the given value. */
+  updatedAt_gte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are contained in given list. */
+  updatedAt_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  /** All values less than the given value. */
+  updatedAt_lt?: InputMaybe<Scalars['DateTime']>;
+  /** All values less than or equal the given value. */
+  updatedAt_lte?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not equal to given value. */
+  updatedAt_not?: InputMaybe<Scalars['DateTime']>;
+  /** All values that are not contained in given list. */
+  updatedAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  user?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  user_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  user_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  user_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  user_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  user_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  user_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  user_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  user_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  user_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  user_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  user_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  user_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  user_starts_with?: InputMaybe<Scalars['String']>;
+};
+
+export type AuditHistoryWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
@@ -6310,10 +6610,12 @@ export type CampaignOrder = Node & {
   attributionAudiences?: Maybe<Array<Audience>>;
   attributionTargets?: Maybe<Array<GeoTarget>>;
   attributionWindow?: Maybe<Scalars['Int']>;
+  auditHistory?: Maybe<Array<AuditHistory>>;
   awarenessCampaign?: Maybe<Scalars['Boolean']>;
   brands?: Maybe<Array<Brand>>;
   budget?: Maybe<Scalars['Float']>;
   campaignChecklistProcess?: Maybe<CampaignChecklist>;
+  campaignReviewProcess?: Maybe<CampaignReviewProcess>;
   campaigns?: Maybe<Array<Campaign>>;
   category: Array<Scalars['String']>;
   changeLog?: Maybe<Array<Change>>;
@@ -6404,6 +6706,17 @@ export type CampaignOrderAttributionTargetsArgs = {
   orderBy?: InputMaybe<GeoTargetOrderByInput>;
   skip?: InputMaybe<Scalars['Int']>;
   where?: InputMaybe<GeoTargetWhereInput>;
+};
+
+
+export type CampaignOrderAuditHistoryArgs = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<AuditHistoryOrderByInput>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<AuditHistoryWhereInput>;
 };
 
 
@@ -6555,10 +6868,12 @@ export type CampaignOrderCreateInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6678,10 +6993,12 @@ export type CampaignOrderCreateWithoutAdTagsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6736,10 +7053,12 @@ export type CampaignOrderCreateWithoutAdUnitsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6794,10 +7113,12 @@ export type CampaignOrderCreateWithoutAdvertiserInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6852,10 +7173,12 @@ export type CampaignOrderCreateWithoutAggregateDataInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6911,9 +7234,11 @@ export type CampaignOrderCreateWithoutBrandsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -6969,10 +7294,12 @@ export type CampaignOrderCreateWithoutCampaignsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
   cpm?: InputMaybe<Scalars['Float']>;
@@ -7027,10 +7354,12 @@ export type CampaignOrderCreateWithoutChangeLogInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   cpm?: InputMaybe<Scalars['Float']>;
@@ -7085,10 +7414,12 @@ export type CampaignOrderCreateWithoutGeoTargetsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -7143,10 +7474,12 @@ export type CampaignOrderCreateWithoutOrgsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -7201,10 +7534,12 @@ export type CampaignOrderCreateWithoutPacingDataInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -7259,10 +7594,12 @@ export type CampaignOrderCreateWithoutReportsInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -7317,10 +7654,12 @@ export type CampaignOrderCreateWithoutTransactionsConfigInput = {
   attributionAudiences?: InputMaybe<AudienceCreateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetCreateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryCreateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandCreateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistCreateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessCreateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignCreateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderCreatecategoryInput>;
   changeLog?: InputMaybe<ChangeCreateManyWithoutCampaignOrderInput>;
@@ -7554,10 +7893,12 @@ export type CampaignOrderUpdateDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -7613,10 +7954,12 @@ export type CampaignOrderUpdateInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -7810,10 +8153,12 @@ export type CampaignOrderUpdateWithoutAdTagsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -7868,10 +8213,12 @@ export type CampaignOrderUpdateWithoutAdUnitsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -7926,10 +8273,12 @@ export type CampaignOrderUpdateWithoutAdvertiserDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -7984,10 +8333,12 @@ export type CampaignOrderUpdateWithoutAggregateDataDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8043,9 +8394,11 @@ export type CampaignOrderUpdateWithoutBrandsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8101,10 +8454,12 @@ export type CampaignOrderUpdateWithoutCampaignsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
   cpm?: InputMaybe<Scalars['Float']>;
@@ -8159,10 +8514,12 @@ export type CampaignOrderUpdateWithoutChangeLogDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   cpm?: InputMaybe<Scalars['Float']>;
@@ -8217,10 +8574,12 @@ export type CampaignOrderUpdateWithoutGeoTargetsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8275,10 +8634,12 @@ export type CampaignOrderUpdateWithoutOrgsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8333,10 +8694,12 @@ export type CampaignOrderUpdateWithoutPacingDataDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8391,10 +8754,12 @@ export type CampaignOrderUpdateWithoutReportsDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8449,10 +8814,12 @@ export type CampaignOrderUpdateWithoutTransactionsConfigDataInput = {
   attributionAudiences?: InputMaybe<AudienceUpdateManyInput>;
   attributionTargets?: InputMaybe<GeoTargetUpdateManyInput>;
   attributionWindow?: InputMaybe<Scalars['Int']>;
+  auditHistory?: InputMaybe<AuditHistoryUpdateManyWithoutCampaignOrderInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   brands?: InputMaybe<BrandUpdateManyWithoutCampaignOrderInput>;
   budget?: InputMaybe<Scalars['Float']>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistUpdateOneWithoutCampaignOrdersInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessUpdateOneWithoutCampaignOrderInput>;
   campaigns?: InputMaybe<CampaignUpdateManyWithoutCampaignOrderInput>;
   category?: InputMaybe<CampaignOrderUpdatecategoryInput>;
   changeLog?: InputMaybe<ChangeUpdateManyWithoutCampaignOrderInput>;
@@ -8656,6 +9023,9 @@ export type CampaignOrderWhereInput = {
   attributionWindow_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   attributionWindow_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  auditHistory_every?: InputMaybe<AuditHistoryWhereInput>;
+  auditHistory_none?: InputMaybe<AuditHistoryWhereInput>;
+  auditHistory_some?: InputMaybe<AuditHistoryWhereInput>;
   awarenessCampaign?: InputMaybe<Scalars['Boolean']>;
   /** All values that are not equal to given value. */
   awarenessCampaign_not?: InputMaybe<Scalars['Boolean']>;
@@ -8678,6 +9048,7 @@ export type CampaignOrderWhereInput = {
   /** All values that are not contained in given list. */
   budget_not_in?: InputMaybe<Array<Scalars['Float']>>;
   campaignChecklistProcess?: InputMaybe<CampaignChecklistWhereInput>;
+  campaignReviewProcess?: InputMaybe<CampaignReviewProcessWhereInput>;
   campaigns_every?: InputMaybe<CampaignWhereInput>;
   campaigns_none?: InputMaybe<CampaignWhereInput>;
   campaigns_some?: InputMaybe<CampaignWhereInput>;
@@ -9646,6 +10017,168 @@ export type CampaignReportWhereInput = {
 export type CampaignReportWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
   key?: InputMaybe<Scalars['String']>;
+};
+
+export type CampaignReviewProcess = Node & {
+  __typename?: 'CampaignReviewProcess';
+  campaignOrder?: Maybe<CampaignOrder>;
+  id: Scalars['ID'];
+  review?: Maybe<Scalars['String']>;
+  scaleBudget?: Maybe<Scalars['String']>;
+  stateLaw?: Maybe<Scalars['String']>;
+};
+
+export type CampaignReviewProcessCreateOneWithoutCampaignOrderInput = {
+  connect?: InputMaybe<CampaignReviewProcessWhereUniqueInput>;
+  create?: InputMaybe<CampaignReviewProcessCreateWithoutCampaignOrderInput>;
+};
+
+export type CampaignReviewProcessCreateWithoutCampaignOrderInput = {
+  review?: InputMaybe<Scalars['String']>;
+  scaleBudget?: InputMaybe<Scalars['String']>;
+  stateLaw?: InputMaybe<Scalars['String']>;
+};
+
+export type CampaignReviewProcessUpdateOneWithoutCampaignOrderInput = {
+  connect?: InputMaybe<CampaignReviewProcessWhereUniqueInput>;
+  create?: InputMaybe<CampaignReviewProcessCreateWithoutCampaignOrderInput>;
+  delete?: InputMaybe<Scalars['Boolean']>;
+  disconnect?: InputMaybe<Scalars['Boolean']>;
+  update?: InputMaybe<CampaignReviewProcessUpdateWithoutCampaignOrderDataInput>;
+  upsert?: InputMaybe<CampaignReviewProcessUpsertWithoutCampaignOrderInput>;
+};
+
+export type CampaignReviewProcessUpdateWithoutCampaignOrderDataInput = {
+  review?: InputMaybe<Scalars['String']>;
+  scaleBudget?: InputMaybe<Scalars['String']>;
+  stateLaw?: InputMaybe<Scalars['String']>;
+};
+
+export type CampaignReviewProcessUpsertWithoutCampaignOrderInput = {
+  create: CampaignReviewProcessCreateWithoutCampaignOrderInput;
+  update: CampaignReviewProcessUpdateWithoutCampaignOrderDataInput;
+};
+
+export type CampaignReviewProcessWhereInput = {
+  /** Logical AND on all given filters. */
+  AND?: InputMaybe<Array<CampaignReviewProcessWhereInput>>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: InputMaybe<Array<CampaignReviewProcessWhereInput>>;
+  /** Logical OR on all given filters. */
+  OR?: InputMaybe<Array<CampaignReviewProcessWhereInput>>;
+  campaignOrder?: InputMaybe<CampaignOrderWhereInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  /** All values containing the given string. */
+  id_contains?: InputMaybe<Scalars['ID']>;
+  /** All values ending with the given string. */
+  id_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values greater than the given value. */
+  id_gt?: InputMaybe<Scalars['ID']>;
+  /** All values greater than or equal the given value. */
+  id_gte?: InputMaybe<Scalars['ID']>;
+  /** All values that are contained in given list. */
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values less than the given value. */
+  id_lt?: InputMaybe<Scalars['ID']>;
+  /** All values less than or equal the given value. */
+  id_lte?: InputMaybe<Scalars['ID']>;
+  /** All values that are not equal to given value. */
+  id_not?: InputMaybe<Scalars['ID']>;
+  /** All values not containing the given string. */
+  id_not_contains?: InputMaybe<Scalars['ID']>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: InputMaybe<Scalars['ID']>;
+  /** All values that are not contained in given list. */
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: InputMaybe<Scalars['ID']>;
+  /** All values starting with the given string. */
+  id_starts_with?: InputMaybe<Scalars['ID']>;
+  review?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  review_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  review_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  review_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  review_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  review_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  review_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  review_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  review_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  review_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  review_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  review_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  review_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  review_starts_with?: InputMaybe<Scalars['String']>;
+  scaleBudget?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  scaleBudget_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  scaleBudget_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  scaleBudget_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  scaleBudget_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  scaleBudget_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  scaleBudget_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  scaleBudget_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  scaleBudget_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  scaleBudget_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  scaleBudget_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  scaleBudget_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  scaleBudget_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  scaleBudget_starts_with?: InputMaybe<Scalars['String']>;
+  stateLaw?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  stateLaw_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  stateLaw_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  stateLaw_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  stateLaw_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  stateLaw_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  stateLaw_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  stateLaw_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  stateLaw_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  stateLaw_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  stateLaw_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  stateLaw_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  stateLaw_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  stateLaw_starts_with?: InputMaybe<Scalars['String']>;
+};
+
+export type CampaignReviewProcessWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']>;
 };
 
 export enum CampaignStatus {
@@ -12277,8 +12810,10 @@ export type Creative = Node & {
   adUnit?: Maybe<AdUnit>;
   cpm?: Maybe<Scalars['Float']>;
   createdAt: Scalars['DateTime'];
+  hasNotes?: Maybe<Scalars['Boolean']>;
   id: Scalars['ID'];
   media: Media;
+  notes?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -12312,14 +12847,18 @@ export type CreativeCreateWithoutAdTagsInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   adUnit?: InputMaybe<AdUnitCreateOneWithoutBannersInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
   media: MediaCreateOneWithoutCreativesInput;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export type CreativeCreateWithoutAdUnitInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   adTags?: InputMaybe<AdTagCreateManyWithoutCreativeInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
   media: MediaCreateOneWithoutCreativesInput;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export type CreativeCreateWithoutMediaInput = {
@@ -12327,6 +12866,8 @@ export type CreativeCreateWithoutMediaInput = {
   adTags?: InputMaybe<AdTagCreateManyWithoutCreativeInput>;
   adUnit?: InputMaybe<AdUnitCreateOneWithoutBannersInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export enum CreativeOrderByInput {
@@ -12336,8 +12877,12 @@ export enum CreativeOrderByInput {
   CpmDesc = 'cpm_DESC',
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
+  HasNotesAsc = 'hasNotes_ASC',
+  HasNotesDesc = 'hasNotes_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  NotesAsc = 'notes_ASC',
+  NotesDesc = 'notes_DESC',
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC'
 }
@@ -12383,14 +12928,18 @@ export type CreativeUpdateWithoutAdTagsDataInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   adUnit?: InputMaybe<AdUnitUpdateOneWithoutBannersInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
   media?: InputMaybe<MediaUpdateOneRequiredWithoutCreativesInput>;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export type CreativeUpdateWithoutAdUnitDataInput = {
   adProviderId?: InputMaybe<Scalars['String']>;
   adTags?: InputMaybe<AdTagUpdateManyWithoutCreativeInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
   media?: InputMaybe<MediaUpdateOneRequiredWithoutCreativesInput>;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export type CreativeUpdateWithoutMediaDataInput = {
@@ -12398,6 +12947,8 @@ export type CreativeUpdateWithoutMediaDataInput = {
   adTags?: InputMaybe<AdTagUpdateManyWithoutCreativeInput>;
   adUnit?: InputMaybe<AdUnitUpdateOneWithoutBannersInput>;
   cpm?: InputMaybe<Scalars['Float']>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
+  notes?: InputMaybe<Scalars['String']>;
 };
 
 export type CreativeUpsertWithWhereUniqueWithoutAdUnitInput = {
@@ -12485,6 +13036,9 @@ export type CreativeWhereInput = {
   createdAt_not?: InputMaybe<Scalars['DateTime']>;
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  hasNotes?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  hasNotes_not?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['ID']>;
   /** All values containing the given string. */
   id_contains?: InputMaybe<Scalars['ID']>;
@@ -12513,6 +13067,33 @@ export type CreativeWhereInput = {
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
   media?: InputMaybe<MediaWhereInput>;
+  notes?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  notes_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  notes_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  notes_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  notes_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  notes_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  notes_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  notes_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  notes_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  notes_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  notes_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  notes_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  notes_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  notes_starts_with?: InputMaybe<Scalars['String']>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -21807,6 +22388,7 @@ export type Mutation = {
   deleteOrg?: Maybe<Org>;
   deleteOrgSummary?: Maybe<OrgSummary>;
   deleteOrgTagsConfig?: Maybe<OrgTagsConfig>;
+  deleteOrgTagsMultipleConfig?: Maybe<OrgTagsMultipleConfig>;
   deleteProduct?: Maybe<Product>;
   deleteRegionGroup?: Maybe<RegionGroup>;
   deleteRole?: Maybe<Role>;
@@ -21874,7 +22456,10 @@ export type Mutation = {
   updateLiquidMSetting?: Maybe<Scalars['JSON']>;
   updateLiquidMSupply?: Maybe<Scalars['JSON']>;
   updateLocation?: Maybe<Location>;
+  updateManyAdGroupCreativeses: BatchPayload;
+  updateManyAudiences: BatchPayload;
   updateManyMessages: BatchPayload;
+  updateManyOrgTagsMultipleConfigs: BatchPayload;
   updateMedia?: Maybe<Media>;
   updateMessage?: Maybe<Message>;
   updateNotification?: Maybe<Notification>;
@@ -22322,6 +22907,11 @@ export type MutationDeleteOrgTagsConfigArgs = {
 };
 
 
+export type MutationDeleteOrgTagsMultipleConfigArgs = {
+  where: OrgTagsMultipleConfigWhereUniqueInput;
+};
+
+
 export type MutationDeleteProductArgs = {
   where: ProductWhereUniqueInput;
 };
@@ -22678,9 +23268,27 @@ export type MutationUpdateLocationArgs = {
 };
 
 
+export type MutationUpdateManyAdGroupCreativesesArgs = {
+  data: AdGroupCreativesUpdateManyMutationInput;
+  where?: InputMaybe<AdGroupCreativesWhereInput>;
+};
+
+
+export type MutationUpdateManyAudiencesArgs = {
+  data: AudienceUpdateManyMutationInput;
+  where?: InputMaybe<AudienceWhereInput>;
+};
+
+
 export type MutationUpdateManyMessagesArgs = {
   data: MessageUpdateManyMutationInput;
   where?: InputMaybe<MessageWhereInput>;
+};
+
+
+export type MutationUpdateManyOrgTagsMultipleConfigsArgs = {
+  data: OrgTagsMultipleConfigUpdateManyMutationInput;
+  where?: InputMaybe<OrgTagsMultipleConfigWhereInput>;
 };
 
 
@@ -26575,6 +27183,7 @@ export type OrgTagsConfig = Node & {
   cart?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  name?: Maybe<Scalars['String']>;
   orgs?: Maybe<Array<Org>>;
   retailId?: Maybe<Scalars['String']>;
   tag?: Maybe<Scalars['Json']>;
@@ -26599,6 +27208,7 @@ export type OrgTagsConfigOrgsArgs = {
 export type OrgTagsConfigCreateInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   orgs?: InputMaybe<OrgCreateManyWithoutTagsConfigInput>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
@@ -26616,6 +27226,7 @@ export type OrgTagsConfigCreateOneWithoutOrgsInput = {
 export type OrgTagsConfigCreateWithoutOrgsInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
   tagPageViews?: InputMaybe<Scalars['String']>;
@@ -26633,6 +27244,8 @@ export enum OrgTagsConfigOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  NameAsc = 'name_ASC',
+  NameDesc = 'name_DESC',
   RetailIdAsc = 'retailId_ASC',
   RetailIdDesc = 'retailId_DESC',
   TagPageViewsAsc = 'tagPageViews_ASC',
@@ -26652,6 +27265,7 @@ export enum OrgTagsConfigOrderByInput {
 export type OrgTagsConfigUpdateInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   orgs?: InputMaybe<OrgUpdateManyWithoutTagsConfigInput>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
@@ -26673,6 +27287,7 @@ export type OrgTagsConfigUpdateOneWithoutOrgsInput = {
 export type OrgTagsConfigUpdateWithoutOrgsDataInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
   tagPageViews?: InputMaybe<Scalars['String']>;
@@ -26789,6 +27404,33 @@ export type OrgTagsConfigWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  name?: InputMaybe<Scalars['String']>;
+  /** All values containing the given string. */
+  name_contains?: InputMaybe<Scalars['String']>;
+  /** All values ending with the given string. */
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values greater than the given value. */
+  name_gt?: InputMaybe<Scalars['String']>;
+  /** All values greater than or equal the given value. */
+  name_gte?: InputMaybe<Scalars['String']>;
+  /** All values that are contained in given list. */
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values less than the given value. */
+  name_lt?: InputMaybe<Scalars['String']>;
+  /** All values less than or equal the given value. */
+  name_lte?: InputMaybe<Scalars['String']>;
+  /** All values that are not equal to given value. */
+  name_not?: InputMaybe<Scalars['String']>;
+  /** All values not containing the given string. */
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  /** All values that are not contained in given list. */
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  /** All values starting with the given string. */
+  name_starts_with?: InputMaybe<Scalars['String']>;
   orgs_every?: InputMaybe<OrgWhereInput>;
   orgs_none?: InputMaybe<OrgWhereInput>;
   orgs_some?: InputMaybe<OrgWhereInput>;
@@ -26930,6 +27572,7 @@ export type OrgTagsMultipleConfig = Node & {
   cart?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   id: Scalars['ID'];
+  isAmplifyDefault?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   org?: Maybe<Org>;
   retailId?: Maybe<Scalars['String']>;
@@ -26949,6 +27592,7 @@ export type OrgTagsMultipleConfigCreateManyWithoutOrgInput = {
 export type OrgTagsMultipleConfigCreateWithoutOrgInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
@@ -26967,6 +27611,8 @@ export enum OrgTagsMultipleConfigOrderByInput {
   CreatedAtDesc = 'createdAt_DESC',
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
+  IsAmplifyDefaultAsc = 'isAmplifyDefault_ASC',
+  IsAmplifyDefaultDesc = 'isAmplifyDefault_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
   RetailIdAsc = 'retailId_ASC',
@@ -26985,6 +27631,19 @@ export enum OrgTagsMultipleConfigOrderByInput {
   UpdatedAtDesc = 'updatedAt_DESC'
 }
 
+export type OrgTagsMultipleConfigUpdateManyMutationInput = {
+  appId?: InputMaybe<Scalars['String']>;
+  cart?: InputMaybe<Scalars['String']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
+  retailId?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['Json']>;
+  tagPageViews?: InputMaybe<Scalars['String']>;
+  tagTransactions?: InputMaybe<Scalars['String']>;
+  tagUpdateDate?: InputMaybe<Scalars['String']>;
+  test?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type OrgTagsMultipleConfigUpdateManyWithoutOrgInput = {
   connect?: InputMaybe<Array<OrgTagsMultipleConfigWhereUniqueInput>>;
   create?: InputMaybe<Array<OrgTagsMultipleConfigCreateWithoutOrgInput>>;
@@ -27002,6 +27661,7 @@ export type OrgTagsMultipleConfigUpdateWithWhereUniqueWithoutOrgInput = {
 export type OrgTagsMultipleConfigUpdateWithoutOrgDataInput = {
   appId?: InputMaybe<Scalars['String']>;
   cart?: InputMaybe<Scalars['String']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   retailId?: InputMaybe<Scalars['String']>;
   tag?: InputMaybe<Scalars['Json']>;
@@ -27120,6 +27780,9 @@ export type OrgTagsMultipleConfigWhereInput = {
   id_not_starts_with?: InputMaybe<Scalars['ID']>;
   /** All values starting with the given string. */
   id_starts_with?: InputMaybe<Scalars['ID']>;
+  isAmplifyDefault?: InputMaybe<Scalars['Boolean']>;
+  /** All values that are not equal to given value. */
+  isAmplifyDefault_not?: InputMaybe<Scalars['Boolean']>;
   name?: InputMaybe<Scalars['String']>;
   /** All values containing the given string. */
   name_contains?: InputMaybe<Scalars['String']>;
@@ -29558,6 +30221,7 @@ export type PageInfo = {
 export type PaidSeachAggregatedDateUnit = Node & {
   __typename?: 'PaidSeachAggregatedDateUnit';
   clicks?: Maybe<Scalars['Int']>;
+  conversionRate?: Maybe<Scalars['Float']>;
   conversions?: Maybe<Scalars['Int']>;
   cost?: Maybe<Scalars['Float']>;
   cpc?: Maybe<Scalars['Float']>;
@@ -29581,6 +30245,7 @@ export type PaidSeachAggregatedDateUnitCreateManyWithoutPaidSearchAggregatedUnit
 
 export type PaidSeachAggregatedDateUnitCreateWithoutPaidSearchAggregatedUnitInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -29598,6 +30263,8 @@ export type PaidSeachAggregatedDateUnitCreateWithoutPaidSearchAggregatedUnitInpu
 export enum PaidSeachAggregatedDateUnitOrderByInput {
   ClicksAsc = 'clicks_ASC',
   ClicksDesc = 'clicks_DESC',
+  ConversionRateAsc = 'conversionRate_ASC',
+  ConversionRateDesc = 'conversionRate_DESC',
   ConversionsAsc = 'conversions_ASC',
   ConversionsDesc = 'conversions_DESC',
   CostAsc = 'cost_ASC',
@@ -29646,6 +30313,7 @@ export type PaidSeachAggregatedDateUnitUpdateWithWhereUniqueWithoutPaidSearchAgg
 
 export type PaidSeachAggregatedDateUnitUpdateWithoutPaidSearchAggregatedUnitDataInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -29688,6 +30356,21 @@ export type PaidSeachAggregatedDateUnitWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  conversionRate_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  conversionRate_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  conversionRate_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  conversionRate_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  conversionRate_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  conversionRate_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  conversionRate_not_in?: InputMaybe<Array<Scalars['Float']>>;
   conversions?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   conversions_gt?: InputMaybe<Scalars['Int']>;
@@ -29918,6 +30601,7 @@ export type PaidSeachAggregatedDateUnitWhereUniqueInput = {
 export type PaidSeachBingDateUnit = Node & {
   __typename?: 'PaidSeachBingDateUnit';
   clicks?: Maybe<Scalars['Int']>;
+  conversionRate?: Maybe<Scalars['Float']>;
   conversions?: Maybe<Scalars['Int']>;
   cost?: Maybe<Scalars['Float']>;
   cpc?: Maybe<Scalars['Float']>;
@@ -29941,6 +30625,7 @@ export type PaidSeachBingDateUnitCreateManyWithoutPaidSearchBingUnitInput = {
 
 export type PaidSeachBingDateUnitCreateWithoutPaidSearchBingUnitInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -29958,6 +30643,8 @@ export type PaidSeachBingDateUnitCreateWithoutPaidSearchBingUnitInput = {
 export enum PaidSeachBingDateUnitOrderByInput {
   ClicksAsc = 'clicks_ASC',
   ClicksDesc = 'clicks_DESC',
+  ConversionRateAsc = 'conversionRate_ASC',
+  ConversionRateDesc = 'conversionRate_DESC',
   ConversionsAsc = 'conversions_ASC',
   ConversionsDesc = 'conversions_DESC',
   CostAsc = 'cost_ASC',
@@ -30006,6 +30693,7 @@ export type PaidSeachBingDateUnitUpdateWithWhereUniqueWithoutPaidSearchBingUnitI
 
 export type PaidSeachBingDateUnitUpdateWithoutPaidSearchBingUnitDataInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -30048,6 +30736,21 @@ export type PaidSeachBingDateUnitWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  conversionRate_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  conversionRate_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  conversionRate_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  conversionRate_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  conversionRate_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  conversionRate_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  conversionRate_not_in?: InputMaybe<Array<Scalars['Float']>>;
   conversions?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   conversions_gt?: InputMaybe<Scalars['Int']>;
@@ -30279,6 +30982,7 @@ export type PaidSearchAggregatedUnit = Node & {
   __typename?: 'PaidSearchAggregatedUnit';
   byDate?: Maybe<Array<PaidSeachAggregatedDateUnit>>;
   clicks?: Maybe<Scalars['Int']>;
+  conversionRate?: Maybe<Scalars['Float']>;
   conversions?: Maybe<Scalars['Float']>;
   cost?: Maybe<Scalars['Float']>;
   cpc?: Maybe<Scalars['Float']>;
@@ -30312,6 +31016,7 @@ export type PaidSearchAggregatedUnitCreateOneWithoutPaidSearchSummaryInput = {
 export type PaidSearchAggregatedUnitCreateWithoutPaidSearchSummaryInput = {
   byDate?: InputMaybe<PaidSeachAggregatedDateUnitCreateManyWithoutPaidSearchAggregatedUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -30336,6 +31041,7 @@ export type PaidSearchAggregatedUnitUpdateOneWithoutPaidSearchSummaryInput = {
 export type PaidSearchAggregatedUnitUpdateWithoutPaidSearchSummaryDataInput = {
   byDate?: InputMaybe<PaidSeachAggregatedDateUnitUpdateManyWithoutPaidSearchAggregatedUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -30378,6 +31084,21 @@ export type PaidSearchAggregatedUnitWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  conversionRate_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  conversionRate_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  conversionRate_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  conversionRate_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  conversionRate_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  conversionRate_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  conversionRate_not_in?: InputMaybe<Array<Scalars['Float']>>;
   conversions?: InputMaybe<Scalars['Float']>;
   /** All values greater than the given value. */
   conversions_gt?: InputMaybe<Scalars['Float']>;
@@ -30894,6 +31615,7 @@ export type PaidSearchBingUnit = Node & {
   __typename?: 'PaidSearchBingUnit';
   byDate?: Maybe<Array<PaidSeachBingDateUnit>>;
   clicks?: Maybe<Scalars['Int']>;
+  conversionRate?: Maybe<Scalars['Float']>;
   conversions?: Maybe<Scalars['Float']>;
   cost?: Maybe<Scalars['Float']>;
   cpc?: Maybe<Scalars['Float']>;
@@ -30933,6 +31655,7 @@ export type PaidSearchBingUnitCreateOneWithoutPaidSearchSummaryInput = {
 export type PaidSearchBingUnitCreateWithoutPaidSearchBingCampaignInput = {
   byDate?: InputMaybe<PaidSeachBingDateUnitCreateManyWithoutPaidSearchBingUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -30949,6 +31672,7 @@ export type PaidSearchBingUnitCreateWithoutPaidSearchBingCampaignInput = {
 export type PaidSearchBingUnitCreateWithoutPaidSearchSummaryInput = {
   byDate?: InputMaybe<PaidSeachBingDateUnitCreateManyWithoutPaidSearchBingUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -30965,6 +31689,8 @@ export type PaidSearchBingUnitCreateWithoutPaidSearchSummaryInput = {
 export enum PaidSearchBingUnitOrderByInput {
   ClicksAsc = 'clicks_ASC',
   ClicksDesc = 'clicks_DESC',
+  ConversionRateAsc = 'conversionRate_ASC',
+  ConversionRateDesc = 'conversionRate_DESC',
   ConversionsAsc = 'conversions_ASC',
   ConversionsDesc = 'conversions_DESC',
   CostAsc = 'cost_ASC',
@@ -31014,6 +31740,7 @@ export type PaidSearchBingUnitUpdateOneWithoutPaidSearchSummaryInput = {
 export type PaidSearchBingUnitUpdateWithoutPaidSearchBingCampaignDataInput = {
   byDate?: InputMaybe<PaidSeachBingDateUnitUpdateManyWithoutPaidSearchBingUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -31030,6 +31757,7 @@ export type PaidSearchBingUnitUpdateWithoutPaidSearchBingCampaignDataInput = {
 export type PaidSearchBingUnitUpdateWithoutPaidSearchSummaryDataInput = {
   byDate?: InputMaybe<PaidSeachBingDateUnitUpdateManyWithoutPaidSearchBingUnitInput>;
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Float']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -31078,6 +31806,21 @@ export type PaidSearchBingUnitWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  conversionRate_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  conversionRate_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  conversionRate_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  conversionRate_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  conversionRate_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  conversionRate_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  conversionRate_not_in?: InputMaybe<Array<Scalars['Float']>>;
   conversions?: InputMaybe<Scalars['Float']>;
   /** All values greater than the given value. */
   conversions_gt?: InputMaybe<Scalars['Float']>;
@@ -31371,6 +32114,25 @@ export enum PaidSearchCampaignOrderByInput {
   UpdatedAtAsc = 'updatedAt_ASC',
   UpdatedAtDesc = 'updatedAt_DESC'
 }
+
+export type PaidSearchCampaignPacingReport = {
+  __typename?: 'PaidSearchCampaignPacingReport';
+  clicks?: Maybe<Scalars['Int']>;
+  cpc?: Maybe<Scalars['Float']>;
+  ctr?: Maybe<Scalars['Float']>;
+  dailyRemainSpend?: Maybe<Scalars['Float']>;
+  date?: Maybe<Scalars['DateTime']>;
+  dayInMonth?: Maybe<Scalars['Int']>;
+  dayOfMonth?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['String']>;
+  impressions?: Maybe<Scalars['Int']>;
+  monthlyBudget?: Maybe<Scalars['Float']>;
+  name?: Maybe<Scalars['String']>;
+  orgId?: Maybe<Scalars['String']>;
+  pace?: Maybe<Scalars['Float']>;
+  spend?: Maybe<Scalars['Float']>;
+  targetPacing?: Maybe<Scalars['Float']>;
+};
 
 export type PaidSearchCampaignUpdateManyWithoutPaidSearchSummaryInput = {
   connect?: InputMaybe<Array<PaidSearchCampaignWhereUniqueInput>>;
@@ -32755,6 +33517,7 @@ export type PaidSearchDataConfigWhereInput = {
 export type PaidSearchDateUnit = Node & {
   __typename?: 'PaidSearchDateUnit';
   clicks?: Maybe<Scalars['Int']>;
+  conversionRate?: Maybe<Scalars['Float']>;
   conversions?: Maybe<Scalars['Int']>;
   cost?: Maybe<Scalars['Float']>;
   cpc?: Maybe<Scalars['Float']>;
@@ -32781,6 +33544,7 @@ export type PaidSearchDateUnitCreateManyWithoutPaidSearchUnitInput = {
 
 export type PaidSearchDateUnitCreateWithoutPaidSearchUnitInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -32801,6 +33565,8 @@ export type PaidSearchDateUnitCreateWithoutPaidSearchUnitInput = {
 export enum PaidSearchDateUnitOrderByInput {
   ClicksAsc = 'clicks_ASC',
   ClicksDesc = 'clicks_DESC',
+  ConversionRateAsc = 'conversionRate_ASC',
+  ConversionRateDesc = 'conversionRate_DESC',
   ConversionsAsc = 'conversions_ASC',
   ConversionsDesc = 'conversions_DESC',
   CostAsc = 'cost_ASC',
@@ -32855,6 +33621,7 @@ export type PaidSearchDateUnitUpdateWithWhereUniqueWithoutPaidSearchUnitInput = 
 
 export type PaidSearchDateUnitUpdateWithoutPaidSearchUnitDataInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
   conversions?: InputMaybe<Scalars['Int']>;
   cost?: InputMaybe<Scalars['Float']>;
   cpc?: InputMaybe<Scalars['Float']>;
@@ -32900,6 +33667,21 @@ export type PaidSearchDateUnitWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  conversionRate?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  conversionRate_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  conversionRate_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  conversionRate_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  conversionRate_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  conversionRate_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  conversionRate_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  conversionRate_not_in?: InputMaybe<Array<Scalars['Float']>>;
   conversions?: InputMaybe<Scalars['Int']>;
   /** All values greater than the given value. */
   conversions_gt?: InputMaybe<Scalars['Int']>;
@@ -34097,7 +34879,9 @@ export type PaidSearchLocationUnitWhereUniqueInput = {
 export type PaidSearchPacingData = Node & {
   __typename?: 'PaidSearchPacingData';
   clicks?: Maybe<Scalars['Int']>;
+  cpc?: Maybe<Scalars['Float']>;
   createdAt: Scalars['DateTime'];
+  ctr?: Maybe<Scalars['Float']>;
   dailyRemainSpend?: Maybe<Scalars['Float']>;
   date?: Maybe<Scalars['DateTime']>;
   dayInMonth?: Maybe<Scalars['Int']>;
@@ -34107,6 +34891,7 @@ export type PaidSearchPacingData = Node & {
   pace?: Maybe<Scalars['Float']>;
   spend?: Maybe<Scalars['Float']>;
   summary: PaidSearchSummary;
+  targetPacing?: Maybe<Scalars['Float']>;
   updatedAt: Scalars['DateTime'];
 };
 
@@ -34117,6 +34902,8 @@ export type PaidSearchPacingDataCreateOneWithoutSummaryInput = {
 
 export type PaidSearchPacingDataCreateWithoutSummaryInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  cpc?: InputMaybe<Scalars['Float']>;
+  ctr?: InputMaybe<Scalars['Float']>;
   dailyRemainSpend?: InputMaybe<Scalars['Float']>;
   date?: InputMaybe<Scalars['DateTime']>;
   dayInMonth?: InputMaybe<Scalars['Int']>;
@@ -34124,6 +34911,7 @@ export type PaidSearchPacingDataCreateWithoutSummaryInput = {
   impressions?: InputMaybe<Scalars['Int']>;
   pace?: InputMaybe<Scalars['Float']>;
   spend?: InputMaybe<Scalars['Float']>;
+  targetPacing?: InputMaybe<Scalars['Float']>;
 };
 
 export type PaidSearchPacingDataUpdateOneWithoutSummaryInput = {
@@ -34137,6 +34925,8 @@ export type PaidSearchPacingDataUpdateOneWithoutSummaryInput = {
 
 export type PaidSearchPacingDataUpdateWithoutSummaryDataInput = {
   clicks?: InputMaybe<Scalars['Int']>;
+  cpc?: InputMaybe<Scalars['Float']>;
+  ctr?: InputMaybe<Scalars['Float']>;
   dailyRemainSpend?: InputMaybe<Scalars['Float']>;
   date?: InputMaybe<Scalars['DateTime']>;
   dayInMonth?: InputMaybe<Scalars['Int']>;
@@ -34144,6 +34934,7 @@ export type PaidSearchPacingDataUpdateWithoutSummaryDataInput = {
   impressions?: InputMaybe<Scalars['Int']>;
   pace?: InputMaybe<Scalars['Float']>;
   spend?: InputMaybe<Scalars['Float']>;
+  targetPacing?: InputMaybe<Scalars['Float']>;
 };
 
 export type PaidSearchPacingDataUpsertWithoutSummaryInput = {
@@ -34173,6 +34964,21 @@ export type PaidSearchPacingDataWhereInput = {
   clicks_not?: InputMaybe<Scalars['Int']>;
   /** All values that are not contained in given list. */
   clicks_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  cpc?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  cpc_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  cpc_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  cpc_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  cpc_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  cpc_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  cpc_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  cpc_not_in?: InputMaybe<Array<Scalars['Float']>>;
   createdAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   createdAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -34188,6 +34994,21 @@ export type PaidSearchPacingDataWhereInput = {
   createdAt_not?: InputMaybe<Scalars['DateTime']>;
   /** All values that are not contained in given list. */
   createdAt_not_in?: InputMaybe<Array<Scalars['DateTime']>>;
+  ctr?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  ctr_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  ctr_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  ctr_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  ctr_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  ctr_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  ctr_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  ctr_not_in?: InputMaybe<Array<Scalars['Float']>>;
   dailyRemainSpend?: InputMaybe<Scalars['Float']>;
   /** All values greater than the given value. */
   dailyRemainSpend_gt?: InputMaybe<Scalars['Float']>;
@@ -34321,6 +35142,21 @@ export type PaidSearchPacingDataWhereInput = {
   /** All values that are not contained in given list. */
   spend_not_in?: InputMaybe<Array<Scalars['Float']>>;
   summary?: InputMaybe<PaidSearchSummaryWhereInput>;
+  targetPacing?: InputMaybe<Scalars['Float']>;
+  /** All values greater than the given value. */
+  targetPacing_gt?: InputMaybe<Scalars['Float']>;
+  /** All values greater than or equal the given value. */
+  targetPacing_gte?: InputMaybe<Scalars['Float']>;
+  /** All values that are contained in given list. */
+  targetPacing_in?: InputMaybe<Array<Scalars['Float']>>;
+  /** All values less than the given value. */
+  targetPacing_lt?: InputMaybe<Scalars['Float']>;
+  /** All values less than or equal the given value. */
+  targetPacing_lte?: InputMaybe<Scalars['Float']>;
+  /** All values that are not equal to given value. */
+  targetPacing_not?: InputMaybe<Scalars['Float']>;
+  /** All values that are not contained in given list. */
+  targetPacing_not_in?: InputMaybe<Array<Scalars['Float']>>;
   updatedAt?: InputMaybe<Scalars['DateTime']>;
   /** All values greater than the given value. */
   updatedAt_gt?: InputMaybe<Scalars['DateTime']>;
@@ -34340,6 +35176,14 @@ export type PaidSearchPacingDataWhereInput = {
 
 export type PaidSearchPacingDataWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']>;
+};
+
+export type PaidSearchPacingReport = {
+  __typename?: 'PaidSearchPacingReport';
+  budget?: Maybe<Scalars['Float']>;
+  campaigns?: Maybe<Array<Maybe<PaidSearchCampaignPacingReport>>>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type PaidSearchReports = {
@@ -37812,6 +38656,7 @@ export type Query = {
   getPaidSearchOrganic?: Maybe<Scalars['JSON']>;
   getPaidSearchPacing: Array<Maybe<PaidSearchSummary>>;
   getPaidSearchPacingBing: Array<Maybe<PaidSearchSummary>>;
+  getPaidSearchPacingCampaigns: Array<Maybe<PaidSearchPacingReport>>;
   getPaidSearchPacingGoogle: Array<Maybe<PaidSearchSummary>>;
   getPaidSearchReports?: Maybe<PaidSearchReports>;
   getPaidSearchSummary?: Maybe<Org>;
@@ -38314,6 +39159,14 @@ export type QueryGetPaidSearchPacingArgs = {
 
 
 export type QueryGetPaidSearchPacingBingArgs = {
+  advertiserIds: Array<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  orgId: Scalars['String'];
+  status?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryGetPaidSearchPacingCampaignsArgs = {
   advertiserIds: Array<Scalars['String']>;
   date?: InputMaybe<Scalars['String']>;
   orgId: Scalars['String'];
@@ -47770,6 +48623,14 @@ export type CreateDashboardUserMutationVariables = Exact<{
 
 export type CreateDashboardUserMutation = { __typename?: 'Mutation', createDashboardUser: { __typename?: 'User', id: string, username: string, email?: string | null } };
 
+export type UpdateOrgMutationVariables = Exact<{
+  name: Scalars['String'];
+  salesforceId: Scalars['String'];
+}>;
+
+
+export type UpdateOrgMutation = { __typename?: 'Mutation', updateOrg?: { __typename?: 'Org', id: string, name: string, salesforceId?: string | null } | null };
+
 export type GetOrgBySalesforceIdQueryVariables = Exact<{
   salesforceId: Scalars['String'];
 }>;
@@ -47788,5 +48649,6 @@ export type GetUserBySalesforceIdOrEmailQuery = { __typename?: 'Query', users: A
 
 export const CreateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"description"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"website"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"domain"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"level"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PartnerLevel"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"MediaCreateOneWithoutOrgInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgWhereUniqueInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"OrgConfigCreateWithoutOrgsInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"seo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Boolean"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"description"},"value":{"kind":"Variable","name":{"kind":"Name","value":"description"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"website"},"value":{"kind":"Variable","name":{"kind":"Name","value":"website"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"domain"},"value":{"kind":"Variable","name":{"kind":"Name","value":"domain"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"logo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"logoId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"level"},"value":{"kind":"Variable","name":{"kind":"Name","value":"level"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"chatWootId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"chatWootId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"cpm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"cpm"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"parentOrg"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"connect"},"value":{"kind":"Variable","name":{"kind":"Name","value":"parentOrgs"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"dataConfig"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"reTargeting"},"value":{"kind":"Variable","name":{"kind":"Name","value":"reTargeting"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"appIds"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"appIds"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"tradeDeskIdentifier"},"value":{"kind":"Variable","name":{"kind":"Name","value":"tradeDeskIdentifier"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"storageBucket"},"value":{"kind":"Variable","name":{"kind":"Name","value":"storageBucket"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleCustomerId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"googleCustomerId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"seo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"seo"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"googleAnalytics"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"viewId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"viewId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"isGA4"},"value":{"kind":"Variable","name":{"kind":"Name","value":"isGA4"}}}]}}]}}]}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"roles"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"create"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleitems"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"isMaster"},"value":{"kind":"BooleanValue","value":true}}]}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}}]}}]}}]} as unknown as DocumentNode<CreateOrgMutation, CreateOrgMutationVariables>;
 export const CreateDashboardUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createDashboardUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"username"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}},"type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RoleItemCreateWithoutRoleInput"}}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"config"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserConfigCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createDashboardUser"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"username"},"value":{"kind":"Variable","name":{"kind":"Name","value":"username"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"phone"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"orgId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"orgId"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"roleItems"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleItems"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"avatar"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatar"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"ObjectField","name":{"kind":"Name","value":"config"},"value":{"kind":"Variable","name":{"kind":"Name","value":"config"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<CreateDashboardUserMutation, CreateDashboardUserMutationVariables>;
+export const UpdateOrgDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"updateOrg"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateOrg"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"data"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}}]}}]}}]} as unknown as DocumentNode<UpdateOrgMutation, UpdateOrgMutationVariables>;
 export const GetOrgBySalesforceIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrgBySalesforceId"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"orgs"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"salesforceId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrgBySalesforceIdQuery, GetOrgBySalesforceIdQueryVariables>;
 export const GetUserBySalesforceIdOrEmailDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getUserBySalesforceIdOrEmail"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"users"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"OR"},"value":{"kind":"ListValue","values":[{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"salesforceId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"salesforceId"}}}]},{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}}]}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]} as unknown as DocumentNode<GetUserBySalesforceIdOrEmailQuery, GetUserBySalesforceIdOrEmailQueryVariables>;
