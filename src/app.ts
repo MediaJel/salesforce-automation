@@ -2,8 +2,8 @@ import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
-import { format, isProduction } from "@/utils/utils";
-import { DEFAULT_EMAIL, DEFAULT_ORG } from "@/constants";
+import { format, formatPhoneNumber, isProduction } from "@/utils/utils";
+import { DEFAULT_EMAIL, DEFAULT_ORG, DEFAULT_PHONE } from "@/constants";
 import {
   Opportunity,
   SalesforceService,
@@ -53,10 +53,13 @@ const createApp = (config: Config) => {
             const user = await graphql.findOrCreateUser({
               salesforceId: contact.Id,
               email: isProduction ? contact.Email : DEFAULT_EMAIL,
-              name: `salesforce: ${format(contact.Name)}`,
-              phone: "+11234567894", // Always add a +1
+              name: format(contact.Name),
+
               username: format(contact.Name),
               orgId: org.id,
+              phone: contact?.Phone
+                ? formatPhoneNumber(contact.Phone)
+                : DEFAULT_PHONE, // Always add a +1
             });
             if (!user) return logger.warn("No User Found/Created Created");
 

@@ -1,3 +1,5 @@
+import { DEFAULT_PHONE } from "@/constants";
+
 export const match = <T extends {}>(
   obj: T,
   where: { [key in keyof Partial<T>]: string }
@@ -16,6 +18,20 @@ export const match = <T extends {}>(
  * @returns string
  */
 export const format = (str: string) => str.replace(/\s/g, "").toLowerCase();
+
+export const formatPhoneNumber = (str: string) => {
+  let phone = str.replace(/[-\s]/g, "");
+
+  if (!str.includes("+1")) {
+    phone = `+1${phone}`;
+  }
+
+  if (phone.length !== 12) {
+    return DEFAULT_PHONE;
+  }
+
+  return phone;
+};
 
 export const isProduction = process.env.NODE_ENV === "production";
 
