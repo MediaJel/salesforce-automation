@@ -75,7 +75,7 @@ const createApp = (config: Config) => {
         return await graphql.findOrCreateOrg({
           salesforceId: account.Id,
           name: account.Name,
-          description: `salesforce: ${account.Id}`,
+          description: "",
           parentOrgId: DEFAULT_ORG,
         });
       }
@@ -89,14 +89,14 @@ const createApp = (config: Config) => {
       parentOrg = await graphql.findOrCreateOrg({
         name: parentAccount.Name,
         salesforceId: parentAccount.Id,
-        description: `salesforce: ${parentAccount.Id}`,
+        description: "",
         parentOrgId: parentAccount?.ParentId ?? DEFAULT_ORG,
       });
 
       const childOrg = await graphql.findOrCreateOrg({
         salesforceId: account.Id,
         name: account.Name,
-        description: `salesforce: ${account.Id}`,
+        description: "",
         parentOrgId: parentOrg?.id ?? DEFAULT_ORG,
       });
 
