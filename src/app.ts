@@ -2,7 +2,7 @@ import createSalesforceService from "@/services/salesforce";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
-import { format, formatPhoneNumber, isProduction } from "@/utils/utils";
+import { format, formatPhone, isProduction } from "@/utils/utils";
 import { DEFAULT_EMAIL, DEFAULT_ORG, DEFAULT_PHONE } from "@/constants";
 import {
   Opportunity,
@@ -54,11 +54,10 @@ const createApp = (config: Config) => {
               salesforceId: contact.Id,
               email: isProduction ? contact.Email : DEFAULT_EMAIL,
               name: format(contact.Name),
-
               username: format(contact.Name),
               orgId: org.id,
               phone: contact?.Phone
-                ? formatPhoneNumber(contact.Phone)
+                ? formatPhone(contact.Phone)
                 : DEFAULT_PHONE, // Always add a +1
             });
             if (!user) return logger.warn("No User Found/Created Created");
@@ -72,6 +71,7 @@ const createApp = (config: Config) => {
     async ensureOrg(svc: SalesforceService, account: Account): Promise<Org> {
       // If no parent, return child org org
       if (!account.ParentId) {
+        logger.warn(`No Parent Org for ${account.Name} (${account.Id})`);
         return await graphql.findOrCreateOrg({
           salesforceId: account.Id,
           name: account.Name,
@@ -84,10 +84,7 @@ const createApp = (config: Config) => {
       parentOrg = await graphql.queries.getOrgBySalesforceId({
         salesforceId: account.ParentId,
       });
-      // If parentOrg already exists in db, return it
-      if (parentOrg) return parentOrg;
 
-      // otherwise, create it
       const parentAccount = await svc.query.accountById(account.ParentId);
       parentOrg = await graphql.findOrCreateOrg({
         name: parentAccount.Name,

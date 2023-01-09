@@ -19,7 +19,7 @@ export const match = <T extends {}>(
  */
 export const format = (str: string) => str.replace(/\s/g, "").toLowerCase();
 
-export const formatPhoneNumber = (str: string) => {
+export const formatPhone = (str: string) => {
   let phone = str.replace(/[-\s]/g, "");
 
   if (!str.includes("+1")) {
