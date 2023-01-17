@@ -4,6 +4,7 @@ import {
   GetOrgBySalesforceIdQueryVariables,
   GetUserBySalesforceIdOrEmailQueryVariables,
   UpdateOrgMutationVariables,
+  User,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
 import { ClientOptions } from "@urql/core";
@@ -14,6 +15,16 @@ import createGraphqlService from "@/services/graphql";
 import createApp from "@/app";
 import createLogger from "@/utils/logger";
 
+export interface DataProvider {
+  org: OrgCreationEvent;
+  listenForUsers: (callback: (users: User[]) => void) => void;
+}
+
+export interface OrgCreationEvent {
+  display: (callback: (orgs: Org[]) => void) => void;
+  paidSearch: (callback: (orgs: Org[]) => void) => void;
+  seo: (callback: (orgs: Org[]) => void) => void;
+}
 export enum SalesforceChannel {
   /**
    * SOQL for 'OpportunitiesUpdate' PushTopic
