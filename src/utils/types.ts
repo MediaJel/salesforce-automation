@@ -15,7 +15,7 @@ import createGraphqlService from "@/services/graphql";
 import createApp from "@/app";
 import createLogger from "@/utils/logger";
 
-export interface DataProvider {
+export interface DataProducer {
   org: OrgCreationEventListener;
   listenForUsers: (callback: (users: User[]) => void) => void;
 }
