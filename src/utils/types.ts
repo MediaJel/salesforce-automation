@@ -16,11 +16,11 @@ import createApp from "@/app";
 import createLogger from "@/utils/logger";
 
 export interface DataProvider {
-  org: OrgCreationEvent;
+  org: OrgCreationEventListener;
   listenForUsers: (callback: (users: User[]) => void) => void;
 }
 
-export interface OrgCreationEvent {
+export interface OrgCreationEventListener {
   display: (callback: (orgs: Org[]) => void) => void;
   paidSearch: (callback: (orgs: Org[]) => void) => void;
   seo: (callback: (orgs: Org[]) => void) => void;

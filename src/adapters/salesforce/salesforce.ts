@@ -4,11 +4,10 @@ import { Connection, ConnectionOptions } from "jsforce";
 import createOrgCreationEventListener from "@/adapters/salesforce/orgs";
 
 const createSalesforceDataProvider = (
-  params: ConnectionOptions,
   callback: (client: Connection, svc: SalesforceService) => void
 ): DataProvider => {
   return {
-    org: createOrgCreationEventListener(params, callback),
+    org: createOrgCreationEventListener(callback),
 
     async listenForUsers(callback: (users: User[]) => void) {
       // Listen for Users...

@@ -1,10 +1,13 @@
-import { ConnectionOptions, Connection } from "jsforce";
-import { Org, OrgCreationEvent, SalesforceService } from "@/utils/types";
+import { Connection } from "jsforce";
+import {
+  Org,
+  OrgCreationEventListener,
+  SalesforceService,
+} from "@/utils/types";
 
-const createOrgCreationEventListener = (
-  params: ConnectionOptions,
+const createSalesforceOrgCreationEventListener = (
   callback: (client: Connection, svc: SalesforceService) => void
-): OrgCreationEvent => {
+): OrgCreationEventListener => {
   return {
     display: (callback: (orgs: Org[]) => void) => {},
     paidSearch: (callback: (orgs: Org[]) => void) => {},
@@ -12,4 +15,4 @@ const createOrgCreationEventListener = (
   };
 };
 
-export default createOrgCreationEventListener;
+export default createSalesforceOrgCreationEventListener;
