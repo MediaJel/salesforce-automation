@@ -1,15 +1,9 @@
 import { DataProducer } from "@/utils/types";
 
-const createProcessor = (provider: DataProducer) => {
+const createProcessor = (producer: DataProducer) => {
   return {
     async listen() {
-      // provider.org.display((orgs) => {});
-
-      // provider.org.paidSearch((orgs) => {});
-
-      // provider.org.seo((orgs) => {});
-
-      provider.listenForUsers((users) => {});
+      producer.listen();
     },
   };
 };

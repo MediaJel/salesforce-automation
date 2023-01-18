@@ -17,6 +17,8 @@ import createLogger from "@/utils/logger";
 
 export interface DataProducer {
   // org: OrgCreationEventListener;
+  listen: () => void;
+  listenForDisplayOrgs: (opp: Opportunity) => void;
   listenForUsers: (callback: (users: User[]) => void) => void;
 }
 

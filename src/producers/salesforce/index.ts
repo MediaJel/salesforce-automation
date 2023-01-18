@@ -1,21 +1,22 @@
 import { User } from "@/services/graphql/generated/graphql";
+import { isProduction, isStaging } from "@/utils/utils";
 import {
   Config,
   DataProducer,
   Opportunity,
+  Org,
   SalesforceChannel,
   SalesforceStreamSubscriptionParams,
 } from "@/utils/types";
 import createOrgCreationEventListener from "@/producers/salesforce/orgs";
 import createSalesforceService from "@/services/salesforce";
-import { isProduction, isStaging } from "@/utils/utils";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
   replayId: -2,
 };
 
-const local: SalesforceStreamSubscriptionParams = {
+const test: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdateTest,
   replayId: -1,
 };
@@ -38,15 +39,20 @@ const listeners = (opportunity: Opportunity) => {
 
 const createSalesforceProducer = (cfg: Config): DataProducer => {
   const isDeployed = isProduction || isStaging;
-  const topic = isDeployed ? live : local;
-
-  createSalesforceService(cfg.salesforce, (client, svc) => {
-    svc.stream.listen<Opportunity>(topic);
-    svc.stream.subscribe<Opportunity>(listeners);
-  });
+  const topic = isDeployed ? live : test;
 
   return {
-    // org: createOrgCreationEventListener(opportunity),
+    listen() {
+      createSalesforceService(cfg.salesforce, (client, svc) => {
+        svc.stream.listen<Opportunity>(topic);
+        svc.stream.subscribe<Opportunity>(listeners);
+        svc.stream.subscribe<Opportunity>(this.listenForDisplayOrgs);
+      });
+    },
+    listenForDisplayOrgs(opp: Opportunity) {
+      console.log("METHODDD");
+      // Listen for Display Orgs...
+    },
 
     async listenForUsers(callback: (users: User[]) => void) {
       // Listen for Users...

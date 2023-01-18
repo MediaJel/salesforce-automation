@@ -1,10 +1,4 @@
-import { Connection } from "jsforce";
-import {
-  Opportunity,
-  Org,
-  OrgCreationEventListener,
-  SalesforceService,
-} from "@/utils/types";
+import { Opportunity, Org } from "@/utils/types";
 
 const createSalesforceOrgCreationEventListener = () => {
   return {
