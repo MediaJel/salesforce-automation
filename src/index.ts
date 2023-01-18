@@ -1,7 +1,7 @@
-import { App } from "@/utils/types";
+// import { App } from "@/utils/types";
 
 import createLogger from "@/utils/logger";
-import createApp from "@/app";
+// import createApp from "@/app";
 import createServer from "@/server";
 import config from "@/config";
 import createSalesforceProducer from "@/producers/salesforce";

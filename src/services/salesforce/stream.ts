@@ -1,8 +1,23 @@
 import { StreamingExtension, Connection, StreamingMessage } from "jsforce";
 import { Logger, SalesforceStreamSubscriptionParams } from "@/utils/types";
 
+const observers = [];
+
 const createSalesforceStream = (client: Connection, logger: Logger) => {
   return {
+    async notify<T extends { Id: string }>(data: T) {
+      observers.forEach((observer) => observer(data));
+    },
+    subscribe(func: any) {
+      observers.push(func);
+    },
+    unsubscribe(func: any) {
+      [...observers].forEach((observer, index) => {
+        if (observer === func) {
+          observers.splice(index, 1);
+        }
+      });
+    },
     /**
      * Subscribe to a Salesforce PushTopic, setting the replayId to `-2` will
      * replay all events for last 72 hours. This is important for data durability
@@ -15,13 +30,12 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
      * a  type that has an `Id` property.
      *
      * @param {SalesforceStreamSubscriptionParams} params - Subscription params
-     * @param callback - callback function to be called when a message is received
      *
      */
-    subscribe: async <T extends { Id: string }>(
-      { channel, replayId = -2 }: SalesforceStreamSubscriptionParams,
-      callback: (message: T) => void
-    ): Promise<void> => {
+    async listen<T extends { Id: string }>({
+      channel,
+      replayId = -2,
+    }: SalesforceStreamSubscriptionParams): Promise<void> {
       const ids: string[] = [];
       const replayExt = new StreamingExtension.Replay(channel, replayId);
       const streamClient = client.streaming.createClient([replayExt]);
@@ -32,10 +46,10 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
 
         ids.push(result.Id);
         logger.info(`Received Opportunity from Salesforce: ${result.Id}`);
-        callback(result);
+        this.notify(result);
       });
     },
   };
 };
 
-export default createSalesforceStream;
+export default Object.freeze(createSalesforceStream);
