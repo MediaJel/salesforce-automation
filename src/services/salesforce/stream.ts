@@ -8,12 +8,12 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
     async notify<T extends { Id: string }>(data: T) {
       observers.forEach((observer) => observer(data));
     },
-    subscribe(func: any) {
-      observers.push(func);
+    subscribe<T extends { Id: string }>(callback: (data: T) => void) {
+      observers.push(callback);
     },
-    unsubscribe(func: any) {
+    unsubscribe<T extends { Id: string }>(callback: (data: T) => void) {
       [...observers].forEach((observer, index) => {
-        if (observer === func) {
+        if (observer === callback) {
           observers.splice(index, 1);
         }
       });

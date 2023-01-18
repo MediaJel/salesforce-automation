@@ -132,7 +132,6 @@ export type UpdateOrgParams = UpdateOrgMutationVariables;
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
 export interface Config {
-  app: AppConfig;
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;

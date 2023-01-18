@@ -3,22 +3,6 @@ import { isProduction, isStaging } from "@/utils/utils";
 import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from "@/constants";
 
 const config: Config = {
-  app: {
-    subscription: () => {
-      // Subscription configuration if production or staging
-      if (isProduction || isStaging) {
-        return {
-          channel: SalesforceChannel.OpportunitiesUpdate,
-          replayId: -2,
-        };
-      }
-      // Subscription configuration if development
-      return {
-        channel: SalesforceChannel.OpportunitiesUpdateTest,
-        replayId: -1,
-      };
-    },
-  },
   salesforce: {
     oauth2: {
       clientId: process.env.SALESFORCE_CLIENT_ID,
