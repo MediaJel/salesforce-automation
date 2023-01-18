@@ -6,14 +6,20 @@ import {
   SalesforceService,
 } from "@/utils/types";
 
-const createSalesforceOrgCreationEventListener = (
-  opportunity: Opportunity
-): OrgCreationEventListener => {
-  console.log(opportunity);
+const createSalesforceOrgCreationEventListener = () => {
   return {
-    display: (callback: (orgs: Org[]) => void) => {},
-    paidSearch: (callback: (orgs: Org[]) => void) => {},
-    seo: (callback: (orgs: Org[]) => void) => {},
+    display: (opp: Opportunity, callback: (orgs: Org[]) => void) => {
+      console.log("Display");
+      callback([]);
+    },
+    paidSearch: (opp: Opportunity, callback: (orgs: Org[]) => void) => {
+      console.log("Paid Search");
+      callback([]);
+    },
+    seo: (opp: Opportunity, callback: (orgs: Org[]) => void) => {
+      console.log("SEO");
+      callback([]);
+    },
   };
 };
 

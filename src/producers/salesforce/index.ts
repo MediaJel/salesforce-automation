@@ -20,17 +20,29 @@ const local: SalesforceStreamSubscriptionParams = {
   replayId: -1,
 };
 
+const listeners = (opportunity: Opportunity) => {
+  const orgs = createOrgCreationEventListener();
+
+  orgs.display(opportunity, (orgs) => {
+    console.log(orgs);
+  });
+
+  orgs.paidSearch(opportunity, (orgs) => {
+    console.log(orgs);
+  });
+
+  orgs.seo(opportunity, (orgs) => {
+    console.log(orgs);
+  });
+};
+
 const createSalesforceProducer = (cfg: Config): DataProducer => {
   const isDeployed = isProduction || isStaging;
   const topic = isDeployed ? live : local;
 
-  function logger(data) {
-    console.log("WOAH");
-    console.log(data);
-  }
   createSalesforceService(cfg.salesforce, (client, svc) => {
     svc.stream.listen<Opportunity>(topic);
-    svc.stream.subscribe<Opportunity>(logger);
+    svc.stream.subscribe<Opportunity>(listeners);
   });
 
   return {
