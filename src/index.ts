@@ -9,6 +9,7 @@ const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);
 
 const startApp = async () => {
+  logger.info("Starting Application in" + process.env.NODE_ENV);
   const app: App = createApp(config);
   const server = createServer(config.server);
   app.setupSubscription();
