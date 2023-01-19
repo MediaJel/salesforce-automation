@@ -5,12 +5,9 @@ import {
   Account,
   QueryAttribute,
   Logger,
+  ProductsByOpportunityIdParams,
 } from "@/utils/types";
 import { match } from "@/utils/utils";
-interface ProductsByOpportunityIdParams {
-  id: string;
-  where?: { [key in keyof Partial<Product>]: string };
-}
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {

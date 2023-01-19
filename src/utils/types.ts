@@ -25,11 +25,22 @@ export interface OrgCandidate {
   parentId?: string;
 }
 
+export interface OrgCreationEventListenerParams {
+  config: Config;
+  logger: Logger;
+}
+
 export interface OrgCreationEventListener {
   display: (cb: (orgs: OrgCandidate) => void) => void;
   paidSearch: (cb: (orgs: OrgCandidate) => void) => void;
   seo: (cb: (orgs: OrgCandidate) => void) => void;
 }
+
+export interface ProductsByOpportunityIdParams {
+  id: string;
+  where?: { [key in keyof Partial<Product>]: string };
+}
+
 export enum SalesforceChannel {
   /**
    * SOQL for 'OpportunitiesUpdate' PushTopic

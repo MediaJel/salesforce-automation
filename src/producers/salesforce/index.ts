@@ -5,9 +5,9 @@ import createLogger from "@/utils/logger";
 
 const logger = createLogger("Salesforce Producer");
 
-const createSalesforceProducer = (cfg: Config): DataProducer => {
+const createSalesforceProducer = (config: Config): DataProducer => {
   return {
-    orgs: createOrgCreationEventListener(cfg, logger),
+    orgs: createOrgCreationEventListener({ config, logger }),
     async listenForUsers(callback: (users: User[]) => void) {},
   };
 };
