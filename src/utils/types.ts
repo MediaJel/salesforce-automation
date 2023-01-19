@@ -16,11 +16,8 @@ import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
 export interface DataProducer {
-  // org: OrgCreationEventListener;
-  // listen: () => void;
-  // serviceHandler: (client: Connection, svc: SalesforceService) => void;
-  listenForDisplayOrgs: (cb: (orgs: OrgCandidate) => void) => void;
-  listenForUsers: (callback: (users: User[]) => void) => void;
+  orgs: OrgCreationEventListener;
+  listenForUsers?: (cb: (users: User[]) => void) => void;
 }
 
 export interface OrgCandidate {
@@ -29,9 +26,9 @@ export interface OrgCandidate {
 }
 
 export interface OrgCreationEventListener {
-  display: (callback: (orgs: Org[]) => void) => void;
-  paidSearch: (callback: (orgs: Org[]) => void) => void;
-  seo: (callback: (orgs: Org[]) => void) => void;
+  display: (cb: (orgs: OrgCandidate) => void) => void;
+  paidSearch: (cb: (orgs: OrgCandidate) => void) => void;
+  seo: (cb: (orgs: OrgCandidate) => void) => void;
 }
 export enum SalesforceChannel {
   /**

@@ -38,9 +38,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
       const matches = products?.filter((product) => match(product, where));
 
-      logger.debug(
-        `${matches.length} Display products from Opportunity: ${id}`
-      );
+      logger.debug(`${matches.length} Products from Opportunity: ${id}`);
 
       return matches;
     },

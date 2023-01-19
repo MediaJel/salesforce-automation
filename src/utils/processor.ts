@@ -5,7 +5,18 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   const graphql = createGraphqlService(config.graphql);
   return {
     async listen() {
-      producer.listenForDisplayOrgs((org) => {
+      producer.orgs.display(async (org) => {
+        console.log("Display");
+        console.log(org);
+      });
+
+      producer.orgs.paidSearch(async (org) => {
+        console.log("Paid Search");
+        console.log(org);
+      });
+
+      producer.orgs.seo(async (org) => {
+        console.log("SEO");
         console.log(org);
       });
     },
