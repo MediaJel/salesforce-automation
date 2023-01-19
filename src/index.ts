@@ -6,6 +6,7 @@ import createServer from "@/server";
 import config from "@/config";
 import createSalesforceProducer from "@/producers/salesforce";
 import createProcessor from "@/utils/processor";
+import { DataProducer } from "./utils/types";
 
 const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);
@@ -14,7 +15,7 @@ const startApp = async () => {
   // const app: App = createApp(config);
   // app.setupSubscription();
   const server = createServer(config.server);
-  const salesforceProducer = createSalesforceProducer(config);
+  const salesforceProducer: DataProducer = createSalesforceProducer(config);
   const processor = createProcessor(salesforceProducer, config);
 
   processor.listen();

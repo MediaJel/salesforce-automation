@@ -6,7 +6,7 @@ import {
   UpdateOrgMutationVariables,
   User,
 } from "@/services/graphql/generated/graphql";
-import { Connection, ConnectionOptions } from "jsforce";
+import { ConnectionOptions } from "jsforce";
 import { ClientOptions } from "@urql/core";
 
 import createSalesforceQueries from "@/services/salesforce/query";
@@ -17,7 +17,6 @@ import createLogger from "@/utils/logger";
 
 export interface DataProducer {
   orgs: OrgCreationEventListener;
-  listenForUsers?: (cb: (users: User[]) => void) => void;
 }
 
 export interface OrgCandidate {
