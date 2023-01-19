@@ -13,8 +13,9 @@ type OrgListener = OrgCreationEventListenerParams & {
 };
 
 const createListener =
-  ({ config, logger, condition, topic }: OrgListener) =>
-  (cb: (orgs: OrgCandidate) => void) => {
+  (opts: OrgListener) => (cb: (orgs: OrgCandidate) => void) => {
+    const { condition, config, logger, topic } = opts;
+
     SalesforceService(config.salesforce, (_, svc) => {
       svc.stream.listen<Opportunity>(topic, async (opp) => {
         logger.debug(`Received Opportunity: ${opp.Id}`);
