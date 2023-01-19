@@ -52,7 +52,7 @@ const createSalesforceProducer = (cfg: Config): DataProducer => {
           // Compose Org structure recursively
           cb({
             id: account.Id,
-            ParentId: account.ParentId,
+            parentId: account.ParentId,
           });
         });
       });

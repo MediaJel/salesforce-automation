@@ -25,7 +25,7 @@ export interface DataProducer {
 
 export interface OrgCandidate {
   id: string;
-  ParentId: string;
+  parentId?: string;
 }
 
 export interface OrgCreationEventListener {
