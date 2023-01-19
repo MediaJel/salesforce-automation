@@ -6,7 +6,7 @@ import {
   UpdateOrgMutationVariables,
   User,
 } from "@/services/graphql/generated/graphql";
-import { ConnectionOptions } from "jsforce";
+import { Connection, ConnectionOptions } from "jsforce";
 import { ClientOptions } from "@urql/core";
 
 import createSalesforceQueries from "@/services/salesforce/query";
@@ -17,9 +17,15 @@ import createLogger from "@/utils/logger";
 
 export interface DataProducer {
   // org: OrgCreationEventListener;
-  listen: () => void;
-  listenForDisplayOrgs: (opp: Opportunity) => void;
+  // listen: () => void;
+  // serviceHandler: (client: Connection, svc: SalesforceService) => void;
+  listenForDisplayOrgs: (cb: (orgs: OrgCandidate) => void) => void;
   listenForUsers: (callback: (users: User[]) => void) => void;
+}
+
+export interface OrgCandidate {
+  id: string;
+  ParentId: string;
 }
 
 export interface OrgCreationEventListener {

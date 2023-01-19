@@ -5,11 +5,13 @@ import {
   DataProducer,
   Opportunity,
   Org,
+  OrgCandidate,
   SalesforceChannel,
   SalesforceStreamSubscriptionParams,
 } from "@/utils/types";
 import createOrgCreationEventListener from "@/producers/salesforce/orgs";
 import createSalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
@@ -21,37 +23,39 @@ const test: SalesforceStreamSubscriptionParams = {
   replayId: -1,
 };
 
-const listeners = (opportunity: Opportunity) => {
-  const orgs = createOrgCreationEventListener();
-
-  orgs.display(opportunity, (orgs) => {
-    console.log(orgs);
-  });
-
-  orgs.paidSearch(opportunity, (orgs) => {
-    console.log(orgs);
-  });
-
-  orgs.seo(opportunity, (orgs) => {
-    console.log(orgs);
-  });
-};
-
+const logger = createLogger("salesforce-producer");
 const createSalesforceProducer = (cfg: Config): DataProducer => {
   const isDeployed = isProduction || isStaging;
   const topic = isDeployed ? live : test;
 
   return {
-    listen() {
-      createSalesforceService(cfg.salesforce, (client, svc) => {
-        svc.stream.listen<Opportunity>(topic);
-        svc.stream.subscribe<Opportunity>(listeners);
-        svc.stream.subscribe<Opportunity>(this.listenForDisplayOrgs);
+    listenForDisplayOrgs(cb: (orgs: OrgCandidate) => void) {
+      createSalesforceService(cfg.salesforce, (_, svc) => {
+        svc.stream.listen<Opportunity>(topic, async (opp) => {
+          logger.debug(`Received Opportunity: ${opp.Id}`);
+
+          if (!opp?.Deal_Signatory__c) {
+            return logger.warn("No Deal Signatory");
+          }
+          const products = await svc.query.productsByOpportunityId({
+            id: opp.Id,
+            where: {
+              Family: "Display Advertising",
+              Name: "*Standard Display Awareness",
+            },
+          });
+          if (!products) return logger.warn("No Display Products");
+
+          const account = await svc.query.accountById(opp.AccountId);
+          if (!account) return logger.warn("No Account");
+
+          // Compose Org structure recursively
+          cb({
+            id: account.Id,
+            ParentId: account.ParentId,
+          });
+        });
       });
-    },
-    listenForDisplayOrgs(opp: Opportunity) {
-      console.log("METHODDD");
-      // Listen for Display Orgs...
     },
 
     async listenForUsers(callback: (users: User[]) => void) {

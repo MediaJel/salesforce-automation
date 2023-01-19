@@ -32,10 +32,10 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
      * @param {SalesforceStreamSubscriptionParams} params - Subscription params
      *
      */
-    async listen<T extends { Id: string }>({
-      channel,
-      replayId = -2,
-    }: SalesforceStreamSubscriptionParams): Promise<void> {
+    async listen<T extends { Id: string }>(
+      { channel, replayId = -2 }: SalesforceStreamSubscriptionParams,
+      cb: (data: T) => void
+    ): Promise<void> {
       const ids: string[] = [];
       const replayExt = new StreamingExtension.Replay(channel, replayId);
       const streamClient = client.streaming.createClient([replayExt]);
@@ -46,7 +46,8 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
 
         ids.push(result.Id);
         logger.info(`Received Opportunity from Salesforce: ${result.Id}`);
-        this.notify(result);
+        cb(result);
+        // this.notify(result);
       });
     },
   };

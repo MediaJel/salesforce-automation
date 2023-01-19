@@ -3,7 +3,9 @@ import { DataProducer } from "@/utils/types";
 const createProcessor = (producer: DataProducer) => {
   return {
     async listen() {
-      producer.listen();
+      producer.listenForDisplayOrgs((org) => {
+        console.log(org);
+      });
     },
   };
 };
