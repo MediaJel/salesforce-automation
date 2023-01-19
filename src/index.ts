@@ -15,7 +15,7 @@ const startApp = async () => {
   // app.setupSubscription();
   const server = createServer(config.server);
   const salesforceProducer = createSalesforceProducer(config);
-  const processor = createProcessor(salesforceProducer);
+  const processor = createProcessor(salesforceProducer, config);
 
   processor.listen();
   server.start();
