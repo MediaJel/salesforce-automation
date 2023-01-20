@@ -5,7 +5,7 @@ import {
 } from "@/utils/types";
 
 import { isProduction, isStaging } from "@/utils/utils";
-import createListener from "@/producers/salesforce/listener";
+import createSalesforceListener from "@/producers/salesforce/listener";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
@@ -25,21 +25,21 @@ const createSalesforceOrgCreationEventListener = ({
   const topic = isDeployed ? live : test;
   const listenerParams = { config, logger, topic };
   return {
-    display: createListener({
+    display: createSalesforceListener({
       ...listenerParams,
       condition: {
         Family: "Display Advertising",
         Name: "*Standard Display Awareness",
       },
     }),
-    paidSearch: createListener({
+    paidSearch: createSalesforceListener({
       ...listenerParams,
       condition: {
         Family: "Paid Search",
         Name: "*Self-Paid Media Buy",
       },
     }),
-    seo: createListener({
+    seo: createSalesforceListener({
       ...listenerParams,
       condition: {
         Family: "Search Engine Optimization (SEO)",
