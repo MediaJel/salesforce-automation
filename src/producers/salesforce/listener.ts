@@ -94,17 +94,23 @@ const handleAccountHierarchy = async (
   const { svc, logger, opp, account, cb } = opts;
 
   if (!account.ParentId) {
+    logger.info(`No Parent Account for ${account.Name}`);
+    // If no parent, return the account
     hierarchy = { id: account.Id };
-    cb(hierarchy);
+    return cb(hierarchy);
   }
 
   const parentAccount = await svc.query.accountById(account.ParentId);
 
   if (!parentAccount?.ParentId) {
+    logger.debug(`No Grandparent Account for ${account.Name}`);
+    // if no grandparent, return the account and parent
     hierarchy = { id: account.Id, parent: { id: account.ParentId } };
-    cb(hierarchy);
+    return cb(hierarchy);
   }
 
+  logger.info(`Found Grandparent Account for ${account.Name}, recursing...`);
+  // if grandparent exists, recurse
   return await handleAccountHierarchy(opts, hierarchy);
 };
 
