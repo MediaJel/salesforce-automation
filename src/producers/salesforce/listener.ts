@@ -60,11 +60,11 @@ const listenToOpportunities = async (opts: ListenToOpportunitiesParams) => {
     if (!opp?.Deal_Signatory__c) {
       return logger.warn("No Deal Signatory");
     }
-    await handleProducts({ svc, logger, opp, condition, cb });
+    await queryProducts({ svc, logger, opp, condition, cb });
   });
 };
 
-const handleProducts = async (opts: HandleProductsParams) => {
+const queryProducts = async (opts: HandleProductsParams) => {
   const { svc, logger, opp, condition, cb } = opts;
 
   const products = await svc.query.productsByOpportunityId({
@@ -74,10 +74,10 @@ const handleProducts = async (opts: HandleProductsParams) => {
   if (!products.length) {
     return logger.warn(`No ${condition.Family} Products`);
   }
-  await handleAccount({ svc, logger, opp, cb });
+  await queryAccount({ svc, logger, opp, cb });
 };
 
-const handleAccount = async (opts: HandleAccountParams) => {
+const queryAccount = async (opts: HandleAccountParams) => {
   const { svc, logger, opp, cb } = opts;
   const account = await svc.query.accountById(opp.AccountId);
   if (!account) return logger.warn("No Account");
