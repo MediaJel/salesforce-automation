@@ -6,6 +6,7 @@ import {
   OrgCandidate,
   Opportunity,
   Logger,
+  Account,
 } from "@/utils/types";
 
 type OrgListener = OrgCreationEventListenerParams & {
@@ -33,6 +34,14 @@ interface HandleAccountParams {
   svc: SalesforceService;
   logger: Logger;
   opp: Opportunity;
+  cb: (orgs: OrgCandidate) => void;
+}
+
+interface HandleHierarchyParams {
+  svc: SalesforceService;
+  logger: Logger;
+  opp: Opportunity;
+  account: Account;
   cb: (orgs: OrgCandidate) => void;
 }
 
@@ -75,11 +84,28 @@ const handleAccount = async (opts: HandleAccountParams) => {
   const account = await svc.query.accountById(opp.AccountId);
   if (!account) return logger.warn("No Account");
 
-  // Compose Org structure recursively
-  cb({
-    id: account.Id,
-    parentId: account.ParentId,
-  });
+  await handleAccountHierarchy({ svc, logger, opp, account, cb });
+};
+
+const handleAccountHierarchy = async (
+  opts: HandleHierarchyParams,
+  hierarchy: OrgCandidate | null = null
+) => {
+  const { svc, logger, opp, account, cb } = opts;
+
+  if (!account.ParentId) {
+    hierarchy = { id: account.Id };
+    cb(hierarchy);
+  }
+
+  const parentAccount = await svc.query.accountById(account.ParentId);
+
+  if (!parentAccount?.ParentId) {
+    hierarchy = { id: account.Id, parent: { id: account.ParentId } };
+    cb(hierarchy);
+  }
+
+  return await handleAccountHierarchy(opts, hierarchy);
 };
 
 export default createSalesforceListener;

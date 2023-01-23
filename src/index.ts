@@ -5,8 +5,8 @@ import createLogger from "@/utils/logger";
 import createServer from "@/server";
 import config from "@/config";
 import createSalesforceProducer from "@/producers/salesforce";
-import createProcessor from "@/utils/processor";
-import { DataProducer } from "./utils/types";
+import createProcessor from "@/processor";
+import { DataProducer } from "@/utils/types";
 
 const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);

@@ -3,8 +3,8 @@ import {
   SalesforceChannel,
   SalesforceStreamSubscriptionParams,
 } from "@/utils/types";
+import { isDeployed } from "@/utils/utils";
 
-import { isProduction, isStaging } from "@/utils/utils";
 import createSalesforceListener from "@/producers/salesforce/listener";
 
 const live: SalesforceStreamSubscriptionParams = {
@@ -21,7 +21,6 @@ const createSalesforceOrgCreationEventListener = ({
   config,
   logger,
 }: OrgCreationEventListenerParams) => {
-  const isDeployed = isProduction || isStaging;
   const topic = isDeployed ? live : test;
   const listenerParams = { config, logger, topic };
   return {
