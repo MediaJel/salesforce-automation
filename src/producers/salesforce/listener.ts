@@ -57,7 +57,6 @@ const listenToOpportunities = async (opts: ListenToOpportunitiesParams) => {
   const { svc, logger, condition, cb, topic } = opts;
 
   svc.stream.listen<Opportunity>(topic, async (opp) => {
-    logger.debug(`Received Opportunity: ${opp.Id}`);
     if (!opp?.Deal_Signatory__c) {
       return logger.warn("No Deal Signatory");
     }
@@ -93,7 +92,6 @@ const handleAccountHierarchy = async (
   const { svc, logger, account } = opts;
 
   if (!account.ParentId) {
-    logger.info(`No Parent Account for ${account.Name}`);
     return { id: account.Id };
   }
 
