@@ -83,34 +83,26 @@ const handleAccount = async (opts: HandleAccountParams) => {
   const account = await svc.query.accountById(opp.AccountId);
   if (!account) return logger.warn("No Account");
 
-  await handleAccountHierarchy({ svc, logger, account, cb });
+  const hierarchy = await handleAccountHierarchy({ svc, logger, account, cb });
+  cb(hierarchy);
 };
 
 const handleAccountHierarchy = async (
-  opts: HandleHierarchyParams,
-  hierarchy: OrgCandidate | null = null
-) => {
-  const { svc, logger, account, cb } = opts;
+  opts: HandleHierarchyParams
+): Promise<OrgCandidate> => {
+  const { svc, logger, account } = opts;
 
   if (!account.ParentId) {
     logger.info(`No Parent Account for ${account.Name}`);
-    // If no parent, return the account
-    hierarchy = { id: account.Id };
-    return cb(hierarchy);
+    return { id: account.Id };
   }
 
   const parentAccount = await svc.query.accountById(account.ParentId);
 
-  if (!parentAccount?.ParentId) {
-    logger.debug(`No Grandparent Account for ${account.Name}`);
-    // if no grandparent, return the account and parent
-    hierarchy = { id: account.Id, parent: { id: account.ParentId } };
-    return cb(hierarchy);
-  }
-
-  logger.info(`Found Grandparent Account for ${account.Name}, recursing...`);
-  // if grandparent exists, recurse
-  return await handleAccountHierarchy(opts, hierarchy);
+  return {
+    id: account.Id,
+    parent: await handleAccountHierarchy({ ...opts, account: parentAccount }),
+  };
 };
 
 export default createSalesforceListener;
