@@ -40,7 +40,6 @@ interface HandleAccountParams {
 interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
-  opp: Opportunity;
   account: Account;
   cb: (orgs: OrgCandidate) => void;
 }
@@ -84,14 +83,14 @@ const handleAccount = async (opts: HandleAccountParams) => {
   const account = await svc.query.accountById(opp.AccountId);
   if (!account) return logger.warn("No Account");
 
-  await handleAccountHierarchy({ svc, logger, opp, account, cb });
+  await handleAccountHierarchy({ svc, logger, account, cb });
 };
 
 const handleAccountHierarchy = async (
   opts: HandleHierarchyParams,
   hierarchy: OrgCandidate | null = null
 ) => {
-  const { svc, logger, opp, account, cb } = opts;
+  const { svc, logger, account, cb } = opts;
 
   if (!account.ParentId) {
     logger.info(`No Parent Account for ${account.Name}`);
