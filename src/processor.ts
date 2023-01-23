@@ -10,7 +10,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     async listen() {
       producer.orgs.display(async (org) => {
         console.log("Display");
-        this._log(org);
+        this.__recursivelyLog(org);
       });
 
       producer.orgs.paidSearch(async (org) => {
@@ -24,7 +24,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       });
     },
 
-    _log: (candidate: OrgCandidate) => {
+    __recursivelyLog(candidate: OrgCandidate) {
       while (candidate) {
         logger.info(`Org: ${candidate.id}`);
         candidate = candidate.parent;
