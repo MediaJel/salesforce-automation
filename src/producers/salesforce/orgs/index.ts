@@ -5,7 +5,7 @@ import {
 } from "@/utils/types";
 import { isDeployed } from "@/utils/utils";
 
-import createSalesforceListener from "@/producers/salesforce/listener";
+import createSalesforceListener from "@/producers/salesforce/orgs/listener";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,

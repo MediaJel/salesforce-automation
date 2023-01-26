@@ -19,20 +19,29 @@ export interface DataProducer {
   orgs: OrgCreationEventListener;
 }
 
-export interface OrgCandidate {
+export interface OrgCreationEventListener {
+  display: (cb: (orgs: OrgCreationCandidate) => void) => void;
+  paidSearch: (cb: (orgs: OrgCreationCandidate) => void) => void;
+  seo: (cb: (orgs: OrgCreationCandidate) => void) => void;
+}
+
+export interface OrgCreationCandidate {
   id: string;
-  parent?: OrgCandidate;
+  name: string;
+  description: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    phone: string;
+  };
+  parent?: OrgCreationCandidate;
 }
 
 export interface OrgCreationEventListenerParams {
   config: Config;
   logger: Logger;
-}
-
-export interface OrgCreationEventListener {
-  display: (cb: (orgs: OrgCandidate) => void) => void;
-  paidSearch: (cb: (orgs: OrgCandidate) => void) => void;
-  seo: (cb: (orgs: OrgCandidate) => void) => void;
 }
 
 export interface ProductsByOpportunityIdParams {

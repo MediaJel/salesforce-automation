@@ -1,4 +1,4 @@
-import { Config, DataProducer, OrgCandidate } from "@/utils/types";
+import { Config, DataProducer, OrgCreationCandidate } from "@/utils/types";
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
 
@@ -24,7 +24,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       });
     },
 
-    __recursivelyLog(candidate: OrgCandidate) {
+    __recursivelyLog(candidate: OrgCreationCandidate) {
       while (candidate) {
         logger.info(`Org: ${candidate.id}`);
         candidate = candidate.parent;

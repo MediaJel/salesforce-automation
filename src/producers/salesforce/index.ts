@@ -1,13 +1,3 @@
-import { Config, DataProducer } from "@/utils/types";
-import createOrgCreationEventListener from "@/producers/salesforce/orgs";
-import createLogger from "@/utils/logger";
-
-const logger = createLogger("Salesforce Producer");
-
-const createSalesforceProducer = (config: Config): DataProducer => {
-  return {
-    orgs: createOrgCreationEventListener({ config, logger }),
-  };
-};
+import createSalesforceProducer from "@/producers/salesforce/producer";
 
 export default createSalesforceProducer;
