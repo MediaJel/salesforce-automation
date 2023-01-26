@@ -142,7 +142,7 @@ const createSalesforceListener =
         const contact = await queryContact(params);
         if (!contact) return;
 
-        // Only asssign user to initial org
+        // Only assign user to initial org
         accountHierarchy.user = {
           id: contact.Id,
           name: format(contact.Name),
