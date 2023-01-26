@@ -99,20 +99,11 @@ const handleAccountHierarchy = async (
 ): Promise<OrgCreationCandidate> => {
   const { svc, logger, account, opp } = opts;
 
-  const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-
   if (!account.ParentId) {
     return {
       id: account.Id,
       name: account.Name,
       description: "",
-      user: {
-        id: contact.Id,
-        name: format(contact.Name),
-        username: format(contact.Name),
-        email: isProduction ? contact.Email : DEFAULT_EMAIL,
-        phone: contact?.Phone ? formatPhone(contact.Phone) : DEFAULT_PHONE, // Always add a +1
-      },
     };
   }
 
@@ -143,14 +134,24 @@ const createSalesforceListener =
         const account = await queryAccount(params);
         if (!account) return;
 
+        const accountHierarchy = await handleAccountHierarchy({
+          ...params,
+          account,
+        });
+
         const contact = await queryContact(params);
         if (!contact) return;
 
-        const accountHierarchy = handleAccountHierarchy({
-          ...params,
+        // Only asssign user to initial org
+        accountHierarchy.user = {
+          id: contact.Id,
+          name: format(contact.Name),
+          username: format(contact.Name),
+          email: isProduction ? contact.Email : DEFAULT_EMAIL,
+          phone: contact?.Phone ? formatPhone(contact.Phone) : DEFAULT_PHONE, // Always add a +1
+        };
 
-          account,
-        });
+        cb(accountHierarchy);
       });
     });
   };

@@ -39,6 +39,8 @@ export interface OrgCreationCandidate {
   parent?: OrgCreationCandidate;
 }
 
+export type OrgCreationCandidateWithUsers = OrgCreationCandidate & {};
+
 export interface OrgCreationEventListenerParams {
   config: Config;
   logger: Logger;
