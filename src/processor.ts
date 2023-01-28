@@ -16,9 +16,8 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   return {
     async listen() {
       producer.orgs.display(async (candidate) => {
-        const { user, ...data } = candidate;
         log("Received Display Org Candidates", candidate);
-        const orgs = await this.__processOrgCandidates(data);
+        // const orgs = await this.__processOrgCandidates(data);
       });
 
       producer.orgs.paidSearch(async (org) => {
@@ -31,10 +30,8 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     },
 
     async __processOrgCandidates(data: Omit<OrgCreationCandidate, "user">) {
-      const { name, id, description, parent } = data;
-
+      // const { name, id, description, parent } = data;
       // log("Processing Org", data);
-
       // if (!parent?.id) {
       //   return await graphql.findOrCreateOrg({
       //     name,
@@ -43,14 +40,12 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       //     parentOrgId: DEFAULT_ORG,
       //   });
       // }
-
       // const createdOrg = await graphql.findOrCreateOrg({
       //   name,
       //   salesforceId: id,
       //   description,
       //   parentOrgId: parent.id,
       // });
-
       // return await this.__processOrgCandidates();
     },
   };

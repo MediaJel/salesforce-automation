@@ -20,9 +20,9 @@ export interface DataProducer {
 }
 
 export interface OrgCreationEventListener {
-  display: (cb: (orgs: OrgCreationCandidate) => void) => void;
-  paidSearch: (cb: (orgs: OrgCreationCandidate) => void) => void;
-  seo: (cb: (orgs: OrgCreationCandidate) => void) => void;
+  display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+  paidSearch: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+  seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
 }
 
 export interface OrgCreationCandidate {
@@ -36,7 +36,7 @@ export interface OrgCreationCandidate {
     username: string;
     phone: string;
   };
-  parent?: OrgCreationCandidate;
+  parentId?: string;
 }
 
 export type OrgCreationCandidateWithUsers = OrgCreationCandidate & {};

@@ -40,15 +40,13 @@ interface HandleAccountParams {
 interface HandleContactParams {
   svc: SalesforceService;
   logger: Logger;
-  opp: Opportunity;
+  contactId: string;
 }
 
 interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
   account: Account;
-  opp: Opportunity;
-  cb: (orgs: OrgCreationCandidate) => void;
 }
 
 const listenToOpportunities = async (
@@ -86,40 +84,43 @@ const queryAccount = async (opts: HandleAccountParams) => {
   return account;
 };
 
-const queryContact = async (opts: HandleAccountParams) => {
-  const { svc, logger, opp } = opts;
-  const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+const queryContact = async (opts: HandleContactParams) => {
+  const { svc, logger, contactId } = opts;
+  const contact = await svc.query.contactById(contactId);
   if (!contact) return logger.warn("No Contact");
 
   return contact;
 };
 
 // Instead of recursing return an array and add an additional field to hold foreign key of parent
-const handleAccountHierarchy = async (
+const handleOrgCandidateHierarchy = async (
   opts: HandleHierarchyParams
-): Promise<OrgCreationCandidate> => {
+): Promise<OrgCreationCandidate[]> => {
   const { svc, logger, account } = opts;
+  const orgs: OrgCreationCandidate[] = [];
 
-  if (!account?.ParentId) {
-    return {
-      id: account.Id,
-      name: account.Name,
-      description: "",
-    };
+  const parent = await svc.query.accountById(account.ParentId);
+
+  if (parent) {
+    const parentOrg = await handleOrgCandidateHierarchy({
+      ...opts,
+      account: parent,
+    });
+    orgs.push(...parentOrg);
   }
 
-  const parentAccount = await svc.query.accountById(account.ParentId);
-
-  return {
+  orgs.push({
     id: account.Id,
     name: account.Name,
+    parentId: account?.ParentId || null,
     description: "",
-    parent: await handleAccountHierarchy({ ...opts, account: parentAccount }),
-  };
+  });
+
+  return orgs;
 };
 
 const createSalesforceListener =
-  (opts: OrgListener) => (cb: (orgs: OrgCreationCandidate) => void) => {
+  (opts: OrgListener) => (cb: (orgs: OrgCreationCandidate[]) => void) => {
     const { condition, config, logger, topic } = opts;
 
     SalesforceService(config.salesforce, (_, svc) => {
@@ -135,24 +136,29 @@ const createSalesforceListener =
         const account = await queryAccount(params);
         if (!account) return;
 
-        const accountHierarchy = await handleAccountHierarchy({
+        const orgCandidates = await handleOrgCandidateHierarchy({
           ...params,
           account,
         });
+        if (!orgCandidates.length) return;
 
-        const contact = await queryContact(params);
-        if (!contact) return;
+        const contact = await queryContact({
+          contactId: opp.Deal_Signatory__c,
+          logger,
+          svc,
+        });
 
-        // Only assign user to initial org
-        accountHierarchy.user = {
-          id: contact.Id,
-          name: format(contact.Name),
-          username: format(contact.Name),
-          email: isProduction ? contact.Email : DEFAULT_EMAIL,
-          phone: contact?.Phone ? formatPhone(contact.Phone) : DEFAULT_PHONE, // Always add a +1
-        };
+        if (contact) {
+          orgCandidates.at(-1).user = {
+            id: contact.Id,
+            name: contact.Name,
+            email: contact.Email,
+            phone: contact.Phone,
+            username: contact.Name,
+          };
+        }
 
-        cb(accountHierarchy);
+        cb(orgCandidates);
       });
     });
   };

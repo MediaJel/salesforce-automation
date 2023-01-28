@@ -46,7 +46,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
       const soql = `SELECT Id, Name, Email, Phone FROM Contact WHERE Id = '${id}'`;
 
       const [contact] = await query<Contact>(client, soql).catch((err) => {
-        logger.error({ message: "Products by Opportunity ID error", err });
+        logger.error({ message: "Contact by ID error", err });
         return [];
       });
 
@@ -60,9 +60,10 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     },
 
     accountById: async (id: string): Promise<Account> => {
+      if (!id) return;
       const soql = `SELECT Id, Name, ParentId  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
-        logger.error({ message: "Products by Opportunity ID error", err });
+        logger.error({ message: "Account By ID error", err });
         return [];
       });
 
