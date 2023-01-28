@@ -94,12 +94,13 @@ const queryContact = async (opts: HandleAccountParams) => {
   return contact;
 };
 
+// Instead of recursing return an array and add an additional field to hold foreign key of parent
 const handleAccountHierarchy = async (
   opts: HandleHierarchyParams
 ): Promise<OrgCreationCandidate> => {
-  const { svc, logger, account, opp } = opts;
+  const { svc, logger, account } = opts;
 
-  if (!account.ParentId) {
+  if (!account?.ParentId) {
     return {
       id: account.Id,
       name: account.Name,

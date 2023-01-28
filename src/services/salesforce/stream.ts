@@ -30,7 +30,7 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
         if (ids.includes(result.Id)) return;
 
         ids.push(result.Id);
-        logger.info(`Received Opportunity from Salesforce: ${result.Id}`);
+        logger.debug(`Received Opportunity from Salesforce: ${result.Id}`);
         cb(result);
       });
     },
