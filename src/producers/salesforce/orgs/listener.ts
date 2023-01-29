@@ -158,7 +158,7 @@ const createSalesforceListener =
           };
         }
 
-        cb(orgCandidates);
+        cb(orgCandidates.reverse());
       });
     });
   };
