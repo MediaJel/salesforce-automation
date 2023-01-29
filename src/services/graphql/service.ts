@@ -15,6 +15,7 @@ const logger = createLogger("GraphQL Service");
 const createGraphqlService = (config: GraphQLConfig) => {
   const client = createClient({
     url: config.url,
+    requestPolicy: "network-only",
     fetchOptions: () => {
       return {
         headers: {
