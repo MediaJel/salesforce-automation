@@ -35,6 +35,8 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     },
 
     async __sort(arr: OrgCreationCandidate[]) {
+      // Organizes the array so that it is in the correct order for Org creation
+      // (I.E. The parent org is created before the child org)
       const sorted = arr.sort((a, b) => {
         if (a.parentId === b.id) return 1;
         if (a.id === b.parentId) return -1;
