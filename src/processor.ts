@@ -51,8 +51,8 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     orgs: Org[],
     candidates: OrgCreationCandidate[]
   ) => {
-    candidates.map(async (candidate) => {
-      const { id, name, description, user = null, parentId } = candidate;
+    candidates.forEach(async (candidate) => {
+      const { id, name, user = null } = candidate;
       const org = orgs.find((org) => org.salesforceId === id);
       if (!org) return logger.warn(`No Org Found for Candidate ${name}`);
       if (!user) return logger.warn(`No User Found for Candidate ${name}`);
