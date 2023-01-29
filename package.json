@@ -44,9 +44,6 @@
       ".git",
       "node_modules"
     ],
-    "watch": [
-      "app"
-    ],
     "exec": "node --no-warnings -r tsconfig-paths/register -r dotenv/config -r ts-node/register ./src/index.ts",
     "ext": "ts"
   }
