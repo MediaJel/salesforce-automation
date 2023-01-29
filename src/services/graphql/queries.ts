@@ -10,6 +10,8 @@ import queries from "@/services/graphql/resolvers/queries";
 const createGraphQLQueries = (client: Client, logger: Logger) => {
   return {
     async getOrgBySalesforceId(params: GetOrgBySalesforceIdQueryVariables) {
+      if (!params.salesforceId) return;
+
       const operation = await client
         .query(queries.GET_ORG_BY_SALESFORCE_ID, {
           salesforceId: params.salesforceId,
