@@ -47,13 +47,10 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       for (const candidate of candidates) {
         const { id, name, description, parentId } = candidate;
         // Fix this. parentOrg.Id returning null
-        await sleep(3000);
 
         const parentOrg = await graphql.queries.getOrgBySalesforceId({
           salesforceId: parentId,
         });
-
-        await sleep(3000);
 
         const childOrg = await graphql.findOrCreateOrg({
           name,
@@ -61,8 +58,6 @@ const createProcessor = (producer: DataProducer, config: Config) => {
           description,
           parentOrgId: parentOrg?.id || DEFAULT_ORG,
         });
-
-        await sleep(3000);
       }
     },
   };
