@@ -53,16 +53,20 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     async __createOrgs(arr: OrgCreationCandidate[]) {
       const promises = arr.map(async (candidate) => {
         const { id, name, description, parentId } = candidate;
+        let parentOrgId = DEFAULT_ORG;
 
-        const parentOrg = await graphql.queries.getOrgBySalesforceId({
-          salesforceId: parentId,
-        });
+        if (parentId) {
+          const parentOrg = await graphql.queries.getOrgBySalesforceId({
+            salesforceId: parentId,
+          });
+          parentOrgId = parentOrg.id;
+        }
 
         const org = await graphql.findOrCreateOrg({
           name,
           salesforceId: id,
           description,
-          parentOrgId: parentOrg?.id || DEFAULT_ORG,
+          parentOrgId,
         });
 
         return org;
