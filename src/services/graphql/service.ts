@@ -37,13 +37,10 @@ const createGraphqlService = (config: GraphQLConfig) => {
       });
 
       if (foundUser) {
-        logger.info(`User ${foundUser.username} already exists`);
         return foundUser;
       }
 
       const createdUser = await mutations.createUser(params);
-
-      logger.info(`User ${createdUser.username} created`);
 
       return createdUser;
     },
@@ -52,25 +49,21 @@ const createGraphqlService = (config: GraphQLConfig) => {
         salesforceId: params.salesforceId,
       });
 
-      if (foundOrg) {
-        logger.warn(`Org ${foundOrg.name} already exists`);
-        return foundOrg;
-      }
+      if (foundOrg) return foundOrg;
 
       const createdOrg = await mutations.createOrg(params);
 
-      if (createdOrg) {
-        logger.info(`Org ${createdOrg.name} created`);
-        return createdOrg;
-      }
+      if (createdOrg) return createdOrg;
 
       // If we get here, something went wrong, attempt to update Org's salesforce Id
       const updatedOrg = await mutations.updateOrg(params);
 
-      logger.info(
-        `Updated org ${params.name} with Salesforce ID ${params.salesforceId}`
-      );
-      return updatedOrg;
+      if (updatedOrg) return updatedOrg;
+
+      logger.error({
+        message: `Failed to update org ${params.name} with Salesforce ID ${params.salesforceId}`,
+      });
+      return null;
     },
   };
 };

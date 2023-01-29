@@ -32,7 +32,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         return null;
       }
 
-      logger.info(`Org ${operation.data.orgs[0].name} already exists`);
+      logger.debug(`Org ${operation.data.orgs[0].name} already exists`);
 
       return operation.data.orgs[0];
     },
@@ -63,6 +63,8 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         logger.debug(`User ${params.salesforceId} does not exist`);
         return null;
       }
+
+      logger.debug(`User ${operation.data.users[0].username} already exists`);
 
       return operation.data.users[0];
     },
