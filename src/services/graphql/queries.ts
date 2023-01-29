@@ -28,7 +28,7 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
       }
 
       if (operation?.data?.orgs.length === 0) {
-        logger.debug(`Org ${params.salesforceId} does not exist`);
+        logger.warn(`Org ${params.salesforceId} does not exist`);
         return null;
       }
 

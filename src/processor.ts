@@ -1,7 +1,9 @@
 import { Config, DataProducer, OrgCreationCandidate } from "@/utils/types";
+import { DEFAULT_ORG } from "@/constants";
+import { sleep } from "@/utils/utils";
+
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
-import { DEFAULT_ORG } from "@/constants";
 
 const logger = createLogger("Processor");
 
@@ -17,26 +19,17 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     async listen() {
       producer.orgs.display(async (candidates) => {
         log("Received Display Org Candidates", candidates);
-        candidates = await this.__sort(candidates);
-        const orgs = await this.__createOrgs(candidates);
-        log("Created Display Orgs", orgs);
+
+        const sorted = await this.__sort(candidates);
+
+        log("Sorted Display Org Candidates", sorted);
+
+        const orgs = await this.__createOrgs(sorted);
       });
 
-      producer.orgs.paidSearch(async (candidates) => {
-        // log("Received Paid Search Org Candidates", candidates);
-        // candidates = await this.__sort(candidates);
-        // console.log(candidates);
-        // const orgs = await this.__createOrgs(candidates);
-        // log("Created Paid Search Orgs", orgs);
-      });
+      producer.orgs.paidSearch(async (candidates) => {});
 
-      producer.orgs.seo(async (candidates) => {
-        // log("Received SEO Org Candidates", candidates);
-        // candidates = await this.__sort(candidates);
-        // console.log(candidates);
-        // const orgs = await this.__createOrgs(candidates);
-        // log("Created SEO Orgs", orgs);
-      });
+      producer.orgs.seo(async (candidates) => {});
     },
 
     async __sort(arr: OrgCreationCandidate[]) {
@@ -54,12 +47,9 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       for (const candidate of candidates) {
         const { id, name, description, parentId } = candidate;
         // Fix this. parentOrg.Id returning null
-        console.log(parentId);
         const parentOrg = await graphql.queries.getOrgBySalesforceId({
           salesforceId: parentId,
         });
-
-        console.log(parentOrg);
 
         const org = await graphql.findOrCreateOrg({
           name,
@@ -67,6 +57,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
           description,
           parentOrgId: parentOrg?.id || DEFAULT_ORG,
         });
+        sleep(3000);
         log(`Created Org`, org);
       }
     },
