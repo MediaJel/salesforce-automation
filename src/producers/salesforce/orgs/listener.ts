@@ -116,7 +116,7 @@ const handleOrgCandidateHierarchy = async (
     description: "",
   });
 
-  return orgs;
+  return orgs.reverse();
 };
 
 const createSalesforceListener =
@@ -149,7 +149,7 @@ const createSalesforceListener =
         });
 
         if (contact) {
-          orgCandidates.at(-1).user = {
+          orgCandidates[0].user = {
             id: contact.Id,
             name: contact.Name,
             email: contact.Email,
