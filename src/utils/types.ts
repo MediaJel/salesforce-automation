@@ -12,7 +12,7 @@ import { ClientOptions } from "@urql/core";
 import createSalesforceQueries from "@/services/salesforce/query";
 import createSalesforceStream from "@/services/salesforce/stream";
 import createGraphqlService from "@/services/graphql";
-// import createApp from "@/app";
+import createApp from "@/app";
 import createLogger from "@/utils/logger";
 
 export interface DataProducer {
@@ -188,4 +188,4 @@ export type Org = Awaited<
   | ReturnType<GraphQLService["mutations"]["createOrg"]>
 >;
 
-// export type App = ReturnType<typeof createApp>;
+export type App = ReturnType<typeof createApp>;
