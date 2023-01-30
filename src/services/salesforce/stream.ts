@@ -27,9 +27,9 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
 
       streamClient.subscribe(channel, (message: StreamingMessage) => {
         const result = message.sobject as T;
-        // if (ids.includes(result.Id)) return;
+        if (ids.includes(result.Id)) return;
 
-        // ids.push(result.Id);
+        ids.push(result.Id);
         logger.debug(`Received Opportunity from Salesforce: ${result.Id}`);
         cb(result);
       });
