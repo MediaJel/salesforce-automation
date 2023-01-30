@@ -4,6 +4,7 @@ import { isProduction, format, formatPhone } from "@/utils/utils";
 
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
+import appState from "@/state";
 
 const logger = createLogger("Processor");
 
@@ -14,17 +15,6 @@ const log = (msg?: string, data?: any) => {
 
 const createProcessor = (producer: DataProducer, config: Config) => {
   const graphql = createGraphqlService(config.graphql);
-
-  const sort = (arr: OrgCreationCandidate[]) => {
-    // Organizes the array so that it is in the correct order for Org creation
-    // (I.E. The parent org is created before the child org)
-    const sorted = arr.sort((a, b) => {
-      if (a.parentId === b.id) return 1;
-      if (a.id === b.parentId) return -1;
-      return 0;
-    });
-    return sorted;
-  };
 
   const createOrgs = async (candidates: OrgCreationCandidate[]) => {
     const orgs: Org[] = [];
@@ -70,31 +60,25 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   };
 
   return {
-    async listen(appState: boolean) {
-      if (!appState) return;
+    async listen() {
       producer.orgs.display(async (candidates) => {
+        if (appState.state() === false) return;
         log("Received Display Org Candidates", candidates);
 
-        const sorted = sort(candidates);
+        logger.error({ message: "THIS STILL WORKS" });
 
-        const orgs = await createOrgs(sorted);
+        const orgs = await createOrgs(candidates);
 
-        const users = await createUsers(orgs, sorted);
+        const users = await createUsers(orgs, candidates);
       });
 
-      producer.orgs.paidSearch(async (candidates) => {
-        // log("Received Paid Search Org Candidates", candidates);
-        // const sorted = sort(candidates);
-        // const orgs = await createOrgs(sorted);
-        // log("Created Paid Search Orgs", orgs);
-      });
+      // producer.orgs.paidSearch(async (candidates) => {
+      //   if (appState.state === false) return;
+      // });
 
-      producer.orgs.seo(async (candidates) => {
-        // log("Received SEO Org Candidates", candidates);
-        // const sorted = sort(candidates);
-        // const orgs = await createOrgs(sorted);
-        // log("Created SEO Orgs", orgs);
-      });
+      // producer.orgs.seo(async (candidates) => {
+      //   if (appState.state === false) return;
+      // });
     },
   };
 };

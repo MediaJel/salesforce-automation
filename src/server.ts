@@ -19,18 +19,18 @@ const createServer = (config: ExpressServerConfig) => {
   };
 
   app.get("/disable", auth, (req, res) => {
-    logger.warn("Unsubscribing from Data Producers...");
+    logger.warn("Sending signal to disable App State...");
     appState.disable();
     return res
-      .json({ message: "Unsubscribing from Data Producers..." })
+      .json({ message: "Sending signal to disable App State..." })
       .status(200);
   });
 
   app.get("/enable", auth, (req, res) => {
-    logger.warn("Subscribing to Data Producers...");
+    logger.warn("Sending signal to enable App State...");
     appState.enable();
     return res
-      .json({ message: "Subscribing to Data Producers..." })
+      .json({ message: "Sending signal to enable App State..." })
       .status(200);
   });
 
