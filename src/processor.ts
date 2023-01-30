@@ -44,6 +44,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
       orgs.push(childOrg);
     }
+    log("Created Display Orgs", orgs);
     return orgs;
   };
 
@@ -69,14 +70,14 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   };
 
   return {
-    async listen() {
+    async listen(appState: boolean) {
+      if (!appState) return;
       producer.orgs.display(async (candidates) => {
         log("Received Display Org Candidates", candidates);
 
         const sorted = sort(candidates);
 
         const orgs = await createOrgs(sorted);
-        log("Created Display Orgs", orgs);
 
         const users = await createUsers(orgs, sorted);
       });

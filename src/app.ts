@@ -3,11 +3,7 @@ import { DataProducer } from "@/utils/types";
 import createSalesforceProducer from "@/producers/salesforce";
 import createServer from "@/server";
 import createProcessor from "@/processor";
-
-const appListeningState = (cb: (isListening: boolean) => void) => {
-  const isListening = true;
-  cb(isListening);
-};
+import appState from "@/state";
 
 const createApp = (config: Config) => {
   const server = createServer(config.server);
@@ -16,10 +12,12 @@ const createApp = (config: Config) => {
 
   return {
     start() {
-      processor.listen();
       server.start();
+      appState.subscribe((state) => {
+        processor.listen(state);
+      });
+      appState.enable();
     },
-    stop() {},
   };
 };
 
