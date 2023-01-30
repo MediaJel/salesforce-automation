@@ -27,7 +27,7 @@ const createServer = (config: ExpressServerConfig) => {
   });
 
   app.get("/enable", auth, (req, res) => {
-    logger.warn("Sending signal to enable App State...");
+    logger.info("Sending signal to enable App State...");
     appState.enable();
     return res
       .json({ message: "Sending signal to enable App State..." })

@@ -39,7 +39,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
       orgs.push(childOrg);
     }
-    log("Created Display Orgs", orgs);
+    log("Created/Found Orgs", orgs);
     return orgs;
   };
 
@@ -47,13 +47,13 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     orgs: Org[],
     candidates: OrgCreationCandidate[]
   ) => {
-    candidates.forEach(async (candidate) => {
+    const promises = candidates.map(async (candidate) => {
       const { id, name, user = null } = candidate;
       const org = orgs.find((org) => org.salesforceId === id);
       if (!org) return logger.warn(`No Org Found for Candidate ${name}`);
       if (!user) return logger.warn(`No User Found for Candidate ${name}`);
 
-      const orgUser = await graphql.findOrCreateUser({
+      return await graphql.findOrCreateUser({
         salesforceId: user.id,
         email: isProduction ? user.email : DEFAULT_EMAIL,
         name: format(user.name),
@@ -62,6 +62,10 @@ const createProcessor = (producer: DataProducer, config: Config) => {
         phone: user?.phone ? formatPhone(user.phone) : DEFAULT_PHONE, // Always add a +1
       });
     });
+
+    const users = (await Promise.all(promises)).filter((user) => !!user);
+
+    log("Created/Found Users", users);
   };
 
   return {
@@ -73,20 +77,32 @@ const createProcessor = (producer: DataProducer, config: Config) => {
           return logWarn("Disabled app state, not processing...", candidates);
         }
 
-        logger.error({ message: "THIS STILL WORKS" });
+        const orgs = await createOrgs(candidates);
+
+        const users = await createUsers(orgs, candidates);
+      });
+
+      producer.orgs.paidSearch(async (candidates) => {
+        log("Received Paid Search Org Candidates", candidates);
+        if (!appState.state()) {
+          return logWarn("Disabled app state, not processing...", candidates);
+        }
 
         const orgs = await createOrgs(candidates);
 
         const users = await createUsers(orgs, candidates);
       });
 
-      // producer.orgs.paidSearch(async (candidates) => {
-      //   if (appState.state === false) return;
-      // });
+      producer.orgs.seo(async (candidates) => {
+        log("Received SEO Org Candidates", candidates);
+        if (!appState.state()) {
+          return logWarn("Disabled app state, not processing...", candidates);
+        }
 
-      // producer.orgs.seo(async (candidates) => {
-      //   if (appState.state === false) return;
-      // });
+        const orgs = await createOrgs(candidates);
+
+        const users = await createUsers(orgs, candidates);
+      });
     },
   };
 };
