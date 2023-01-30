@@ -31,7 +31,7 @@ const createSalesforceOrgCreationEventListener = ({
         Name: "*Standard Display Awareness",
       },
     }),
-    paidSearch: createSalesforceListener({
+    search: createSalesforceListener({
       ...listenerParams,
       condition: {
         Family: "Paid Search",

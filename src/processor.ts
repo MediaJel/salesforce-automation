@@ -68,41 +68,20 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     log("Created/Found Users", users);
   };
 
+  const process = async (type: string, candidates: OrgCreationCandidate[]) => {
+    log(`Received ${type} Org Candidates`, candidates);
+    if (!appState.state()) {
+      return logWarn("Disabled app state, not processing...", candidates);
+    }
+    const orgs = await createOrgs(candidates);
+    await createUsers(orgs, candidates);
+  };
+
   return {
     async listen() {
-      producer.orgs.display(async (candidates) => {
-        log("Received Display Org Candidates", candidates);
-
-        if (!appState.state()) {
-          return logWarn("Disabled app state, not processing...", candidates);
-        }
-
-        const orgs = await createOrgs(candidates);
-
-        const users = await createUsers(orgs, candidates);
-      });
-
-      producer.orgs.paidSearch(async (candidates) => {
-        log("Received Paid Search Org Candidates", candidates);
-        if (!appState.state()) {
-          return logWarn("Disabled app state, not processing...", candidates);
-        }
-
-        const orgs = await createOrgs(candidates);
-
-        const users = await createUsers(orgs, candidates);
-      });
-
-      producer.orgs.seo(async (candidates) => {
-        log("Received SEO Org Candidates", candidates);
-        if (!appState.state()) {
-          return logWarn("Disabled app state, not processing...", candidates);
-        }
-
-        const orgs = await createOrgs(candidates);
-
-        const users = await createUsers(orgs, candidates);
-      });
+      producer.orgs.display((candidates) => process("Display", candidates));
+      producer.orgs.search((candidates) => process("Paid Search", candidates));
+      producer.orgs.seo((candidates) => process("SEO", candidates));
     },
   };
 };

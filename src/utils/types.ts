@@ -21,7 +21,7 @@ export interface DataProducer {
 
 export interface OrgCreationEventListener {
   display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  paidSearch: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+  search: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
   seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
 }
 
