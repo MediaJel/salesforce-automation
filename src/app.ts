@@ -13,9 +13,7 @@ const createApp = (config: Config) => {
   return {
     start() {
       server.start();
-      appState.subscribe((state) => {
-        processor.listen(state);
-      });
+      appState.subscribe((state) => processor.listen(state));
       appState.enable();
     },
   };
