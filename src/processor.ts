@@ -8,9 +8,14 @@ import appState from "@/state";
 
 const logger = createLogger("Processor");
 
+// Use a logging library
 const log = (msg?: string, data?: any) => {
   const json = { message: msg, data };
   logger.info(JSON.stringify(json, null, 2));
+};
+const logWarn = (msg?: string, data?: any) => {
+  const json = { message: msg, data };
+  logger.warn(JSON.stringify(json, null, 2));
 };
 
 const createProcessor = (producer: DataProducer, config: Config) => {
@@ -62,8 +67,11 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   return {
     async listen() {
       producer.orgs.display(async (candidates) => {
-        if (appState.state() === false) return;
         log("Received Display Org Candidates", candidates);
+
+        if (!appState.state()) {
+          return logWarn("Disabled app state, not processing...", candidates);
+        }
 
         logger.error({ message: "THIS STILL WORKS" });
 
