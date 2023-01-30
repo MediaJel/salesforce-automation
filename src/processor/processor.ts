@@ -80,8 +80,8 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   return {
     async listen() {
       producer.orgs.display((candidates) => process("Display", candidates));
-      producer.orgs.search((candidates) => process("Paid Search", candidates));
-      producer.orgs.seo((candidates) => process("SEO", candidates));
+      // producer.orgs.search((candidates) => process("Paid Search", candidates));
+      // producer.orgs.seo((candidates) => process("SEO", candidates));
     },
   };
 };
