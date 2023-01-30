@@ -19,19 +19,17 @@ const createServer = (config: ExpressServerConfig) => {
   };
 
   app.get("/disable", auth, (req, res) => {
-    logger.warn("Sending signal to disable App State...");
+    const msg = "Sending signal to disable Processor State...";
+    logger.warn(msg);
     processorState.disable();
-    return res
-      .json({ message: "Sending signal to disable App State..." })
-      .status(200);
+    return res.json({ message: msg }).status(200);
   });
 
   app.get("/enable", auth, (req, res) => {
-    logger.info("Sending signal to enable App State...");
+    const msg = "Sending signal to enable App State...";
+    logger.info(msg);
     processorState.enable();
-    return res
-      .json({ message: "Sending signal to enable App State..." })
-      .status(200);
+    return res.json({ message: msg }).status(200);
   });
 
   return {
