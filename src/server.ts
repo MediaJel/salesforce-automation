@@ -1,7 +1,7 @@
 import express from "express";
 import createLogger from "@/utils/logger";
 import { ExpressServerConfig } from "@/utils/types";
-import appState from "@/state";
+import { processorState } from "@/processor";
 
 const app = express();
 const logger = createLogger("Server");
@@ -20,7 +20,7 @@ const createServer = (config: ExpressServerConfig) => {
 
   app.get("/disable", auth, (req, res) => {
     logger.warn("Sending signal to disable App State...");
-    appState.disable();
+    processorState.disable();
     return res
       .json({ message: "Sending signal to disable App State..." })
       .status(200);
@@ -28,7 +28,7 @@ const createServer = (config: ExpressServerConfig) => {
 
   app.get("/enable", auth, (req, res) => {
     logger.info("Sending signal to enable App State...");
-    appState.enable();
+    processorState.enable();
     return res
       .json({ message: "Sending signal to enable App State..." })
       .status(200);

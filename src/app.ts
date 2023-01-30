@@ -1,7 +1,7 @@
 import { Config } from "./utils/types";
 import { DataProducer } from "@/utils/types";
 import createSalesforceProducer from "@/producers/salesforce";
-import createProcessor from "@/processor";
+import createProcessor from "@/processor/processor";
 import createServer from "@/server";
 
 const createApp = (config: Config) => {

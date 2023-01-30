@@ -1,5 +1,5 @@
 import createLogger from "@/utils/logger";
-import appState from "@/state";
+import { processorState } from "@/processor";
 
 const logger = createLogger("Limiter");
 
@@ -10,7 +10,7 @@ const createLimiter = <T = any>(limit: number) => {
     add: (item: T) => {
       if (list.length >= limit) {
         logger.warn("Limiter is full, Disabling App State");
-        appState.disable();
+        processorState.disable();
       }
       const remaining = limit - list.length;
       const remainingObjects = remaining > 0 ? remaining : 0;

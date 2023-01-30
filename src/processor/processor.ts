@@ -4,7 +4,7 @@ import { isProduction, format, formatPhone } from "@/utils/utils";
 
 import createGraphqlService from "@/services/graphql";
 import createLogger from "@/utils/logger";
-import appState from "@/state";
+import processorState from "@/processor/state";
 
 const logger = createLogger("Processor");
 
@@ -70,7 +70,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
   const process = async (type: string, candidates: OrgCreationCandidate[]) => {
     log(`Received ${type} Org Candidates`, candidates);
-    if (!appState.state()) {
+    if (!processorState.state()) {
       return logWarn("Disabled app state, not processing...", candidates);
     }
     const orgs = await createOrgs(candidates);
