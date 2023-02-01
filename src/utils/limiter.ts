@@ -1,5 +1,5 @@
 import createLogger from "@/utils/logger";
-import { isProduction } from "@/utils/utils";
+import { processorState } from "@/processor";
 
 const logger = createLogger("Limiter");
 
@@ -8,15 +8,13 @@ const createLimiter = <T = any>(limit: number) => {
 
   return {
     add: (item: T) => {
-      if (isProduction) {
-        return null;
-      }
       if (list.length >= limit) {
-        logger.warn("Limiter is full, Closing application");
-        process.exit(0);
+        logger.warn("Limiter is full, Disabling App State");
+        processorState.disable();
       }
-
-      logger.warn(`You can create ${limit - list.length} more objects`);
+      const remaining = limit - list.length;
+      const remainingObjects = remaining > 0 ? remaining : 0;
+      logger.warn(`You can create ${remainingObjects} more objects`);
       list.push(item);
     },
   };

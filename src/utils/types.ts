@@ -4,6 +4,7 @@ import {
   GetOrgBySalesforceIdQueryVariables,
   GetUserBySalesforceIdOrEmailQueryVariables,
   UpdateOrgMutationVariables,
+  User,
 } from "@/services/graphql/generated/graphql";
 import { ConnectionOptions } from "jsforce";
 import { ClientOptions } from "@urql/core";
@@ -13,6 +14,42 @@ import createSalesforceStream from "@/services/salesforce/stream";
 import createGraphqlService from "@/services/graphql";
 import createApp from "@/app";
 import createLogger from "@/utils/logger";
+
+export interface DataProducer {
+  orgs: OrgCreationEventListener;
+}
+
+export interface OrgCreationEventListener {
+  display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+  search: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+  seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+}
+
+export interface OrgCreationCandidate {
+  id: string;
+  name: string;
+  description: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    phone: string;
+  };
+  parentId?: string;
+}
+
+export type OrgCreationCandidateWithUsers = OrgCreationCandidate & {};
+
+export interface OrgCreationEventListenerParams {
+  config: Config;
+  logger: Logger;
+}
+
+export interface ProductsByOpportunityIdParams {
+  id: string;
+  where?: { [key in keyof Partial<Product>]: string };
+}
 
 export enum SalesforceChannel {
   /**
@@ -121,7 +158,6 @@ export type UpdateOrgParams = UpdateOrgMutationVariables;
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
 export interface Config {
-  app: AppConfig;
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;

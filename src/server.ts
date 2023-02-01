@@ -1,20 +1,35 @@
 import express from "express";
 import createLogger from "@/utils/logger";
 import { ExpressServerConfig } from "@/utils/types";
+import { processorState } from "@/processor";
 
 const app = express();
 const logger = createLogger("Server");
 
-const killSwitchHandler = (req: express.Request, res: express.Response) => {};
-
 const createServer = (config: ExpressServerConfig) => {
-  app.get("/", (req, res) => {
+  const auth = (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
     if (req.query.key === config.serverKey) {
-      logger.info("Closing Application...");
-      res.json({ message: "Closing Application..." }).status(200);
-      process.exit(0);
+      return next();
     }
-    res.json({ message: "Invalid Key" }).status(401);
+    return res.json({ message: "Invalid Key" }).status(401);
+  };
+
+  app.get("/disable", auth, (req, res) => {
+    const msg = "Sending signal to disable Processor State...";
+    logger.warn(msg);
+    processorState.disable();
+    return res.json({ message: msg }).status(200);
+  });
+
+  app.get("/enable", auth, (req, res) => {
+    const msg = "Sending signal to enable App State...";
+    logger.info(msg);
+    processorState.enable();
+    return res.json({ message: msg }).status(200);
   });
 
   return {

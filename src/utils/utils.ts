@@ -33,6 +33,12 @@ export const formatPhone = (str: string) => {
   return phone;
 };
 
+export const sleep = (ms: number) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export const isProduction = process.env.NODE_ENV === "production";
 
 export const isStaging = process.env.NODE_ENV === "staging";
+
+export const isDeployed = isProduction || isStaging;

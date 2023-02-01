@@ -15,13 +15,12 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
      * a  type that has an `Id` property.
      *
      * @param {SalesforceStreamSubscriptionParams} params - Subscription params
-     * @param callback - callback function to be called when a message is received
      *
      */
-    subscribe: async <T extends { Id: string }>(
+    async listen<T extends { Id: string }>(
       { channel, replayId = -2 }: SalesforceStreamSubscriptionParams,
-      callback: (message: T) => void
-    ): Promise<void> => {
+      cb: (data: T) => void
+    ): Promise<void> {
       const ids: string[] = [];
       const replayExt = new StreamingExtension.Replay(channel, replayId);
       const streamClient = client.streaming.createClient([replayExt]);
@@ -31,11 +30,11 @@ const createSalesforceStream = (client: Connection, logger: Logger) => {
         if (ids.includes(result.Id)) return;
 
         ids.push(result.Id);
-        logger.info(`Received Opportunity from Salesforce: ${result.Id}`);
-        callback(result);
+        logger.debug(`Received Opportunity from Salesforce: ${result.Id}`);
+        cb(result);
       });
     },
   };
 };
 
-export default createSalesforceStream;
+export default Object.freeze(createSalesforceStream);

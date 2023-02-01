@@ -23,7 +23,7 @@ const logger = createLogger("Salesforce Service");
 const SalesforceService = (
   params: ConnectionOptions,
   callback: (client: Connection, svc: SalesforceService) => void
-): void => {
+) => {
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {

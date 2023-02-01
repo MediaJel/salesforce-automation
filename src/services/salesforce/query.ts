@@ -5,12 +5,9 @@ import {
   Account,
   QueryAttribute,
   Logger,
+  ProductsByOpportunityIdParams,
 } from "@/utils/types";
 import { match } from "@/utils/utils";
-interface ProductsByOpportunityIdParams {
-  id: string;
-  where?: { [key in keyof Partial<Product>]: string };
-}
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {
@@ -27,19 +24,19 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
     productsByOpportunityId: async ({
       id,
-      where,
+      where: condition,
     }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
         logger.error({ message: "Products by Opportunity ID error", err });
       });
 
-      if (!where || !products) return [];
+      if (!condition || !products) return [];
 
-      const matches = products?.filter((product) => match(product, where));
+      const matches = products?.filter((product) => match(product, condition));
 
       logger.debug(
-        `${matches.length} Display products from Opportunity: ${id}`
+        `${matches.length} ${condition.Family} Products from Opportunity: ${id}`
       );
 
       return matches;
@@ -49,7 +46,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
       const soql = `SELECT Id, Name, Email, Phone FROM Contact WHERE Id = '${id}'`;
 
       const [contact] = await query<Contact>(client, soql).catch((err) => {
-        logger.error({ message: "Products by Opportunity ID error", err });
+        logger.error({ message: "Contact by ID error", err });
         return [];
       });
 
@@ -63,9 +60,10 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     },
 
     accountById: async (id: string): Promise<Account> => {
+      if (!id) return;
       const soql = `SELECT Id, Name, ParentId  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
-        logger.error({ message: "Products by Opportunity ID error", err });
+        logger.error({ message: "Account By ID error", err });
         return [];
       });
 

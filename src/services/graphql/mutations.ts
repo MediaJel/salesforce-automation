@@ -3,21 +3,22 @@ import {
   CreateOrgParams,
   CreateUserParams,
   Logger,
+  Org,
   UpdateOrgParams,
 } from "@/utils/types";
 import {
   PartnerLevel,
   Feature,
   FeatureActions,
+  User,
 } from "@/services/graphql/generated/graphql";
 
 import mutations from "@/services/graphql/resolvers/mutations";
 import createLimiter from "@/utils/limiter";
 
 const createGraphqlMutations = (client: Client, logger: Logger) => {
-  const userLimiter = createLimiter<string>(10);
   const orgLimiter = createLimiter<string>(10);
-
+  const userLimiter = createLimiter<string>(10);
   return {
     async createUser(params: CreateUserParams) {
       const operation = await client
@@ -59,6 +60,10 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         logger.error(operation.error);
         return null;
       }
+
+      logger.debug(
+        `User ${operation.data.createDashboardUser.username} created`
+      );
 
       userLimiter.add(operation.data.createDashboardUser.id);
 
@@ -114,6 +119,8 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         return null;
       }
 
+      logger.debug(`Org ${operation.data.createOrg.name} created`);
+
       orgLimiter.add(operation.data.createOrg.id);
 
       return operation.data.createOrg;
@@ -132,6 +139,14 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         logger.error(operation.error);
         return null;
       }
+
+      logger.debug(
+        `Org ${operation.data.updateOrg.name} updated with ${JSON.stringify(
+          params,
+          null,
+          2
+        )}`
+      );
 
       return operation.data.updateOrg;
     },

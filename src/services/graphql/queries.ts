@@ -10,6 +10,8 @@ import queries from "@/services/graphql/resolvers/queries";
 const createGraphQLQueries = (client: Client, logger: Logger) => {
   return {
     async getOrgBySalesforceId(params: GetOrgBySalesforceIdQueryVariables) {
+      if (!params.salesforceId) return;
+
       const operation = await client
         .query(queries.GET_ORG_BY_SALESFORCE_ID, {
           salesforceId: params.salesforceId,
@@ -26,11 +28,11 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
       }
 
       if (operation?.data?.orgs.length === 0) {
-        logger.debug(`Org ${params.salesforceId} does not exist`);
+        logger.warn(`Org ${params.salesforceId} does not exist`);
         return null;
       }
 
-      logger.info(`Org ${operation.data.orgs[0].name} already exists`);
+      logger.debug(`Org ${operation.data.orgs[0].name} already exists`);
 
       return operation.data.orgs[0];
     },
@@ -61,6 +63,8 @@ const createGraphQLQueries = (client: Client, logger: Logger) => {
         logger.debug(`User ${params.salesforceId} does not exist`);
         return null;
       }
+
+      logger.debug(`User ${operation.data.users[0].username} already exists`);
 
       return operation.data.users[0];
     },
