@@ -37,6 +37,11 @@ export const sleep = (ms: number) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
+const pipe =
+  <T>(...fns: Array<(arg: T) => T>) =>
+  (value: T) =>
+    fns.reduce((acc, fn) => fn(acc), value);
+
 export const isProduction = process.env.NODE_ENV === "production";
 
 export const isStaging = process.env.NODE_ENV === "staging";
