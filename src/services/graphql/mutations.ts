@@ -3,7 +3,7 @@ import {
   CreateOrgParams,
   CreateUserParams,
   Logger,
-  Org,
+
   UpdateOrgParams,
 } from "@/utils/types";
 import {
@@ -14,11 +14,10 @@ import {
 } from "@/services/graphql/generated/graphql";
 
 import mutations from "@/services/graphql/resolvers/mutations";
-import createLimiter from "@/utils/limiter";
+
 
 const createGraphqlMutations = (client: Client, logger: Logger) => {
-  const orgLimiter = createLimiter<string>(10);
-  const userLimiter = createLimiter<string>(10);
+
   return {
     async createUser(params: CreateUserParams) {
       const operation = await client
@@ -65,7 +64,7 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
         `User ${operation.data.createDashboardUser.username} created`
       );
 
-      userLimiter.add(operation.data.createDashboardUser.id);
+
 
       return operation.data.createDashboardUser;
     },
@@ -120,8 +119,6 @@ const createGraphqlMutations = (client: Client, logger: Logger) => {
       }
 
       logger.debug(`Org ${operation.data.createOrg.name} created`);
-
-      orgLimiter.add(operation.data.createOrg.id);
 
       return operation.data.createOrg;
     },

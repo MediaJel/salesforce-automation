@@ -1,10 +1,10 @@
-import { isStaging } from "@/utils/utils";
+import { isProduction } from "@/utils/utils";
 
 const DOJO_MEDIAJEL_ORG = "cjoq2t7g4yzca07347pug25ck";
 
-// const PROD_MEDIAJEL_ORG = "cjpkhilv4es4q0722xgsd8k12";
+const PROD_MEDIAJEL_ORG = "cjpkhilv4es4q0722xgsd8k12";
 
-export const DEFAULT_ORG = DOJO_MEDIAJEL_ORG; // Mediajel Org, make this dynamic for different environments
+export const DEFAULT_ORG = isProduction ? PROD_MEDIAJEL_ORG : DOJO_MEDIAJEL_ORG; // Mediajel Org, make this dynamic for different environments
 
 export const DEFAULT_EMAIL = "pacholo@mediajel.com";
 
