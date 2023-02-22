@@ -57,11 +57,6 @@ jobs:
             commitSha=${CIRCLE_SHA1} -f chart/stages/staging.yaml \
             --history-max=1
       - run:
-          name: Restart deployment
-          command: |
-            kops export kubecfg --admin
-            kubectl rollout restart deployment salesforce-automation
-      - run:
           name: Helm List on version 3
           command: |
             kops export kubecfg --admin
@@ -105,11 +100,6 @@ jobs:
             helm3 upgrade --install salesforce-automation chart/ --set \
             commitSha=${CIRCLE_SHA1} -f chart/stages/production.yaml \
             --history-max=1
-      - run:
-          name: Restart deployment
-          command: |
-            kops export kubecfg --admin
-            kubectl rollout restart deployment salesforce-automation
       - run:
           name: Helm List on version 3
           command: |
