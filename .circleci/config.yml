@@ -128,7 +128,7 @@ workflows:
           create-repo: true
           region: AWS_ECR_REGION
           repo: salesforce-automation
-          tag: staging
+          tag: $CIRCLE_SHA1
           attach-workspace: false
           workspace-root: .
           dockerfile: ./docker/Dockerfile
@@ -153,7 +153,7 @@ workflows:
           create-repo: false
           region: AWS_ECR_REGION
           repo: salesforce-automation
-          tag: production
+          tag: $CIRCLE_SHA1
           attach-workspace: true
           workspace-root: .
           dockerfile: ./docker/Dockerfile
