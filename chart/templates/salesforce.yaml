@@ -55,7 +55,7 @@ spec:
       - name: |-
           {{ .Release.Name }}
         image: |-
-          {{ .Values.repoUrl }}/salesforce-automation:{{ .Values.tag }}
+          {{ .Values.repoUrl }}/salesforce-automation:{{ .Values.commitSha }}
         imagePullPolicy: Always 
         ports:
           - name: salesforce
@@ -75,13 +75,13 @@ spec:
         env:  
         - name: GRAPHQL_ENDPOINT
           value: |-
-            {{ .Values.GRAPHQL_ENDPOINT }}
+            {{ .Values.gqlEndpoint }}
         - name: LOG_LEVEL
           value: |-
-            {{ .Values.LOG_LEVEL }}
+            {{ .Values.logLevel }}
         - name: NODE_ENV
           value: |-
-            {{ .Values.NODE_ENV }}
+            {{ .Values.nodeEnv }}
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
