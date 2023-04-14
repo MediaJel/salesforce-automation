@@ -23,12 +23,24 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
   const createOrgs = async (candidates: OrgCreationCandidate[]) => {
     const orgs: Org[] = [];
+
     for (const candidate of candidates) {
       const { id, name, description, parentId } = candidate;
 
       const parentOrg = await graphql.queries.getOrgBySalesforceId({
         salesforceId: parentId,
       });
+
+      // The eldest org should use the default org
+      if (orgs.length === 0) {
+        await graphql.findOrCreateOrg({
+          name,
+          salesforceId: id,
+          description,
+          parentOrgId: DEFAULT_ORG,
+        });
+        log(`Associated ${name} with default Mediajel org`);
+      }
 
       const childOrg = await graphql.findOrCreateOrg({
         name,
@@ -39,14 +51,12 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
       orgs.push(childOrg);
     }
+
     log("Created/Found Orgs", orgs);
     return orgs;
   };
 
-  const createUsers = async (
-    orgs: Org[],
-    candidates: OrgCreationCandidate[]
-  ) => {
+  const createUsers = async (orgs: Org[], candidates: OrgCreationCandidate[]) => {
     const promises = candidates.map(async (candidate) => {
       const { id, name, user = null } = candidate;
       const org = orgs.find((org) => org.salesforceId === id);
@@ -73,6 +83,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
     if (!processorState.state()) {
       return logWarn("Disabled app state, not processing...", candidates);
     }
+
     const orgs = await createOrgs(candidates);
     await createUsers(orgs, candidates);
   };

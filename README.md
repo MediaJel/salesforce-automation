@@ -32,7 +32,7 @@ SALESFORCE_CLIENT_SECRET=
 SALESFORCE_ACCESS_TOKEN=
 SALESFORCE_REFRESH_TOKEN=
 SALESFORCE_INSTANCE_URL=
-GRAPHQL_ENDPOINT=
+GRAPHQL_ENDPOINT=graphql.dmp.mediajel.ninja
 GRAPHQL_KEY=
 SERVER_KEY=
 LOG_LEVEL="DEBUG"
@@ -42,8 +42,12 @@ PORT=4000
 
 ## Running the service
 
-To run the service, run the following command
-
+To run the service, run the following command:
 ```
 yarn dev
+```
+
+In Kubernetes:
+```
+kubectl port-forward svc/salesforce-automation 4040
 ```
