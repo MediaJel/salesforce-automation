@@ -30,8 +30,8 @@ jobs:
             wget -O kops https://github.com/kubernetes/kops/releases/download/v${KOPS_VERSION}/kops-linux-amd64
             chmod +x ./kops
             sudo mv ./kops /usr/local/bin/kops
-            echo "export KOPS_CLUSTER_NAME=${KOPS_CLUSTER_NAME}" >> $BASH_ENV
-            echo "export KOPS_STATE_STORE=s3://${KOPS_STATE_STORE}" >> $BASH_ENV
+            echo "export KOPS_CLUSTER_NAME=${KOPS_NEW_CLUSTER_NAME}" >> $BASH_ENV
+            echo "export KOPS_STATE_STORE=s3://${KOPS_NEW_STATE_STORE}" >> $BASH_ENV
             echo "export AWS_ACCESS_KEY_ID=${ACCESS_KEY_ID}" >> $BASH_ENV
             echo "export AWS_SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
@@ -75,8 +75,8 @@ jobs:
             wget -O kops https://github.com/kubernetes/kops/releases/download/v${KOPS_VERSION}/kops-linux-amd64
             chmod +x ./kops
             sudo mv ./kops /usr/local/bin/kops
-            echo "export KOPS_CLUSTER_NAME=${KOPS_CLUSTER_NAME}" >> $BASH_ENV
-            echo "export KOPS_STATE_STORE=s3://${KOPS_STATE_STORE}" >> $BASH_ENV
+            echo "export KOPS_CLUSTER_NAME=${KOPS_NEW_CLUSTER_NAME}" >> $BASH_ENV
+            echo "export KOPS_STATE_STORE=s3://${KOPS_NEW_STATE_STORE}" >> $BASH_ENV
             echo "export AWS_ACCESS_KEY_ID=${ACCESS_KEY_ID}" >> $BASH_ENV
             echo "export AWS_SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
