@@ -1,6 +1,6 @@
-import { Config, LogLevel, SalesforceChannel } from "@/utils/types";
-import { isProduction, isStaging } from "@/utils/utils";
-import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from "@/constants";
+import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from '@/constants';
+import { Config, LogLevel, SalesforceChannel } from '@/utils/types';
+import { isProduction, isStaging } from '@/utils/utils';
 
 const config: Config = {
   salesforce: {
