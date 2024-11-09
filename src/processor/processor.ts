@@ -1,6 +1,6 @@
 import createGraphqlProcessor from '@/processor/graphql.processor';
 import createLogger from '@/utils/logger';
-import { Config, DataProducer, OrgCreationCandidate } from '@/utils/types';
+import { Config, DataProducer, SalesforceClosedWonResource } from '@/utils/types';
 
 const logger = createLogger("Processor");
 
@@ -9,9 +9,9 @@ const logger = createLogger("Processor");
 const createProcessor = (producer: DataProducer, config: Config) => {
   const graphql = createGraphqlProcessor(config);
 
-  const process = async (type: string, candidates: OrgCreationCandidate[]) => {
-    candidates.forEach((candidate) => {
-      logger.info(`Processing Data: ${JSON.stringify(candidate, null, 2)}`);
+  const process = async (type: string, resources: SalesforceClosedWonResource[]) => {
+    resources.forEach((resource) => {
+      logger.info(`Processing Data: ${JSON.stringify(resource, null, 2)}`);
     });
 
     // graphql.process(type, candidates);
@@ -19,7 +19,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
   return {
     async listen() {
-      producer.orgs.all((candidates) => process("All", candidates));
+      producer.resources.all((candidates) => process("All", candidates));
       // producer.orgs.display((candidates) => process("Display", candidates));
       // producer.orgs.search((candidates) => process("Paid Search", candidates));
       // producer.orgs.seo((candidates) => process("SEO", candidates));

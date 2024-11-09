@@ -1,7 +1,7 @@
 import SalesforceService from '@/services/salesforce';
 import {
-    Account, Logger, Opportunity, OrgCreationCandidate, OrgCreationEventListenerParams, Product,
-    SalesforceStreamSubscriptionParams
+    Account, Logger, Opportunity, OrgCreationEventListenerParams, Product,
+    SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
 } from '@/utils/types';
 
 type OrgListener = OrgCreationEventListenerParams & {
@@ -32,9 +32,9 @@ const listenToOpportunities = async (
   });
 };
 
-const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<OrgCreationCandidate[]> => {
+const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
   const { svc, logger, account } = opts;
-  const orgs: OrgCreationCandidate[] = [];
+  const orgs: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
 
@@ -56,7 +56,7 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
   return orgs.reverse();
 };
 
-const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: OrgCreationCandidate[]) => void) => {
+const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceClosedWonResource[]) => void) => {
   const { condition, config, logger, topic } = opts;
 
   SalesforceService(config.salesforce, (_, svc) => {

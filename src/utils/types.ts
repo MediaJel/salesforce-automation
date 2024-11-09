@@ -13,17 +13,17 @@ import createLogger from '@/utils/logger';
 import { ClientOptions } from '@urql/core';
 
 export interface DataProducer {
-  orgs: OrgCreationEventListener;
+  resources: SalesfeorceClosedWonResourceListener;
 }
 
-export interface OrgCreationEventListener {
-  all: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  search: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+export interface SalesfeorceClosedWonResourceListener {
+  all: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  display: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  search: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  seo: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
 }
 
-export interface OrgCreationCandidate {
+export interface SalesforceClosedWonResource {
   id: string;
   name: string;
   description: string;
@@ -37,7 +37,7 @@ export interface OrgCreationCandidate {
   parentId?: string;
 }
 
-export type OrgCreationCandidateWithUsers = OrgCreationCandidate & {};
+export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
 
 export interface OrgCreationEventListenerParams {
   config: Config;

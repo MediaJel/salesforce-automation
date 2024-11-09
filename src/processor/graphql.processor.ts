@@ -2,7 +2,7 @@ import { DEFAULT_EMAIL, DEFAULT_ORG, DEFAULT_PHONE } from '@/constants';
 import processorState from '@/processor/state';
 import createGraphqlService from '@/services/graphql';
 import createLogger from '@/utils/logger';
-import { Config, DataProducer, Org, OrgCreationCandidate } from '@/utils/types';
+import { Config, DataProducer, Org, SalesforceClosedWonResource } from '@/utils/types';
 import { format, formatPhone, isProduction } from '@/utils/utils';
 
 const logger = createLogger("GraphQL Processor");
@@ -20,11 +20,11 @@ const createGraphqlProcessor = (config: Config) => {
   const graphql = createGraphqlService(config.graphql);
   logger.info("Registered GraphQL Processor");
 
-  const createOrgs = async (candidates: OrgCreationCandidate[]) => {
+  const createOrgs = async (resources: SalesforceClosedWonResource[]) => {
     const orgs: Org[] = [];
 
-    for (const candidate of candidates) {
-      const { id, name, description, parentId } = candidate;
+    for (const resource of resources) {
+      const { id, name, description, parentId } = resource;
 
       const parentOrg = await graphql.queries.getOrgBySalesforceId({
         salesforceId: parentId,
@@ -55,9 +55,9 @@ const createGraphqlProcessor = (config: Config) => {
     return orgs;
   };
 
-  const createUsers = async (orgs: Org[], candidates: OrgCreationCandidate[]) => {
-    const promises = candidates.map(async (candidate) => {
-      const { id, name, user = null } = candidate;
+  const createUsers = async (orgs: Org[], resources: SalesforceClosedWonResource[]) => {
+    const promises = resources.map(async (resource) => {
+      const { id, name, user = null } = resource;
       const org = orgs.find((org) => org.salesforceId === id);
       if (!org) return logger.warn(`No Org Found for Candidate ${name}`);
       if (!user) return logger.warn(`No User Found for Candidate ${name}`);
@@ -78,13 +78,13 @@ const createGraphqlProcessor = (config: Config) => {
   };
 
   return {
-    process: async (type: string, candidates: OrgCreationCandidate[]) => {
+    process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       if (!processorState.state()) {
         return logger.warn("Disabled app state, not processing...");
       }
 
-      const orgs = await createOrgs(candidates);
-      await createUsers(orgs, candidates);
+      const orgs = await createOrgs(resources);
+      await createUsers(orgs, resources);
     },
   };
 };
