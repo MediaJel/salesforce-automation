@@ -20,7 +20,7 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
 const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
     // TODO: Always blank
-    opportunityLineItemById: async (id: string): Promise<OpportunityLineItem> => {
+    opportunityLineItemByOpportunityId: async (id: string): Promise<OpportunityLineItem> => {
       const soql = `SELECT Id,Name, Quantity, UnitPrice, TotalPrice FROM OpportunityLineItem WHERE OpportunityId = '${id}'`;
 
       const [opportunityLineItem] = await query<OpportunityLineItem>(client, soql).catch((err) => {
