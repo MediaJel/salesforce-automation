@@ -40,6 +40,35 @@ NODE_ENV="development"
 PORT=4000
 ```
 
+## Generating the Refresh token/Access tokens
+
+To use the salesforce-automation service, you'll need the following environment variables
+
+```.env
+SALESFORCE_ACCESS_TOKEN=
+SALESFORCE_REFRESH_TOKEN=
+```
+
+If the user associated with the service is inactive, you may not be able to authenticate to Salesforce correctly, you'll get the following error:
+
+```json
+{
+    "invalid_grant": "user is inactive"
+}
+```
+
+To remediate this, run the server and go to `http://localhost:1234/salesforce/login`
+
+Login with the user that this service uses to authenticate requests and then after authenticating, you should receive the tokens from the response.
+
+```
+{
+  "accessToken": "<access_token>",
+  "instanceUrl": "<instance_url>",
+  "refreshToken": "<refresh_token>"
+}
+```
+
 ## Running the service
 
 To run the service, run the following command:

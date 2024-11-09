@@ -9,17 +9,11 @@ import { ExpressServerConfig } from '@/utils/types';
 const app = express();
 const logger = createLogger("Server");
 
-logger.info({
-  loginUrl: config.salesforce.loginUrl,
-  clientId: config.salesforce.clientId,
-  clientSecret: config.salesforce.clientSecret,
-  redirectUri: config.salesforce.redirectUri,
-});
 const oauth2 = new jsforce.OAuth2({
   loginUrl: config.salesforce.loginUrl,
   clientId: config.salesforce.oauth2.clientId,
   clientSecret: config.salesforce.oauth2.clientSecret,
-  redirectUri: "http://localhost:1234/services/oauth2/callback",
+  redirectUri: config.salesforce.oauth2.redirectUri,
 });
 
 const createServer = (config: ExpressServerConfig) => {
@@ -31,22 +25,23 @@ const createServer = (config: ExpressServerConfig) => {
   };
 
   app.get("/salesforce/login", (req, res) => {
-    res.redirect(oauth2.getAuthorizationUrl({ scope: "api id web" }));
+    res.redirect(oauth2.getAuthorizationUrl({ scope: "api id web refresh_token" }));
   });
 
   app.get("/services/oauth2/callback", async (req, res) => {
     const conn = new jsforce.Connection({ oauth2 });
-    const code = req.param("code");
+    const code = req.param("code") as string;
 
     conn.authorize(code, async (err, userInfo) => {
       if (err) {
         return res.json(err).status(500);
       }
 
-      logger.info(conn.accessToken);
-      logger.info(conn.instanceUrl);
-      logger.info(conn.refreshToken);
-      res.send("success");
+      res.send({
+        accessToken: conn.accessToken,
+        instanceUrl: conn.instanceUrl,
+        refreshToken: conn.refreshToken,
+      });
     });
   });
   app.get("/disable", auth, (req, res) => {
