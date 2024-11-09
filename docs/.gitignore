@@ -9,10 +9,9 @@ coverage
 dist
 sw.*
 .env
-.output
+# .output
 
 # Nuxt dev/build outputs
-# .output
 .data
 .nuxt
 .nitro
