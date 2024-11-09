@@ -45,7 +45,7 @@ export interface SalesforceClosedWonResource {
 
 export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
 
-export interface OrgCreationEventListenerParams {
+export interface SalesforceClosedWonEventListenerParams {
   config: Config;
   logger: Logger;
 }

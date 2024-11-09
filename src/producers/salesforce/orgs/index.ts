@@ -1,8 +1,10 @@
-import createSalesforceListener from '@/producers/salesforce/orgs/listener';
+import createSalesforceListener from "@/producers/salesforce/orgs/listener";
 import {
-    OrgCreationEventListenerParams, SalesforceChannel, SalesforceStreamSubscriptionParams
-} from '@/utils/types';
-import { isDeployed } from '@/utils/utils';
+  SalesforceChannel,
+  SalesforceClosedWonEventListenerParams,
+  SalesforceStreamSubscriptionParams,
+} from "@/utils/types";
+import { isDeployed } from "@/utils/utils";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
@@ -14,11 +16,11 @@ const test: SalesforceStreamSubscriptionParams = {
   replayId: -1,
 };
 
-const createSalesforceOrgCreationEventListener = ({ config, logger }: OrgCreationEventListenerParams) => {
+const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
   const topic = isDeployed ? live : test;
   const listenerParams = { config, logger, topic };
   return {
-    all: createSalesforceListener({ ...listenerParams}),
+    all: createSalesforceListener({ ...listenerParams }),
     display: createSalesforceListener({
       ...listenerParams,
       condition: {
@@ -43,4 +45,4 @@ const createSalesforceOrgCreationEventListener = ({ config, logger }: OrgCreatio
   };
 };
 
-export default createSalesforceOrgCreationEventListener;
+export default createSalesforceClosedWonEventListener;

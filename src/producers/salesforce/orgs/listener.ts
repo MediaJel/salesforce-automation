@@ -1,10 +1,17 @@
-import SalesforceService from '@/services/salesforce';
+import SalesforceService from "@/services/salesforce";
 import {
-    Account, Contact, Logger, Opportunity, OpportunityLineItem, OrgCreationEventListenerParams,
-    Product, SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
-} from '@/utils/types';
+  Account,
+  Contact,
+  Logger,
+  Opportunity,
+  OpportunityLineItem,
+  Product,
+  SalesforceClosedWonEventListenerParams,
+  SalesforceClosedWonResource,
+  SalesforceStreamSubscriptionParams,
+} from "@/utils/types";
 
-type OrgListener = OrgCreationEventListenerParams & {
+type StreamListener = SalesforceClosedWonEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
   condition?: { [key in keyof Partial<Product>]: string };
 };
@@ -38,7 +45,7 @@ const listenToOpportunities = async (
 
 const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
   const { svc, logger, account, opportunity, contact, products, opportunityLineItem } = opts;
-  const orgs: SalesforceClosedWonResource[] = [];
+  const resources: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
 
@@ -47,10 +54,10 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
       ...opts,
       account: parent,
     });
-    orgs.push(...parentOrg);
+    resources.push(...parentOrg);
   }
 
-  orgs.push({
+  resources.push({
     opportunity,
     contact,
     products,
@@ -65,10 +72,10 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
     amount: opportunity.Amount,
   });
 
-  return orgs.reverse();
+  return resources.reverse();
 };
 
-const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceClosedWonResource[]) => void) => {
+const createSalesforceListener = (opts: StreamListener) => (cb: (resources: SalesforceClosedWonResource[]) => void) => {
   const { condition, config, logger, topic } = opts;
 
   SalesforceService(config.salesforce, (_, svc) => {
