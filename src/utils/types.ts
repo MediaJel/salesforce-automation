@@ -28,11 +28,10 @@ export interface SalesforceClosedWonResource {
   account: Account;
   contact: Contact;
   products: Product[];
-  // Legacy
   parentId?: string;
+  // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;
-
   amount: number;
   user?: {
     id: string;
