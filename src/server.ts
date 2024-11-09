@@ -1,10 +1,11 @@
-import express from 'express';
-import jsforce from 'jsforce';
+import express from "express";
+import intuitOAuth2Client from "intuit-oauth";
+import jsforce from "jsforce";
 
-import config from '@/config';
-import { processorState } from '@/processor';
-import createLogger from '@/utils/logger';
-import { ExpressServerConfig } from '@/utils/types';
+import config from "@/config";
+import { processorState } from "@/processor";
+import createLogger from "@/utils/logger";
+import { ExpressServerConfig } from "@/utils/types";
 
 const app = express();
 const logger = createLogger("Server");
@@ -14,6 +15,13 @@ const jsForceOAuth2 = new jsforce.OAuth2({
   clientId: config.salesforce.oauth2.clientId,
   clientSecret: config.salesforce.oauth2.clientSecret,
   redirectUri: config.salesforce.oauth2.redirectUri,
+});
+
+const intuitOAuth2 = new intuitOAuth2Client({
+  clientId: config.intuit.clientId,
+  clientSecret: config.intuit.clientSecret,
+  environment: config.intuit.environment,
+  redirectUri: config.intuit.redirectUri,
 });
 
 const createServer = (config: ExpressServerConfig) => {
@@ -45,10 +53,33 @@ const createServer = (config: ExpressServerConfig) => {
     });
   });
 
-  app.get("/intuit/login", (req, res) => {});
+  app.get("/intuit/login", (req, res) => {
+    res.redirect(
+      intuitOAuth2.authorizeUri({
+        scope: [
+          intuitOAuth2Client.scopes.Accounting,
+          intuitOAuth2Client.scopes.OpenId,
+          intuitOAuth2Client.scopes.Profile,
+          intuitOAuth2Client.scopes.Email,
+        ],
+        state: "intuit-test",
+      })
+    );
+  });
 
   app.get("/intuit/oauth2/callback", (req, res) => {
-    
+    const parseRedirect = req.url;
+    logger.info(`Intuit OAuth2 Redirect: ${parseRedirect}`);
+
+    intuitOAuth2
+      .createToken(parseRedirect)
+      .then((authResponse) => {
+        logger.info(`Intuit OAuth2 Response: ${JSON.stringify(authResponse.json, null, 2)}`);
+        res.send(authResponse.json);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
   });
 
   app.get("/disable", auth, (req, res) => {

@@ -1,16 +1,19 @@
-import { ConnectionOptions } from 'jsforce';
+import { ConnectionOptions } from "jsforce";
 
-import createApp from '@/app';
-import createGraphqlService from '@/services/graphql';
+import createApp from "@/app";
+import createGraphqlService from "@/services/graphql";
 import {
-    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
-    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
-    UpdateOrgMutationVariables, User
-} from '@/services/graphql/generated/graphql';
-import createSalesforceQueries from '@/services/salesforce/query';
-import createSalesforceStream from '@/services/salesforce/stream';
-import createLogger from '@/utils/logger';
-import { ClientOptions } from '@urql/core';
+  CreateDashboardUserMutationVariables,
+  CreateOrgMutationVariables,
+  GetOrgBySalesforceIdQueryVariables,
+  GetUserBySalesforceIdOrEmailQueryVariables,
+  UpdateOrgMutationVariables,
+  User,
+} from "@/services/graphql/generated/graphql";
+import createSalesforceQueries from "@/services/salesforce/query";
+import createSalesforceStream from "@/services/salesforce/stream";
+import createLogger from "@/utils/logger";
+import { ClientOptions } from "@urql/core";
 
 export interface DataProducer {
   closedWon: SalesforceClosedWonResourceListener;
@@ -177,11 +180,20 @@ export type UpdateOrgParams = UpdateOrgMutationVariables;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
+interface IntuitConfig {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  environment: "sandbox" | "production";
+  accessToken: string;
+  refreshToken: string;
+}
 export interface Config {
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;
   logLevel: LogLevel;
+  intuit: IntuitConfig;
 }
 
 export type AppConfig = {
