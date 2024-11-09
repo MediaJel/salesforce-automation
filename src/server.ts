@@ -9,7 +9,7 @@ import { ExpressServerConfig } from '@/utils/types';
 const app = express();
 const logger = createLogger("Server");
 
-const oauth2 = new jsforce.OAuth2({
+const jsForceOAuth2 = new jsforce.OAuth2({
   loginUrl: config.salesforce.loginUrl,
   clientId: config.salesforce.oauth2.clientId,
   clientSecret: config.salesforce.oauth2.clientSecret,
@@ -25,11 +25,11 @@ const createServer = (config: ExpressServerConfig) => {
   };
 
   app.get("/salesforce/login", (req, res) => {
-    res.redirect(oauth2.getAuthorizationUrl({ scope: "api id web refresh_token" }));
+    res.redirect(jsForceOAuth2.getAuthorizationUrl({ scope: "api id web refresh_token" }));
   });
 
-  app.get("/services/oauth2/callback", async (req, res) => {
-    const conn = new jsforce.Connection({ oauth2 });
+  app.get("/salesforce/oauth2/callback", async (req, res) => {
+    const conn = new jsforce.Connection({ oauth2: jsForceOAuth2 });
     const code = req.param("code") as string;
 
     conn.authorize(code, async (err, userInfo) => {
@@ -44,6 +44,13 @@ const createServer = (config: ExpressServerConfig) => {
       });
     });
   });
+
+  app.get("/intuit/login", (req, res) => {});
+
+  app.get("/intuit/oauth2/callback", (req, res) => {
+    
+  });
+
   app.get("/disable", auth, (req, res) => {
     const msg = "Sending signal to disable Processor State...";
     logger.warn(msg);
