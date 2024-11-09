@@ -1,25 +1,23 @@
-import {
-  CreateDashboardUserMutationVariables,
-  CreateOrgMutationVariables,
-  GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdOrEmailQueryVariables,
-  UpdateOrgMutationVariables,
-  User,
-} from "@/services/graphql/generated/graphql";
-import { ConnectionOptions } from "jsforce";
-import { ClientOptions } from "@urql/core";
+import { ConnectionOptions } from 'jsforce';
 
-import createSalesforceQueries from "@/services/salesforce/query";
-import createSalesforceStream from "@/services/salesforce/stream";
-import createGraphqlService from "@/services/graphql";
-import createApp from "@/app";
-import createLogger from "@/utils/logger";
+import createApp from '@/app';
+import createGraphqlService from '@/services/graphql';
+import {
+    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
+    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
+    UpdateOrgMutationVariables, User
+} from '@/services/graphql/generated/graphql';
+import createSalesforceQueries from '@/services/salesforce/query';
+import createSalesforceStream from '@/services/salesforce/stream';
+import createLogger from '@/utils/logger';
+import { ClientOptions } from '@urql/core';
 
 export interface DataProducer {
   orgs: OrgCreationEventListener;
 }
 
 export interface OrgCreationEventListener {
+  all: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
   display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
   search: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
   seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
@@ -131,18 +129,12 @@ export interface SalesforceService {
   stream: ReturnType<typeof createSalesforceStream>;
 }
 
-export type FindOrCreateOrgParams = Pick<
-  CreateOrgMutationVariables,
-  "name" | "description" | "salesforceId"
-> &
+export type FindOrCreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
   GetOrgBySalesforceIdQueryVariables & {
     salesforceParentId?: string;
   };
 
-export type CreateOrgParams = Pick<
-  CreateOrgMutationVariables,
-  "name" | "description" | "salesforceId"
-> &
+export type CreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
   GetOrgBySalesforceIdQueryVariables & {
     parentOrgId?: string;
   };
@@ -184,8 +176,7 @@ export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
 export type GraphQLService = ReturnType<typeof createGraphqlService>;
 
 export type Org = Awaited<
-  | ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]>
-  | ReturnType<GraphQLService["mutations"]["createOrg"]>
+  ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]> | ReturnType<GraphQLService["mutations"]["createOrg"]>
 >;
 
 export type App = ReturnType<typeof createApp>;

@@ -1,17 +1,12 @@
-import SalesforceService from "@/services/salesforce";
+import SalesforceService from '@/services/salesforce';
 import {
-  OrgCreationEventListenerParams,
-  SalesforceStreamSubscriptionParams,
-  Product,
-  OrgCreationCandidate,
-  Opportunity,
-  Logger,
-  Account,
-} from "@/utils/types";
+    Account, Logger, Opportunity, OrgCreationCandidate, OrgCreationEventListenerParams, Product,
+    SalesforceStreamSubscriptionParams
+} from '@/utils/types';
 
 type OrgListener = OrgCreationEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
-  condition: { [key in keyof Partial<Product>]: string };
+  condition?: { [key in keyof Partial<Product>]: string };
 };
 
 interface ListenToOpportunitiesParams {
@@ -70,7 +65,7 @@ const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: OrgCreationC
 
       const products = await svc.query.productsByOpportunityId({
         id: opp.Id,
-        where: condition,
+        where: condition ? condition : {},
       });
       if (!products) return logger.warn(`No ${condition.Family} Products`);
 

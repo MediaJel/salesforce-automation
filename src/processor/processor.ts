@@ -10,13 +10,14 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   const graphql = createGraphqlProcessor(config);
 
   const process = async (type: string, candidates: OrgCreationCandidate[]) => {
-    logger.info(`Received Data`);
-    graphql.process(type, candidates);
+    logger.info(`Processing Data: ${candidates}`);
+    // graphql.process(type, candidates);
   };
 
   return {
     async listen() {
-      producer.orgs.display((candidates) => process("Display", candidates));
+      producer.orgs.all((candidates) => process("All", candidates));
+      // producer.orgs.display((candidates) => process("Display", candidates));
       // producer.orgs.search((candidates) => process("Paid Search", candidates));
       // producer.orgs.seo((candidates) => process("SEO", candidates));
     },
