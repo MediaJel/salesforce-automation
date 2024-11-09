@@ -1,20 +1,20 @@
-import createGraphqlProcessor from '@/processor/graphql.processor';
-import createLogger from '@/utils/logger';
-import { Config, DataProducer, SalesforceClosedWonResource } from '@/utils/types';
+import createMediajelProcessor from "@/processor/mediajel/mediajel.processor";
+import createLogger from "@/utils/logger";
+import { Config, DataProducer, SalesforceClosedWonResource } from "@/utils/types";
 
 const logger = createLogger("Processor");
 
 // Use a logging library
 
 const createProcessor = (producer: DataProducer, config: Config) => {
-  const graphql = createGraphqlProcessor(config);
+  const mediajel = createMediajelProcessor(config);
 
   const process = async (type: string, resources: SalesforceClosedWonResource[]) => {
     resources.forEach((resource) => {
       logger.info(`Processing Data: ${JSON.stringify(resource, null, 2)}`);
     });
 
-    // graphql.process(type, candidates);
+    // mediajel.process(type, candidates);
   };
 
   return {

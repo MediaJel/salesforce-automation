@@ -1,4 +1,4 @@
-import createSalesforceClosedWonEventListener from "@/producers/salesforce/orgs";
+import createSalesforceClosedWonEventListener from "@/producers/salesforce/closed-won";
 import createLogger from "@/utils/logger";
 import { Config, DataProducer } from "@/utils/types";
 

@@ -1,4 +1,4 @@
-import createSalesforceListener from "@/producers/salesforce/orgs/listener";
+import createSalesforceListener from "@/producers/salesforce/closed-won/listener";
 import {
   SalesforceChannel,
   SalesforceClosedWonEventListenerParams,

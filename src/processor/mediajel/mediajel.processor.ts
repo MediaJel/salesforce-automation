@@ -1,9 +1,9 @@
-import { DEFAULT_EMAIL, DEFAULT_ORG, DEFAULT_PHONE } from '@/constants';
-import processorState from '@/processor/state';
-import createGraphqlService from '@/services/graphql';
-import createLogger from '@/utils/logger';
-import { Config, DataProducer, Org, SalesforceClosedWonResource } from '@/utils/types';
-import { format, formatPhone, isProduction } from '@/utils/utils';
+import { DEFAULT_EMAIL, DEFAULT_ORG, DEFAULT_PHONE } from "@/constants";
+import processorState from "@/processor/state";
+import createGraphqlService from "@/services/graphql";
+import createLogger from "@/utils/logger";
+import { Config, DataProducer, Org, SalesforceClosedWonResource } from "@/utils/types";
+import { format, formatPhone, isProduction } from "@/utils/utils";
 
 const logger = createLogger("GraphQL Processor");
 
@@ -16,9 +16,9 @@ const logWarn = (msg?: string, data?: any) => {
   logger.warn(JSON.stringify(json, null, 2));
 };
 
-const createGraphqlProcessor = (config: Config) => {
+const createMediajelProcessor = (config: Config) => {
   const graphql = createGraphqlService(config.graphql);
-  logger.info("Registered GraphQL Processor");
+  logger.info("Registered Mediajel Processor");
 
   const createOrgs = async (resources: SalesforceClosedWonResource[]) => {
     const orgs: Org[] = [];
@@ -89,4 +89,4 @@ const createGraphqlProcessor = (config: Config) => {
   };
 };
 
-export default createGraphqlProcessor;
+export default createMediajelProcessor;
