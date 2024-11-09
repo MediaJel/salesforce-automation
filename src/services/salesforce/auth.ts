@@ -5,7 +5,6 @@ import { Logger } from '@/utils/types';
 const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
   return {
     async authenticate(): Promise<Connection> {
-      throw Error("Test");
       return new Promise<Connection>(async (resolve, reject) => {
         logger.info("Authenticating/Reauthenticating to Salesforce");
         const client = new Connection(opts);
