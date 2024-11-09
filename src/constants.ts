@@ -1,4 +1,4 @@
-import { isProduction } from '@/utils/utils';
+import { isProduction } from "@/utils/utils";
 
 const DOJO_MEDIAJEL_ORG = "cjoq2t7g4yzca07347pug25ck";
 

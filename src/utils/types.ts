@@ -15,6 +15,187 @@ import createSalesforceStream from "@/services/salesforce/stream";
 import createLogger from "@/utils/logger";
 import { ClientOptions } from "@urql/core";
 
+export interface QuickbooksCreateEstimateInput {
+  TotalAmt: number;
+  BillEmail: {
+    Address: string;
+  };
+  CustomerMemo: {
+    value: string;
+  };
+  ShipAddr: QuickbooksAddressInput;
+  PrintStatus: string;
+  EmailStatus: string;
+  BillAddr: QuickbooksAddressInput;
+  Line: QuickbooksEstimateLineInput[];
+  CustomerRef: {
+    name: string;
+    value: string;
+  };
+  TxnTaxDetail: {
+    TotalTax: number;
+  };
+  ApplyTaxAfterDiscount: boolean;
+}
+
+interface QuickbooksAddressInput {
+  City: string;
+  Line1: string;
+  PostalCode: string;
+  Lat: string;
+  Long: string;
+  CountrySubDivisionCode: string;
+  Id: string;
+}
+
+interface QuickbooksEstimateLineInput {
+  Description?: string;
+  DetailType: string;
+  SalesItemLineDetail?: QuickbooksSalesItemLineDetailInput;
+  SubTotalLineDetail?: Record<string, unknown>;
+  DiscountLineDetail?: QuickbooksDiscountLineDetailInput;
+  LineNum?: number;
+  Amount: number;
+  Id?: string;
+}
+
+interface QuickbooksSalesItemLineDetailInput {
+  TaxCodeRef: {
+    value: string;
+  };
+  Qty: number;
+  UnitPrice: number;
+  ItemRef: {
+    name: string;
+    value: string;
+  };
+}
+
+interface QuickbooksDiscountLineDetailInput {
+  DiscountAccountRef: {
+    name: string;
+    value: string;
+  };
+  PercentBased: boolean;
+  DiscountPercent: number;
+}
+
+export interface QuickbooksEstimateResponse {
+  QueryResponse: {
+    Estimate: QuickbooksEstimate[];
+    startPosition: number;
+    maxResults: number;
+  };
+  time: string;
+}
+
+interface QuickbooksEstimate {
+  domain: string;
+  sparse: boolean;
+  Id: string;
+  SyncToken: string;
+  MetaData: {
+    CreateTime: string;
+    LastUpdatedTime: string;
+  };
+  CustomField: any[];
+  DocNumber: string;
+  TxnDate: string;
+  CurrencyRef: {
+    value: string;
+    name: string;
+  };
+  TxnStatus: string;
+  LinkedTxn: QuickbooksLinkedTransaction[];
+  Line: QuickbooksEstimateLine[];
+  TxnTaxDetail: {
+    TxnTaxCodeRef?: {
+      value: string;
+    };
+    TotalTax: number;
+    TaxLine?: QuickbooksTaxLine[];
+  };
+  CustomerRef: {
+    value: string;
+    name: string;
+  };
+  CustomerMemo: {
+    value: string;
+  };
+  BillAddr: QuickbooksAddress;
+  ShipAddr: QuickbooksAddress;
+  FreeFormAddress: boolean;
+  TotalAmt: number;
+  ApplyTaxAfterDiscount: boolean;
+  PrintStatus: string;
+  EmailStatus: string;
+  BillEmail: {
+    Address: string;
+  };
+  DeliveryInfo?: {
+    DeliveryType: string;
+  };
+}
+
+interface QuickbooksLinkedTransaction {
+  TxnId: string;
+  TxnType: string;
+}
+
+interface QuickbooksEstimateLine {
+  Id?: string;
+  LineNum?: number;
+  Description?: string;
+  Amount: number;
+  DetailType: string;
+  SalesItemLineDetail?: QuickbooksSalesItemLineDetail;
+  SubTotalLineDetail?: Record<string, unknown>;
+}
+
+interface QuickbooksSalesItemLineDetail {
+  ItemRef: {
+    value: string;
+    name: string;
+  };
+  UnitPrice: number;
+  Qty: number;
+  ItemAccountRef: {
+    value: string;
+    name: string;
+  };
+  TaxCodeRef: {
+    value: string;
+  };
+}
+
+interface QuickbooksTaxLine {
+  Amount: number;
+  DetailType: string;
+  TaxLineDetail: QuickbooksTaxLineDetail;
+}
+
+interface QuickbooksTaxLineDetail {
+  TaxRateRef: {
+    value: string;
+  };
+  PercentBased: boolean;
+  TaxPercent: number;
+  NetAmountTaxable: number;
+}
+
+interface QuickbooksAddress {
+  Id: string;
+  Line1: string;
+  Line2?: string;
+  Line3?: string;
+  Line4?: string;
+  City?: string;
+  CountrySubDivisionCode?: string;
+  PostalCode?: string;
+  Lat: string;
+  Long: string;
+}
+
 export interface DataProducer {
   closedWon: SalesforceClosedWonResourceListener;
 }

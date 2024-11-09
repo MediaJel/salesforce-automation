@@ -1,7 +1,7 @@
-import createIntuitProcessor from "@/processor/intuit/intuit.processor";
-import createMediajelProcessor from "@/processor/mediajel/mediajel.processor";
-import createLogger from "@/utils/logger";
-import { Config, DataProducer, SalesforceClosedWonResource } from "@/utils/types";
+import createIntuitProcessor from '@/processor/intuit/intuit.processor';
+import createMediajelProcessor from '@/processor/mediajel/mediajel.processor';
+import createLogger from '@/utils/logger';
+import { Config, DataProducer, SalesforceClosedWonResource } from '@/utils/types';
 
 const logger = createLogger("Processor");
 
