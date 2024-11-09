@@ -1,17 +1,11 @@
 // https://github.com/nuxt-themes/docus/blob/main/nuxt.schema.ts
 export default defineAppConfig({
   docus: {
-    title: "Pachtop",
-    description: `Pachtop - a more modern system monitor. Pachtop is a lightweight, performant, and opensource system monitor that provides real-time monitoring of your system's performance, application monitoring, and detailed system information`,
-    url: "https://pachtop.com",
+    title: "Salesforce to Quickbooks Automation",
+    description: `Seamlessly Automate Your QuickBooks with Salesforce Data`,
+    url: "https://salesforce.mediajel.com",
     socials: {
-      github: "pacholoamit/pachtop",
-      youtube: "@pacholoamit",
-      linkedin: {
-        label: "Pacholo Amit",
-        icon: "fa6-brands:linkedin-in",
-        href: "https://www.linkedin.com/in/pacholo-amit/",
-      },
+      github: "MediaJel/salesforce-automation",
     },
     github: {
       dir: ".starters/default/content",
@@ -33,8 +27,8 @@ export default defineAppConfig({
       credits: false,
       textLinks: [
         {
-          text: "Built with ❤️ by Pacholo Amit",
-          href: "https://www.pacholoamit.com",
+          text: "Built with ❤️ by MediaJel",
+          href: "https://www.mediajel.com/",
           rel: "noopener",
           target: "_blank",
         },
