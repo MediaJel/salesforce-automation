@@ -1,17 +1,12 @@
-import SalesforceService from "@/services/salesforce";
+import SalesforceService from '@/services/salesforce';
 import {
-  OrgCreationEventListenerParams,
-  SalesforceStreamSubscriptionParams,
-  Product,
-  OrgCreationCandidate,
-  Opportunity,
-  Logger,
-  Account,
-} from "@/utils/types";
+    Account, Contact, Logger, Opportunity, OpportunityLineItem, OrgCreationEventListenerParams,
+    Product, SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
+} from '@/utils/types';
 
 type OrgListener = OrgCreationEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
-  condition: { [key in keyof Partial<Product>]: string };
+  condition?: { [key in keyof Partial<Product>]: string };
 };
 
 interface ListenToOpportunitiesParams {
@@ -23,7 +18,11 @@ interface ListenToOpportunitiesParams {
 interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
+  opportunity: Opportunity;
+  opportunityLineItem: OpportunityLineItem;
   account: Account;
+  contact: Contact;
+  products: Product[];
 }
 
 const listenToOpportunities = async (
@@ -37,9 +36,9 @@ const listenToOpportunities = async (
   });
 };
 
-const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<OrgCreationCandidate[]> => {
-  const { svc, logger, account } = opts;
-  const orgs: OrgCreationCandidate[] = [];
+const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
+  const { svc, logger, account, opportunity, contact, products, opportunityLineItem } = opts;
+  const orgs: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
 
@@ -52,16 +51,24 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
   }
 
   orgs.push({
+    opportunity,
+    contact,
+    products,
+    account,
+    opportunityLineItem,
+    parentId: account?.ParentId || null,
+
+    // Legacy types, mainly here for the GraphQL processor
     id: account.Id,
     name: account.Name,
-    parentId: account?.ParentId || null,
-    description: "",
+
+    amount: opportunity.Amount,
   });
 
   return orgs.reverse();
 };
 
-const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: OrgCreationCandidate[]) => void) => {
+const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceClosedWonResource[]) => void) => {
   const { condition, config, logger, topic } = opts;
 
   SalesforceService(config.salesforce, (_, svc) => {
@@ -70,21 +77,28 @@ const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: OrgCreationC
 
       const products = await svc.query.productsByOpportunityId({
         id: opp.Id,
-        where: condition,
+        where: condition ? condition : null,
       });
       if (!products) return logger.warn(`No ${condition.Family} Products`);
 
       const account = await svc.query.accountById(opp.AccountId);
       if (!account) return logger.warn("No Account");
 
+      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+      if (!contact) return logger.warn("No Contact");
+
+      const opportunityLineItem = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
+      if (!opportunityLineItem) return logger.warn("No Opportunity Line Item");
+
       const orgCandidates = await handleOrgCandidateHierarchy({
         ...params,
         account,
+        opportunity: opp,
+        opportunityLineItem,
+        contact: contact,
+        products: products,
       });
       if (!orgCandidates.length) return;
-
-      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-      if (!contact) return logger.warn("No Contact");
 
       if (contact) {
         orgCandidates[0].user = {
