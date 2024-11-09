@@ -17,6 +17,8 @@ const test: SalesforceStreamSubscriptionParams = {
 };
 
 const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
+  // Live vs Test mainly relies on the "is_Active__c" field in Salesforce
+  // if opportunity is active, it's live, otherwise it's test
   const topic = isDeployed ? live : test;
   const listenerParams = { config, logger, topic };
   return {
