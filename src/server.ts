@@ -74,8 +74,8 @@ const createServer = (config: ExpressServerConfig) => {
     intuitOAuth2
       .createToken(parseRedirect)
       .then((authResponse) => {
-        logger.info(`Intuit OAuth2 Response: ${JSON.stringify(authResponse.json, null, 2)}`);
-        res.send(authResponse.json);
+        logger.info(`Intuit OAuth2 Response: ${JSON.stringify(authResponse.token, null, 2)}`);
+        res.send(authResponse.token);
       })
       .catch((err) => {
         res.send(err);

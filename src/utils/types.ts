@@ -187,6 +187,7 @@ interface IntuitConfig {
   environment: "sandbox" | "production";
   accessToken: string;
   refreshToken: string;
+  realmId: string;
 }
 export interface Config {
   salesforce: SalesforceConfig;

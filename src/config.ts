@@ -21,6 +21,7 @@ const config: Config = {
     redirectUri: process.env.INTUIT_REDIRECT_URI,
     accessToken: process.env.INTUIT_ACCESS_TOKEN,
     refreshToken: process.env.INTUIT_REFRESH_TOKEN,
+    realmId: process.env.INTUIT_REALM_ID,
   },
   graphql: {
     url: process.env.GRAPHQL_ENDPOINT,
