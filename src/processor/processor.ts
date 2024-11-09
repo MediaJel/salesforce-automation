@@ -10,7 +10,10 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   const graphql = createGraphqlProcessor(config);
 
   const process = async (type: string, candidates: OrgCreationCandidate[]) => {
-    logger.info(`Processing Data: ${candidates}`);
+    candidates.forEach((candidate) => {
+      logger.info(`Processing Data: ${JSON.stringify(candidate, null, 2)}`);
+    });
+
     // graphql.process(type, candidates);
   };
 
