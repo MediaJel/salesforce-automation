@@ -1,6 +1,6 @@
 import SalesforceService from '@/services/salesforce';
 import {
-    Account, Logger, Opportunity, OrgCreationEventListenerParams, Product,
+    Account, Contact, Logger, Opportunity, OrgCreationEventListenerParams, Product,
     SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
 } from '@/utils/types';
 
@@ -18,7 +18,10 @@ interface ListenToOpportunitiesParams {
 interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
+  opportunity: Opportunity;
   account: Account;
+  contact: Contact;
+  products: Product[];
 }
 
 const listenToOpportunities = async (
@@ -33,7 +36,7 @@ const listenToOpportunities = async (
 };
 
 const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
-  const { svc, logger, account } = opts;
+  const { svc, logger, account, opportunity, contact, products } = opts;
   const orgs: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
@@ -47,10 +50,17 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
   }
 
   orgs.push({
+    opportunity,
+    contact,
+    products,
+    account,
+    parentId: account?.ParentId || null,
+
+    // Legacy types, mainly here for the GraphQL processor
     id: account.Id,
     name: account.Name,
-    parentId: account?.ParentId || null,
-    description: "",
+
+    amount: opportunity.Amount,
   });
 
   return orgs.reverse();
@@ -72,14 +82,17 @@ const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceCl
       const account = await svc.query.accountById(opp.AccountId);
       if (!account) return logger.warn("No Account");
 
+      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+      if (!contact) return logger.warn("No Contact");
+
       const orgCandidates = await handleOrgCandidateHierarchy({
         ...params,
         account,
+        opportunity: opp,
+        contact: contact,
+        products: products,
       });
       if (!orgCandidates.length) return;
-
-      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-      if (!contact) return logger.warn("No Contact");
 
       if (contact) {
         orgCandidates[0].user = {

@@ -24,7 +24,7 @@ const createGraphqlProcessor = (config: Config) => {
     const orgs: Org[] = [];
 
     for (const resource of resources) {
-      const { id, name, description, parentId } = resource;
+      const { id, name, parentId } = resource;
 
       const parentOrg = await graphql.queries.getOrgBySalesforceId({
         salesforceId: parentId,
@@ -35,7 +35,7 @@ const createGraphqlProcessor = (config: Config) => {
         await graphql.findOrCreateOrg({
           name,
           salesforceId: id,
-          description,
+
           parentOrgId: DEFAULT_ORG,
         });
         log(`Associated ${name} with default Mediajel org`);
@@ -44,7 +44,7 @@ const createGraphqlProcessor = (config: Config) => {
       const childOrg = await graphql.findOrCreateOrg({
         name,
         salesforceId: id,
-        description,
+
         parentOrgId: parentOrg?.id || DEFAULT_ORG,
       });
 

@@ -24,9 +24,16 @@ export interface SalesforceClosedWonResourceListener {
 }
 
 export interface SalesforceClosedWonResource {
+  opportunity: Opportunity;
+  account: Account;
+  contact: Contact;
+  products: Product[];
+  // Legacy
+  parentId?: string;
   id: string;
   name: string;
-  description: string;
+
+  amount: number;
   user?: {
     id: string;
     name: string;
@@ -34,7 +41,6 @@ export interface SalesforceClosedWonResource {
     username: string;
     phone: string;
   };
-  parentId?: string;
 }
 
 export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
