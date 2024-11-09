@@ -24,30 +24,18 @@ const createIntuitProcessor = () => {
 
   const createEstimate = (input: QuickbooksCreateEstimateInput): Promise<QuickbooksEstimateResponse> => {
     return new Promise((resolve, reject) => {
-      qbo.findEstimates({}, (err, estimates) => {
+      qbo.findEstimates(input, (err, estimates) => {
         if (err) reject(err);
         resolve(estimates);
       });
     });
   };
 
-  //   qbo.createAttachable({ Note: "My File" }, function (err, attachable) {
-  //     if (err) logger.error(err);
-  //     else logger.debug(attachable.Id);
-  //   });
-
-  qbo.findEstimates({}, (err, estimates) => {
-    if (err) return logger.error(err);
-    logger.debug(`Estimates: ${JSON.stringify(estimates, null, 2)}`);
-  });
-
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      if (!processorState.state()) {
-        return logger.warn("Disabled app state, not processing...");
-      }
-
-      logger.info(`Resources received ${resources.length}`);
+      resources.forEach((resource) => {
+        logger.debug(`Processing resource: ${resource.opportunity.Id}`);
+      });
     },
   };
 };
