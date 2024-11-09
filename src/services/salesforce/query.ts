@@ -31,12 +31,13 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
       return opportunityLineItem;
     },
     productsByOpportunityId: async ({ id, where: condition }: ProductsByOpportunityIdParams): Promise<Product[]> => {
-      const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
+      const soql = `SELECT Id, Name, Family, Description, ProductCode FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
         logger.error({ message: "Products by Opportunity ID error", err });
       });
 
-      if (!condition || !products) return [];
+      if (!products) return [];
+      if (!condition) return products;
 
       const matches = products?.filter((product) => match(product, condition));
 

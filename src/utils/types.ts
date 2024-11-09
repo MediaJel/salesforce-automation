@@ -25,6 +25,7 @@ export interface SalesforceClosedWonResourceListener {
 
 export interface SalesforceClosedWonResource {
   opportunity: Opportunity;
+  opportunityLineItem: OpportunityLineItem;
   account: Account;
   contact: Contact;
   products: Product[];
@@ -114,6 +115,8 @@ export interface Product {
   Id: string;
   Name: string;
   Family: string;
+  ProductCode: string;
+  Description: string;
   attributes: PushTopicRecordAttributes;
 }
 

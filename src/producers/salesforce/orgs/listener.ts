@@ -1,7 +1,7 @@
 import SalesforceService from '@/services/salesforce';
 import {
-    Account, Contact, Logger, Opportunity, OrgCreationEventListenerParams, Product,
-    SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
+    Account, Contact, Logger, Opportunity, OpportunityLineItem, OrgCreationEventListenerParams,
+    Product, SalesforceClosedWonResource, SalesforceStreamSubscriptionParams
 } from '@/utils/types';
 
 type OrgListener = OrgCreationEventListenerParams & {
@@ -19,6 +19,7 @@ interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
   opportunity: Opportunity;
+  opportunityLineItem: OpportunityLineItem;
   account: Account;
   contact: Contact;
   products: Product[];
@@ -36,7 +37,7 @@ const listenToOpportunities = async (
 };
 
 const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
-  const { svc, logger, account, opportunity, contact, products } = opts;
+  const { svc, logger, account, opportunity, contact, products, opportunityLineItem } = opts;
   const orgs: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
@@ -54,6 +55,7 @@ const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise
     contact,
     products,
     account,
+    opportunityLineItem,
     parentId: account?.ParentId || null,
 
     // Legacy types, mainly here for the GraphQL processor
@@ -75,7 +77,7 @@ const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceCl
 
       const products = await svc.query.productsByOpportunityId({
         id: opp.Id,
-        where: condition ? condition : {},
+        where: condition ? condition : null,
       });
       if (!products) return logger.warn(`No ${condition.Family} Products`);
 
@@ -85,10 +87,14 @@ const createSalesforceListener = (opts: OrgListener) => (cb: (orgs: SalesforceCl
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
       if (!contact) return logger.warn("No Contact");
 
+      const opportunityLineItem = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
+      if (!opportunityLineItem) return logger.warn("No Opportunity Line Item");
+
       const orgCandidates = await handleOrgCandidateHierarchy({
         ...params,
         account,
         opportunity: opp,
+        opportunityLineItem,
         contact: contact,
         products: products,
       });
