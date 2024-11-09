@@ -10,23 +10,11 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
         const client = new Connection(opts);
 
         const data = await client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
-          logger.debug({ res });
           if (err) {
             logger.error({ message: "Error authenticating to Salesforce" });
             reject(err);
           }
-
-          // const newClient = new Connection({
-          //   accessToken: res.access_token,
-          //   instanceUrl: res["instance_url"],
-          // });
-
-          // logger.info("Authentication/Reauthentication Successful");
-
-          // resolve(newClient);
         });
-
-        logger.debug({ data });
 
         const newClient = new Connection({
           accessToken: data.access_token,
