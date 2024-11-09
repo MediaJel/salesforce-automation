@@ -13,7 +13,7 @@ import createLogger from '@/utils/logger';
 import { ClientOptions } from '@urql/core';
 
 export interface DataProducer {
-  resources: SalesfeorceClosedWonResourceListener;
+  closedWon: SalesfeorceClosedWonResourceListener;
 }
 
 export interface SalesfeorceClosedWonResourceListener {

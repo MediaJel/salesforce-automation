@@ -6,7 +6,7 @@ const logger = createLogger("Salesforce Producer");
 
 const createSalesforceProducer = (config: Config): DataProducer => {
   return {
-    resources: createOrgCreationEventListener({ config, logger }),
+    closedWon: createOrgCreationEventListener({ config, logger }),
   };
 };
 
