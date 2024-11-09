@@ -1,8 +1,10 @@
-import createSalesforceListener from '@/producers/salesforce/orgs/listener';
+import createSalesforceListener from "@/producers/salesforce/closed-won/listener";
 import {
-    OrgCreationEventListenerParams, SalesforceChannel, SalesforceStreamSubscriptionParams
-} from '@/utils/types';
-import { isDeployed } from '@/utils/utils';
+  SalesforceChannel,
+  SalesforceClosedWonEventListenerParams,
+  SalesforceStreamSubscriptionParams,
+} from "@/utils/types";
+import { isDeployed } from "@/utils/utils";
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
@@ -14,11 +16,13 @@ const test: SalesforceStreamSubscriptionParams = {
   replayId: -1,
 };
 
-const createSalesforceOrgCreationEventListener = ({ config, logger }: OrgCreationEventListenerParams) => {
+const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
+  // Live vs Test mainly relies on the "is_Active__c" field in Salesforce
+  // if opportunity is active, it's live, otherwise it's test
   const topic = isDeployed ? live : test;
   const listenerParams = { config, logger, topic };
   return {
-    all: createSalesforceListener({ ...listenerParams}),
+    all: createSalesforceListener({ ...listenerParams }),
     display: createSalesforceListener({
       ...listenerParams,
       condition: {
@@ -43,4 +47,4 @@ const createSalesforceOrgCreationEventListener = ({ config, logger }: OrgCreatio
   };
 };
 
-export default createSalesforceOrgCreationEventListener;
+export default createSalesforceClosedWonEventListener;

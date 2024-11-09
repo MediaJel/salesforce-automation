@@ -1,10 +1,15 @@
-import { Connection } from 'jsforce';
+import { Connection } from "jsforce";
 
 import {
-    Account, Contact, Logger, OpportunityLineItem, Product, ProductsByOpportunityIdParams,
-    QueryAttribute
-} from '@/utils/types';
-import { match } from '@/utils/utils';
+  Account,
+  Contact,
+  Logger,
+  OpportunityLineItem,
+  Product,
+  ProductsByOpportunityIdParams,
+  QueryAttribute,
+} from "@/utils/types";
+import { match } from "@/utils/utils";
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {
