@@ -13,10 +13,10 @@ import createLogger from '@/utils/logger';
 import { ClientOptions } from '@urql/core';
 
 export interface DataProducer {
-  closedWon: SalesfeorceClosedWonResourceListener;
+  closedWon: SalesforceClosedWonResourceListener;
 }
 
-export interface SalesfeorceClosedWonResourceListener {
+export interface SalesforceClosedWonResourceListener {
   all: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
   display: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
   search: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
