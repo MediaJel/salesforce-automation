@@ -20,9 +20,9 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   return {
     async listen() {
       producer.closedWon.all((candidates) => process("All", candidates));
-      // producer.orgs.display((candidates) => process("Display", candidates));
-      // producer.orgs.search((candidates) => process("Paid Search", candidates));
-      // producer.orgs.seo((candidates) => process("SEO", candidates));
+      // producer.closedWon.display((candidates) => process("Display", candidates));
+      // producer.closedWon.search((candidates) => process("Paid Search", candidates));
+      // producer.closedWon.seo((candidates) => process("SEO", candidates));
     },
   };
 };
