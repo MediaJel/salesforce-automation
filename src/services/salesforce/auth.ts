@@ -7,7 +7,6 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
     async authenticate(): Promise<Connection> {
       return new Promise<Connection>(async (resolve, reject) => {
         logger.info("Authenticating/Reauthenticating to Salesforce");
-        logger.debug({ opts });
         const client = new Connection(opts);
 
         const data = await client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
