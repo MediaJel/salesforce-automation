@@ -42,6 +42,8 @@ PORT=4000
 
 ## Generating the Refresh token/Access tokens
 
+You may need to comment out the producer/consumer code in the `app.ts` file, and only let remain the server and server.start code
+
 To use the salesforce-automation service, you'll need the following environment variables
 
 ```.env

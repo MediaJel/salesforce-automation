@@ -7,6 +7,7 @@ import { Config } from './utils/types';
 
 const createApp = (config: Config) => {
   const server = createServer(config.server);
+
   const salesforceProducer: DataProducer = createSalesforceProducer(config);
   const processor = createProcessor(salesforceProducer, config);
 
