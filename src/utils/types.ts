@@ -117,10 +117,30 @@ export interface Product {
   attributes: PushTopicRecordAttributes;
 }
 
+export interface OpportunityLineItem {
+  Id: string;
+  Name: string;
+  Quantity: number;
+  UnitPrice: number;
+  TotalPrice: number;
+  attributes: PushTopicRecordAttributes;
+}
+
 export interface Account {
   Id: string;
   Name: string;
   ParentId: string;
+  ShippingCity: string;
+  ShippingStreet: string;
+  ShippingPostalCode: number;
+  ShippingLatitude: number;
+  ShippingLongitude: number;
+  BillingCity: string;
+  BillingStreet: string;
+  BillingPostalCode: number;
+  BillingLatitude: number;
+  BillingLongitude: number;
+  BillingCountryCode: string;
   attributes: PushTopicRecordAttributes;
 }
 

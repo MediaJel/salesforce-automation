@@ -1,13 +1,10 @@
-import { Connection } from "jsforce";
+import { Connection } from 'jsforce';
+
 import {
-  Contact,
-  Product,
-  Account,
-  QueryAttribute,
-  Logger,
-  ProductsByOpportunityIdParams,
-} from "@/utils/types";
-import { match } from "@/utils/utils";
+    Account, Contact, Logger, OpportunityLineItem, Product, ProductsByOpportunityIdParams,
+    QueryAttribute
+} from '@/utils/types';
+import { match } from '@/utils/utils';
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {
@@ -22,10 +19,18 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
 
 const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
-    productsByOpportunityId: async ({
-      id,
-      where: condition,
-    }: ProductsByOpportunityIdParams): Promise<Product[]> => {
+    // TODO: Always blank
+    opportunityLineItemById: async (id: string): Promise<OpportunityLineItem> => {
+      const soql = `SELECT Id,Name, Quantity, UnitPrice, TotalPrice FROM OpportunityLineItem WHERE OpportunityId = '${id}'`;
+
+      const [opportunityLineItem] = await query<OpportunityLineItem>(client, soql).catch((err) => {
+        logger.error({ message: "Opportunity Line Item by ID error", err });
+        return [];
+      });
+
+      return opportunityLineItem;
+    },
+    productsByOpportunityId: async ({ id, where: condition }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
       const products = await query<Product>(client, soql).catch((err) => {
         logger.error({ message: "Products by Opportunity ID error", err });
@@ -35,9 +40,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
       const matches = products?.filter((product) => match(product, condition));
 
-      logger.debug(
-        `${matches.length} ${condition.Family} Products from Opportunity: ${id}`
-      );
+      logger.debug(`${matches.length} ${condition.Family} Products from Opportunity: ${id}`);
 
       return matches;
     },
@@ -47,21 +50,16 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
       const [contact] = await query<Contact>(client, soql).catch((err) => {
         logger.error({ message: "Contact by ID error", err });
-        return [];
+        return null;
       });
 
-      if (!contact.Email) {
-        logger.warn(`No Contact "Email" Found`);
-        contact.Email = "pacholo@mediajel.com";
-      }
-
-      !contact.Email && logger.debug(`Found contact ${contact.Name}`);
       return contact;
     },
 
     accountById: async (id: string): Promise<Account> => {
       if (!id) return;
-      const soql = `SELECT Id, Name, ParentId  FROM Account WHERE Id = '${id}'`;
+      logger.info(`Searching for account with ID: ${id}`);
+      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
         logger.error({ message: "Account By ID error", err });
         return [];
