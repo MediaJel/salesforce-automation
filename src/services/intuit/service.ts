@@ -3,16 +3,26 @@ import QuickBooks from "node-quickbooks";
 import { CreateIntuitServiceInput, QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from "@/utils/types";
 
 const createIntuitService = (input: CreateIntuitServiceInput) => {
+  const {
+    consumerKey = null,
+    consumerSecret = null,
+    withTokenSecret = false,
+    useSandbox = true,
+    enableDebugging = true,
+    minorVersion = null,
+    oAuthVersion = "2.0",
+  } = input;
+
   const client = new QuickBooks(
-    input.consumerKey ?? null,
-    input.consumerSecret ?? null,
+    consumerKey,
+    consumerSecret,
     input.accessToken,
-    input.withTokenSecret ?? false,
+    withTokenSecret,
     input.realmId,
-    input.useSandbox ?? true,
-    input.enableDebugging ?? true,
-    input.minorVersion ?? null,
-    input.oAuthVersion ?? "2.0",
+    useSandbox,
+    enableDebugging,
+    minorVersion,
+    oAuthVersion,
     input.refreshToken
   );
 

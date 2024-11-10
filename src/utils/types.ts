@@ -59,7 +59,7 @@ interface QuickbooksAddressInput {
   Lat: number;
   Long: number;
   CountrySubDivisionCode: string;
-  Id: string;
+  Id: number;
 }
 
 interface QuickbooksEstimateLineInput {
