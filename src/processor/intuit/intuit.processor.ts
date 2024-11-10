@@ -1,10 +1,7 @@
-import QuickBooks from "node-quickbooks";
-
 import config from "@/config";
-import { processorState } from "@/processor";
 import createIntuitService from "@/services/intuit/service";
 import createLogger from "@/utils/logger";
-import { QuickbooksCreateEstimateInput, QuickbooksEstimateResponse, SalesforceClosedWonResource } from "@/utils/types";
+import { SalesforceClosedWonResource } from "@/utils/types";
 import { isProduction } from "@/utils/utils";
 
 const logger = createLogger("Intuit Processor");
