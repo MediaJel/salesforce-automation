@@ -107,6 +107,7 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
       });
       if (!orgCandidates.length) return;
 
+      // TODO: Remove this
       if (contact) {
         orgCandidates[0].user = {
           id: contact.Id,

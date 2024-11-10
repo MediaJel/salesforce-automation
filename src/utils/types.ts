@@ -15,6 +15,20 @@ import createSalesforceStream from "@/services/salesforce/stream";
 import createLogger from "@/utils/logger";
 import { ClientOptions } from "@urql/core";
 
+export interface CreateIntuitServiceInput {
+  consumerKey?: string;
+  consumerSecret?: string;
+  accessToken: string;
+  withTokenSecret?: boolean;
+  realmId: string;
+  useSandbox?: boolean;
+  enableDebugging?: boolean;
+  /**Set minorversion or null for the latest version */
+  minorVersion?: string;
+  oAuthVersion?: string;
+  refreshToken: string;
+}
+
 export interface QuickbooksCreateEstimateInput {
   TotalAmt: number;
   BillEmail: {
@@ -27,7 +41,7 @@ export interface QuickbooksCreateEstimateInput {
   PrintStatus: string;
   EmailStatus: string;
   BillAddr: QuickbooksAddressInput;
-  Line: QuickbooksEstimateLineInput[];
+  Line: Partial<QuickbooksEstimateLineInput>[];
   CustomerRef: {
     name: string;
     value: string;
@@ -41,17 +55,18 @@ export interface QuickbooksCreateEstimateInput {
 interface QuickbooksAddressInput {
   City: string;
   Line1: string;
-  PostalCode: string;
-  Lat: string;
-  Long: string;
+  PostalCode: number;
+  Lat: number;
+  Long: number;
   CountrySubDivisionCode: string;
-  Id: string;
+  Id: number;
 }
 
 interface QuickbooksEstimateLineInput {
   Description?: string;
   DetailType: string;
-  SalesItemLineDetail?: QuickbooksSalesItemLineDetailInput;
+  // TODO: Made this partial, since I don't know yet what is required
+  SalesItemLineDetail?: Partial<QuickbooksSalesItemLineDetailInput>;
   SubTotalLineDetail?: Record<string, unknown>;
   DiscountLineDetail?: QuickbooksDiscountLineDetailInput;
   LineNum?: number;
@@ -67,7 +82,7 @@ interface QuickbooksSalesItemLineDetailInput {
   UnitPrice: number;
   ItemRef: {
     name: string;
-    value: string;
+    value: number;
   };
 }
 
