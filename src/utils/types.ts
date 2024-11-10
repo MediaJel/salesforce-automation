@@ -41,7 +41,7 @@ export interface QuickbooksCreateEstimateInput {
   PrintStatus: string;
   EmailStatus: string;
   BillAddr: QuickbooksAddressInput;
-  Line: QuickbooksEstimateLineInput[];
+  Line: Partial<QuickbooksEstimateLineInput>[];
   CustomerRef: {
     name: string;
     value: string;
@@ -65,7 +65,8 @@ interface QuickbooksAddressInput {
 interface QuickbooksEstimateLineInput {
   Description?: string;
   DetailType: string;
-  SalesItemLineDetail?: QuickbooksSalesItemLineDetailInput;
+  // TODO: Made this partial, since I don't know yet what is required
+  SalesItemLineDetail?: Partial<QuickbooksSalesItemLineDetailInput>;
   SubTotalLineDetail?: Record<string, unknown>;
   DiscountLineDetail?: QuickbooksDiscountLineDetailInput;
   LineNum?: number;
@@ -81,7 +82,7 @@ interface QuickbooksSalesItemLineDetailInput {
   UnitPrice: number;
   ItemRef: {
     name: string;
-    value: string;
+    value: number;
   };
 }
 
