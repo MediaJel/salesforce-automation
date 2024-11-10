@@ -15,6 +15,20 @@ import createSalesforceStream from "@/services/salesforce/stream";
 import createLogger from "@/utils/logger";
 import { ClientOptions } from "@urql/core";
 
+export interface CreateIntuitServiceInput {
+  consumerKey?: string;
+  consumerSecret?: string;
+  accessToken: string;
+  withTokenSecret?: boolean;
+  realmId: string;
+  useSandbox?: boolean;
+  enableDebugging?: boolean;
+  /**Set minorversion or null for the latest version */
+  minorVersion?: string;
+  oAuthVersion?: string;
+  refreshToken: string;
+}
+
 export interface QuickbooksCreateEstimateInput {
   TotalAmt: number;
   BillEmail: {
@@ -41,9 +55,9 @@ export interface QuickbooksCreateEstimateInput {
 interface QuickbooksAddressInput {
   City: string;
   Line1: string;
-  PostalCode: string;
-  Lat: string;
-  Long: string;
+  PostalCode: number;
+  Lat: number;
+  Long: number;
   CountrySubDivisionCode: string;
   Id: string;
 }
