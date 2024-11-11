@@ -6,7 +6,7 @@ import { CreateIntuitServiceInput } from '@/utils/types';
 
 const logger = createLogger("Intuit Service");
 
-interface IntuitService {
+export interface IntuitService {
   customers: ReturnType<typeof createIntuitCustomersService>;
   estimates: ReturnType<typeof createIntuitEstimatesService>;
 }

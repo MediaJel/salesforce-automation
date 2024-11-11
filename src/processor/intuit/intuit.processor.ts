@@ -1,11 +1,28 @@
 import config from '@/config';
-import createIntuitService from '@/services/intuit/service';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
 import createLogger from '@/utils/logger';
 import {
     QuickbooksCreateEstimateInput, QuickbooksEstimateResponse, SalesforceClosedWonResource
 } from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
+
+const processCustomer = async (service: IntuitService, name: string) => {
+  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: name }]);
+
+  if (!results?.QueryResponse?.Customer?.length || results.QueryResponse.Customer.length === 0) {
+    return logger.warn(`No customer found with name: ${name}`);
+  }
+
+  if (results.QueryResponse.Customer.length > 1) {
+    return logger.warn(`Multiple customers found with name: ${name}`);
+    // TODO: Send slack message???
+  }
+
+  if (results.QueryResponse.Customer.length === 1) return results.QueryResponse.Customer[0];
+
+  // TODO: Create customer
+};
 
 const createIntuitProcessor = () => {
   return {
@@ -14,11 +31,7 @@ const createIntuitProcessor = () => {
         const promises = resources.map(async (resource) => {
           const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
-          const customers = await service.customers.find([
-            { field: "DisplayName", operator: "=", value: `Amy's Bird Sanctuary` },
-          ]);
-
-          logger.debug(`Customers: ${JSON.stringify(customers, null, 2)}`);
+          const customer = await processCustomer(service, account.Name);
 
           //TODO: Create customer if not-existing
           const mapping: Partial<QuickbooksCreateEstimateInput> = {
