@@ -1,7 +1,7 @@
-import createIntuitProcessor from '@/processor/intuit/intuit.processor';
-import createMediajelProcessor from '@/processor/mediajel/mediajel.processor';
-import createLogger from '@/utils/logger';
-import { Config, DataProducer, SalesforceClosedWonResource } from '@/utils/types';
+import createIntuitProcessor from "@/processor/intuit/intuit.processor";
+import createMediajelProcessor from "@/processor/mediajel/mediajel.processor";
+import createLogger from "@/utils/logger";
+import { Config, DataProducer, SalesforceClosedWonResource } from "@/utils/types";
 
 const logger = createLogger("Processor");
 
@@ -16,7 +16,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
       logger.info(`Processing Data: ${JSON.stringify(resource, null, 2)}`);
     });
 
-    intuit.process(type, resources);
+    await intuit.process(type, resources);
     // mediajel.process(type, candidates);
   };
 

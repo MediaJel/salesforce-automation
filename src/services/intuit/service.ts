@@ -1,7 +1,7 @@
-import createIntuitAuth from "@/services/intuit/auth";
-import createIntuitEstimatesService from "@/services/intuit/estimates";
-import createLogger from "@/utils/logger";
-import { CreateIntuitServiceInput } from "@/utils/types";
+import createIntuitAuth from '@/services/intuit/auth';
+import createIntuitEstimatesService from '@/services/intuit/estimates';
+import createLogger from '@/utils/logger';
+import { CreateIntuitServiceInput } from '@/utils/types';
 
 const logger = createLogger("Intuit Service");
 
@@ -18,6 +18,8 @@ const createIntuitService = (input: CreateIntuitServiceInput, callback: (service
       .catch((err) => {
         logger.error({ message: "Error authenticating to Intuit", err });
       });
+
+    if (!client) return;
 
     callback({
       estimates: createIntuitEstimatesService(client),

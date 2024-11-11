@@ -1,11 +1,13 @@
-import QuickBooks from "node-quickbooks";
+import QuickBooks from 'node-quickbooks';
 
-import config from "@/config";
-import { processorState } from "@/processor";
-import createIntuitService from "@/services/intuit/service";
-import createLogger from "@/utils/logger";
-import { QuickbooksCreateEstimateInput, QuickbooksEstimateResponse, SalesforceClosedWonResource } from "@/utils/types";
-import { isProduction } from "@/utils/utils";
+import config from '@/config';
+import { processorState } from '@/processor';
+import createIntuitService from '@/services/intuit/service';
+import createLogger from '@/utils/logger';
+import {
+    QuickbooksCreateEstimateInput, QuickbooksEstimateResponse, SalesforceClosedWonResource
+} from '@/utils/types';
+import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
@@ -70,9 +72,14 @@ const createIntuitProcessor = () => {
               },
             ],
           };
-          service.estimates.create(mapping).then((estimate: QuickbooksEstimateResponse) => {
-            logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
-          });
+          service.estimates
+            .create(mapping)
+            .then((estimate: QuickbooksEstimateResponse) => {
+              logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
+            })
+            .catch((err) => {
+              logger.error({ message: "Error creating estimate", err });
+            });
         });
       });
     },
