@@ -1,72 +1,31 @@
-import intuitOAuth2Client from "intuit-oauth";
-import QuickBooks from "node-quickbooks";
-
-import config from "@/config";
+import createIntuitAuth from "@/services/intuit/auth";
+import createIntuitEstimatesService from "@/services/intuit/estimates";
 import createLogger from "@/utils/logger";
-import { CreateIntuitServiceInput, QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from "@/utils/types";
-
-interface IntuitService {
-  createEstimate: (input: Partial<QuickbooksCreateEstimateInput>) => Promise<QuickbooksEstimateResponse>;
-}
+import { CreateIntuitServiceInput } from "@/utils/types";
 
 const logger = createLogger("Intuit Service");
 
-const createIntuitService = (input: CreateIntuitServiceInput) => {
-  const {
-    consumerKey = null,
-    consumerSecret = null,
-    withTokenSecret = false,
-    useSandbox = true,
-    enableDebugging = true,
-    minorVersion = null,
-    oAuthVersion = "2.0",
-  } = input;
+interface IntuitService {
+  estimates: ReturnType<typeof createIntuitEstimatesService>;
+}
 
-  const intuitOAuth2 = new intuitOAuth2Client({
-    clientId: config.intuit.clientId,
-    clientSecret: config.intuit.clientSecret,
-    environment: config.intuit.environment,
-    redirectUri: config.intuit.redirectUri,
-  });
+const createIntuitService = (input: CreateIntuitServiceInput, callback: (service: IntuitService) => void) => {
+  const time = 3600000; // Re-authenticate every hour
 
-  if (!intuitOAuth2.isAccessTokenValid) {
-    logger.debug("Intuit OAuth2 Access Token Invalid, Refreshing");
-
-    intuitOAuth2
-      .refreshUsingToken(config.intuit.refreshToken)
-      .then((auth) => {
-        logger.debug(`Intuit OAuth2 Refreshed: ${JSON.stringify(auth.json, null, 2)}`);
-      })
+  const establishConnection = async () => {
+    const client = await createIntuitAuth(logger)
+      .authenticate(input)
       .catch((err) => {
-        console.log(err);
-        logger.error({ message: "Intuit OAuth2 Refresh Error", error: err.message });
+        logger.error({ message: "Error authenticating to Intuit", err });
       });
-  }
 
-  const client = new QuickBooks(
-    consumerKey,
-    consumerSecret,
-    input.accessToken,
-    withTokenSecret,
-    input.realmId,
-    useSandbox,
-    enableDebugging,
-    minorVersion,
-    oAuthVersion,
-    input.refreshToken
-  );
-
-  return {
-    //TODO: Using a Partial type since I have no idea what is required
-    createEstimate: (input: Partial<QuickbooksCreateEstimateInput>): Promise<QuickbooksEstimateResponse> => {
-      return new Promise((resolve, reject) => {
-        client.createEstimate(input, (err, estimate) => {
-          if (err) reject(err);
-          resolve(estimate as QuickbooksEstimateResponse);
-        });
-      });
-    },
+    callback({
+      estimates: createIntuitEstimatesService(client),
+    });
   };
+
+  establishConnection();
+  setInterval(establishConnection, time);
 };
 
 export default createIntuitService;

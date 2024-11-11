@@ -1,6 +1,6 @@
-import { Connection, ConnectionOptions } from 'jsforce';
+import { Connection, ConnectionOptions } from "jsforce";
 
-import { Logger } from '@/utils/types';
+import { Logger } from "@/utils/types";
 
 const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
   return {
@@ -15,6 +15,8 @@ const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
             reject(err);
           }
         });
+
+        logger.debug(`Salesforce OAuth2 Refreshed: ${JSON.stringify(data, null, 2)}`);
 
         const newClient = new Connection({
           accessToken: data.access_token,
