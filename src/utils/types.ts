@@ -18,16 +18,31 @@ export interface QuickbooksFindCustomersInput {
   operator?: string;
 }
 
+export interface QuickbooksCreateCustomerInput {
+  FullyQualifiedName: string;
+  PrimaryEmailAddr?: QuickbooksEmailAddress;
+  DisplayName: string;
+  Suffix?: string;
+  Title?: string;
+  MiddleName?: string;
+  Notes?: string;
+  FamilyName: string;
+  PrimaryPhone?: QuickbooksPhoneNumber;
+  CompanyName?: string;
+  BillAddr?: QuickbooksAddress;
+  GivenName: string;
+}
+
 export interface QuickbooksFindCustomersResponse {
   QueryResponse: {
-    Customer: QuickbooksCustomer[];
-    startPosition: number;
-    maxResults: number;
+    Customer?: QuickbooksCustomer[];
+    startPosition?: number;
+    maxResults?: number;
   };
   time: string;
 }
 
-interface QuickbooksCustomer {
+export interface QuickbooksCustomer {
   domain: string;
   FamilyName: string;
   DisplayName: string;
