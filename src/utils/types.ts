@@ -1,19 +1,91 @@
-import { ConnectionOptions } from "jsforce";
+import { ConnectionOptions } from 'jsforce';
 
-import createApp from "@/app";
-import createGraphqlService from "@/services/graphql";
+import createApp from '@/app';
+import createGraphqlService from '@/services/graphql';
 import {
-  CreateDashboardUserMutationVariables,
-  CreateOrgMutationVariables,
-  GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdOrEmailQueryVariables,
-  UpdateOrgMutationVariables,
-  User,
-} from "@/services/graphql/generated/graphql";
-import createSalesforceQueries from "@/services/salesforce/query";
-import createSalesforceStream from "@/services/salesforce/stream";
-import createLogger from "@/utils/logger";
-import { ClientOptions } from "@urql/core";
+    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
+    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
+    UpdateOrgMutationVariables, User
+} from '@/services/graphql/generated/graphql';
+import createSalesforceQueries from '@/services/salesforce/query';
+import createSalesforceStream from '@/services/salesforce/stream';
+import createLogger from '@/utils/logger';
+import { ClientOptions } from '@urql/core';
+
+export interface QuickbooksFindCustomersInput {
+  field: string;
+  value: string;
+  operator?: string;
+}
+
+export interface QuickbooksCreateCustomerInput {
+  FullyQualifiedName: string;
+  PrimaryEmailAddr?: QuickbooksEmailAddress;
+  DisplayName: string;
+  Suffix?: string;
+  Title?: string;
+  MiddleName?: string;
+  Notes?: string;
+  FamilyName: string;
+  PrimaryPhone?: QuickbooksPhoneNumber;
+  CompanyName?: string;
+  BillAddr?: QuickbooksAddress;
+  GivenName: string;
+}
+
+export interface QuickbooksFindCustomersResponse {
+  QueryResponse: {
+    Customer?: QuickbooksCustomer[];
+    startPosition?: number;
+    maxResults?: number;
+  };
+  time: string;
+}
+
+export interface QuickbooksCustomer {
+  domain: string;
+  FamilyName: string;
+  DisplayName: string;
+  DefaultTaxCodeRef?: QuickbooksReference;
+  PrimaryEmailAddr?: QuickbooksEmailAddress;
+  PreferredDeliveryMethod: string;
+  GivenName: string;
+  FullyQualifiedName: string;
+  BillWithParent: boolean;
+  Job: boolean;
+  BalanceWithJobs: number;
+  PrimaryPhone?: QuickbooksPhoneNumber;
+  Active: boolean;
+  MetaData: QuickbooksMetaData;
+  BillAddr?: QuickbooksAddress;
+  MiddleName?: string;
+  Notes?: string;
+  Taxable: boolean;
+  Balance: number;
+  SyncToken: string;
+  CompanyName?: string;
+  ShipAddr?: QuickbooksAddress;
+  PrintOnCheckName?: string;
+  sparse?: boolean;
+  Id: string;
+}
+
+interface QuickbooksReference {
+  value: string;
+}
+
+interface QuickbooksEmailAddress {
+  Address: string;
+}
+
+interface QuickbooksPhoneNumber {
+  FreeFormNumber: string;
+}
+
+interface QuickbooksMetaData {
+  CreateTime: string;
+  LastUpdatedTime: string;
+}
 
 export interface CreateIntuitServiceInput {
   consumerKey?: string;
