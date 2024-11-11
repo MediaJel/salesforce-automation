@@ -1,5 +1,6 @@
 import config from '@/config';
 import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
     QuickbooksCreateEstimateInput, QuickbooksCustomer, QuickbooksEstimateResponse,
@@ -46,7 +47,7 @@ const processEstimate = async (
   service: IntuitService,
   customer: QuickbooksCustomer,
   resource: SalesforceClosedWonResource
-) => {
+): Promise<QuickbooksEstimateResponse> => {
   const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
@@ -106,14 +107,18 @@ const processEstimate = async (
       },
     ],
   };
-  service.estimates
-    .create(mapping)
-    .then((estimate: QuickbooksEstimateResponse) => {
-      logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
-    })
-    .catch((err) => {
-      logger.error({ message: "Error creating estimate", err });
-    });
+  const estimate = await service.estimates.create(mapping).catch((err) => {
+    logger.error({ message: "Error creating estimate", err });
+  });
+
+  if (!estimate) {
+    logger.error({ message: "Error creating estimate" });
+    return null;
+  }
+
+  logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
+
+  return estimate;
 };
 
 const createIntuitProcessor = () => {
@@ -124,11 +129,16 @@ const createIntuitProcessor = () => {
           const customer = await processCustomer(service, resource.account.Name);
           if (!customer) return logger.warn(`Customer not found for account: ${resource.account.Name}`);
           const estimate = await processEstimate(service, customer, resource);
+          if (!estimate) return logger.warn(`Estimate not created for account: ${resource.account.Name}`);
 
           return estimate;
         });
 
         const data = await Promise.all(processes);
+
+        logger.info(`Completed processing resources: ${JSON.stringify(data, null, 2)}`);
+
+        SalesforceService(config.salesforce, async (_, svc) => {});
 
         // TODO: Attach data to DBSync in salesforce
       });
