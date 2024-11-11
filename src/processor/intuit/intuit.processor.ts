@@ -120,6 +120,8 @@ const createIntuitProcessor = () => {
           const customer = await processCustomer(service, resource.account.Name);
           if (!customer) return logger.warn(`Customer not found for account: ${resource.account.Name}`);
           const estimate = await processEstimate(service,customer, resource);
+
+          return estimate
         });
 
         await Promise.all(promises);

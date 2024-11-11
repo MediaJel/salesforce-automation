@@ -1,7 +1,7 @@
-import createIntuitProcessor from "@/processor/intuit/intuit.processor";
-import createMediajelProcessor from "@/processor/mediajel/mediajel.processor";
-import createLogger from "@/utils/logger";
-import { Config, DataProducer, SalesforceClosedWonResource } from "@/utils/types";
+import createIntuitProcessor from '@/processor/intuit/intuit.processor';
+import createMediajelProcessor from '@/processor/mediajel/mediajel.processor';
+import createLogger from '@/utils/logger';
+import { Config, DataProducer, SalesforceClosedWonResource } from '@/utils/types';
 
 const logger = createLogger("Processor");
 
@@ -13,7 +13,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
 
   const process = async (type: string, resources: SalesforceClosedWonResource[]) => {
     resources.forEach((resource) => {
-      logger.info(`Processing Data: ${JSON.stringify(resource, null, 2)}`);
+      logger.info(`Received Closed Won resource: ${JSON.stringify(resource, null, 2)}`);
     });
 
     await intuit.process(type, resources);
