@@ -1,23 +1,26 @@
-import QuickBooks from 'node-quickbooks';
-
 import config from '@/config';
-import { processorState } from '@/processor';
 import createIntuitService from '@/services/intuit/service';
 import createLogger from '@/utils/logger';
 import {
     QuickbooksCreateEstimateInput, QuickbooksEstimateResponse, SalesforceClosedWonResource
 } from '@/utils/types';
-import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
 const createIntuitProcessor = () => {
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      createIntuitService(config.intuit, (service) => {
-        resources.forEach((resource) => {
+      createIntuitService(config.intuit, async (service) => {
+        const promises = resources.map(async (resource) => {
           const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
+          const customers = await service.customers.find([
+            { field: "DisplayName", operator: "=", value: `Amy's Bird Sanctuary` },
+          ]);
+
+          logger.debug(`Customers: ${JSON.stringify(customers, null, 2)}`);
+
+          //TODO: Create customer if not-existing
           const mapping: Partial<QuickbooksCreateEstimateInput> = {
             TotalAmt: opportunity.Amount,
 
@@ -45,10 +48,12 @@ const createIntuitProcessor = () => {
               CountrySubDivisionCode: account.BillingCountryCode,
             },
             //* Currently static, to handle the auto creation of customers if non-existing
+            //* What do we use to map customers?
             CustomerRef: {
               name: "Amy's Bird Sanctuary",
               value: "1",
             },
+
             //* TODO: Needs more clarification due to "OpportunityOpportunityLineItems.records"
             //* Right now, only creating 1 line item
             Line: [
@@ -59,6 +64,7 @@ const createIntuitProcessor = () => {
                 DetailType: "SalesItemLineDetail",
                 //* Amount shouuld contain the sum of totalprice of opportunityLineItem Question where the records is on OpportunityLineItem
                 Amount: opportunityLineItem.TotalPrice,
+                Description: products[0].Description,
                 SalesItemLineDetail: {
                   Qty: opportunityLineItem.Quantity,
                   UnitPrice: opportunityLineItem.UnitPrice,
@@ -81,6 +87,8 @@ const createIntuitProcessor = () => {
               logger.error({ message: "Error creating estimate", err });
             });
         });
+
+        await Promise.all(promises);
       });
     },
   };

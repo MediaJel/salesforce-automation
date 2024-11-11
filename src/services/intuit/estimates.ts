@@ -1,8 +1,5 @@
-import { QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from "@/utils/types";
+import { QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from '@/utils/types';
 
-export interface IntuitEstimatesService {
-  createEstimate: (input: Partial<QuickbooksCreateEstimateInput>) => Promise<QuickbooksEstimateResponse>;
-}
 //* Client is any since node-quickbooks don't got types
 const createIntuitEstimatesService = (client: any) => {
   return {
