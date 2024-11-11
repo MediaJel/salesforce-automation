@@ -138,9 +138,10 @@ const createIntuitProcessor = () => {
 
         logger.info(`Completed processing resources: ${JSON.stringify(data, null, 2)}`);
 
-        SalesforceService(config.salesforce, async (_, svc) => {});
-
         // TODO: Attach data to DBSync in salesforce
+        SalesforceService(config.salesforce, async (_, svc) => {
+          data.map(async (estimate) => {});
+        });
       });
     },
   };
