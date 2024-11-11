@@ -42,7 +42,11 @@ const processCustomer = async (service: IntuitService, name: string): Promise<Qu
   }
 };
 
-const processEstimate = async (service: IntuitService, customer: QuickbooksCustomer, resource: SalesforceClosedWonResource) => {
+const processEstimate = async (
+  service: IntuitService,
+  customer: QuickbooksCustomer,
+  resource: SalesforceClosedWonResource
+) => {
   const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
@@ -116,15 +120,17 @@ const createIntuitProcessor = () => {
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       createIntuitService(config.intuit, async (service) => {
-        const promises = resources.map(async (resource) => {
+        const processes = resources.map(async (resource) => {
           const customer = await processCustomer(service, resource.account.Name);
           if (!customer) return logger.warn(`Customer not found for account: ${resource.account.Name}`);
-          const estimate = await processEstimate(service,customer, resource);
+          const estimate = await processEstimate(service, customer, resource);
 
-          return estimate
+          return estimate;
         });
 
-        await Promise.all(promises);
+        const data = await Promise.all(processes);
+
+        // TODO: Attach data to DBSync in salesforce
       });
     },
   };
