@@ -43,14 +43,14 @@ const listenToOpportunities = async (
   });
 };
 
-const handleOrgCandidateHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
+const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
   const { svc, logger, account, opportunity, contact, products, opportunityLineItem } = opts;
   const resources: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
 
   if (parent) {
-    const parentOrg = await handleOrgCandidateHierarchy({
+    const parentOrg = await handleResourcesHierarchy({
       ...opts,
       account: parent,
     });
@@ -97,7 +97,7 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
       const opportunityLineItem = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
       if (!opportunityLineItem) return logger.warn("No Opportunity Line Item");
 
-      const orgCandidates = await handleOrgCandidateHierarchy({
+      const resources = await handleResourcesHierarchy({
         ...params,
         account,
         opportunity: opp,
@@ -105,11 +105,11 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
         contact: contact,
         products: products,
       });
-      if (!orgCandidates.length) return;
+      if (!resources.length) return;
 
       // TODO: Remove this
       if (contact) {
-        orgCandidates[0].user = {
+        resources[0].user = {
           id: contact.Id,
           name: contact.Name,
           email: contact.Email,
@@ -119,7 +119,7 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
       }
 
       // Organize the array starting from the highest parent account to the lowest child account
-      const sorted = orgCandidates.reverse().sort((a, b) => {
+      const sorted = resources.reverse().sort((a, b) => {
         if (a.parentId === b.id) return 1;
         if (a.id === b.parentId) return -1;
         return 0;

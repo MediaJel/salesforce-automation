@@ -1,6 +1,13 @@
 import QuickBooks from "node-quickbooks";
 
+import createLogger from "@/utils/logger";
 import { CreateIntuitServiceInput, QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from "@/utils/types";
+
+interface IntuitService {
+  createEstimate: (input: Partial<QuickbooksCreateEstimateInput>) => Promise<QuickbooksEstimateResponse>;
+}
+
+const logger = createLogger("Intuit Service");
 
 const createIntuitService = (input: CreateIntuitServiceInput) => {
   const {
@@ -13,6 +20,18 @@ const createIntuitService = (input: CreateIntuitServiceInput) => {
     oAuthVersion = "2.0",
   } = input;
 
+  logger.debug({
+    consumerKey,
+    consumerSecret,
+    accessToken: input.accessToken,
+    withTokenSecret,
+    realmId: input.realmId,
+    useSandbox,
+    enableDebugging,
+    minorVersion,
+    oAuthVersion,
+    refreshToken: input.refreshToken,
+  });
   const client = new QuickBooks(
     consumerKey,
     consumerSecret,
