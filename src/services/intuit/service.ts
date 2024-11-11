@@ -1,5 +1,7 @@
+import intuitOAuth2Client from "intuit-oauth";
 import QuickBooks from "node-quickbooks";
 
+import config from "@/config";
 import createLogger from "@/utils/logger";
 import { CreateIntuitServiceInput, QuickbooksCreateEstimateInput, QuickbooksEstimateResponse } from "@/utils/types";
 
@@ -20,18 +22,27 @@ const createIntuitService = (input: CreateIntuitServiceInput) => {
     oAuthVersion = "2.0",
   } = input;
 
-  logger.debug({
-    consumerKey,
-    consumerSecret,
-    accessToken: input.accessToken,
-    withTokenSecret,
-    realmId: input.realmId,
-    useSandbox,
-    enableDebugging,
-    minorVersion,
-    oAuthVersion,
-    refreshToken: input.refreshToken,
+  const intuitOAuth2 = new intuitOAuth2Client({
+    clientId: config.intuit.clientId,
+    clientSecret: config.intuit.clientSecret,
+    environment: config.intuit.environment,
+    redirectUri: config.intuit.redirectUri,
   });
+
+  if (!intuitOAuth2.isAccessTokenValid) {
+    logger.debug("Intuit OAuth2 Access Token Invalid, Refreshing");
+
+    intuitOAuth2
+      .refreshUsingToken(config.intuit.refreshToken)
+      .then((auth) => {
+        logger.debug(`Intuit OAuth2 Refreshed: ${JSON.stringify(auth.json, null, 2)}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        logger.error({ message: "Intuit OAuth2 Refresh Error", error: err.message });
+      });
+  }
+
   const client = new QuickBooks(
     consumerKey,
     consumerSecret,
