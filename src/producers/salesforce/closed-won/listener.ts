@@ -20,7 +20,7 @@ interface HandleHierarchyParams {
   svc: SalesforceService;
   logger: Logger;
   opportunity: Opportunity;
-  opportunityLineItem: OpportunityLineItem;
+  opportunityLineItems: OpportunityLineItem[];
   account: Account;
   contact: Contact;
   products: Product[];
@@ -38,7 +38,7 @@ const listenToOpportunities = async (
 };
 
 const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
-  const { svc, logger, account, opportunity, contact, products, opportunityLineItem } = opts;
+  const { svc, logger, account, opportunity, contact, products, opportunityLineItems } = opts;
   const resources: SalesforceClosedWonResource[] = [];
 
   const parent = await svc.query.accountById(account.ParentId);
@@ -56,7 +56,7 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
     contact,
     products,
     account,
-    opportunityLineItem,
+    opportunityLineItems,
     parentId: account?.ParentId || null,
     parentName: parent?.Name || null,
     // Legacy types, mainly here for the GraphQL processor
@@ -87,14 +87,14 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
       const contact = await svc.query.contactById(opp.Deal_Signatory__c);
       if (!contact) return logger.warn("No Contact");
 
-      const opportunityLineItem = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
-      if (!opportunityLineItem) return logger.warn("No Opportunity Line Item");
+      const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
+      if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
 
       const resources = await handleResourcesHierarchy({
         ...params,
         account,
         opportunity: opp,
-        opportunityLineItem,
+        opportunityLineItems,
         contact: contact,
         products: products,
       });

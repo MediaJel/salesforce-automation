@@ -302,7 +302,7 @@ export interface SalesforceClosedWonResourceListener {
 
 export interface SalesforceClosedWonResource {
   opportunity: Opportunity;
-  opportunityLineItem: OpportunityLineItem;
+  opportunityLineItems: OpportunityLineItem[];
   account: Account;
   contact: Contact;
   products: Product[];

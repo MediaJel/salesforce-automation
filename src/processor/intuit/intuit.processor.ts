@@ -87,8 +87,9 @@ const processEstimate = async (
   customer: QuickbooksCustomer,
   resource: SalesforceClosedWonResource
 ): Promise<QuickbooksEstimate> => {
-  const { opportunity, account, contact, opportunityLineItem, products } = resource;
+  const { opportunity, account, contact, opportunityLineItems, products } = resource;
 
+  const aggregate = [...products, ...opportunityLineItems];
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
     TotalAmt: opportunity.Amount,
 
@@ -115,36 +116,49 @@ const processEstimate = async (
       Long: account.BillingLongitude,
       CountrySubDivisionCode: account.BillingCountryCode,
     },
-    //* Currently static, to handle the auto creation of customers if non-existing
-    //* What do we use to map customers?
     CustomerRef: {
       name: customer.DisplayName,
       value: customer.Id,
     },
 
-    //* TODO: Needs more clarification due to "OpportunityOpportunityLineItems.records"
-    //* Right now, only creating 1 line item
-    Line: [
-      {
-        //* According to Warren's Mapping, is important for this to be "1"?
-        Id: "1",
-        //* Ask what Salesforce data maps to DetailType to Provide here??
-        DetailType: "SalesItemLineDetail",
-        //* Amount shouuld contain the sum of totalprice of opportunityLineItem Question where the records is on OpportunityLineItem
-        Amount: opportunityLineItem.TotalPrice,
-        Description: products[0].Description,
-        SalesItemLineDetail: {
-          Qty: opportunityLineItem.Quantity,
-          UnitPrice: opportunityLineItem.UnitPrice,
-          //* TODO: Only uses 1 product for now
-          ItemRef: {
-            name: products[0].Name,
-            //* IremRef.Value expects a number but ProductCode is a string
-            value: 1,
-          },
+    Line: opportunityLineItems.map((opportunityLineItem, i) => ({
+      Id: (i + 1).toString(),
+      DetailType: "SalesItemLineDetail",
+      Amount: opportunityLineItem.TotalPrice,
+      Description: products[i].Description,
+      SalesItemLineDetail: {
+        Qty: opportunityLineItem.Quantity,
+        UnitPrice: opportunityLineItem.UnitPrice,
+        ItemRef: {
+          name: products[i].Name,
+          value: 1,
         },
       },
-    ],
+    })),
+
+    //* TODO: Needs more clarification due to "OpportunityOpportunityLineItems.records"
+    //* Right now, only creating 1 line item
+    // Line: [
+    //   {
+    //     //* According to Warren's Mapping, is important for this to be "1"?
+    //     Id: "1",
+    //     //* Ask what Salesforce data maps to DetailType to Provide here??
+    //     DetailType: "SalesItemLineDetail",
+    //     //* Amount shouuld contain the sum of totalprice of opportunityLineItem Question where the records is on OpportunityLineItem
+    //     Amount: opportunityLineItem.TotalPrice,
+    //     Description: products[0].Description,
+    //     SalesItemLineDetail: {
+    //       Qty: opportunityLineItem.Quantity,
+    //       UnitPrice: opportunityLineItem.UnitPrice,
+    //       //* TODO: Only uses 1 product for now
+    //       ItemRef: {
+    //         name: products[0].Name,
+    //         //* IremRef.Value expects a number but ProductCode is a string
+    //         value: 1,
+    //       },
+    //     },
+    //   },
+    // ],
   };
   const estimate = await service.estimates.create(mapping);
 
