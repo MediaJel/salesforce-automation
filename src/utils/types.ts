@@ -1,34 +1,317 @@
-import {
-  CreateDashboardUserMutationVariables,
-  CreateOrgMutationVariables,
-  GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdOrEmailQueryVariables,
-  UpdateOrgMutationVariables,
-  User,
-} from "@/services/graphql/generated/graphql";
-import { ConnectionOptions } from "jsforce";
-import { ClientOptions } from "@urql/core";
+import { ConnectionOptions } from 'jsforce';
 
-import createSalesforceQueries from "@/services/salesforce/query";
-import createSalesforceStream from "@/services/salesforce/stream";
-import createGraphqlService from "@/services/graphql";
-import createApp from "@/app";
-import createLogger from "@/utils/logger";
+import createApp from '@/app';
+import createGraphqlService from '@/services/graphql';
+import {
+    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
+    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
+    UpdateOrgMutationVariables, User
+} from '@/services/graphql/generated/graphql';
+import createSalesforceMutations from '@/services/salesforce/mutations';
+import createSalesforceQueries from '@/services/salesforce/query';
+import createSalesforceStream from '@/services/salesforce/stream';
+import createLogger from '@/utils/logger';
+import { ClientOptions } from '@urql/core';
+
+export interface QuickbooksFindCustomersInput {
+  field: string;
+  value: string;
+  operator?: string;
+}
+
+export interface QuickbooksCreateCustomerInput {
+  FullyQualifiedName: string;
+  PrimaryEmailAddr?: QuickbooksEmailAddress;
+  DisplayName: string;
+  Suffix?: string;
+  Title?: string;
+  MiddleName?: string;
+  Notes?: string;
+  FamilyName: string;
+  PrimaryPhone?: QuickbooksPhoneNumber;
+  CompanyName?: string;
+  BillAddr?: QuickbooksAddress;
+  GivenName: string;
+  //* TODO: Tentative
+  Job?: boolean;
+  ParentRef?: {
+    value: string;
+  };
+}
+
+export interface QuickbooksFindCustomersResponse {
+  QueryResponse: {
+    Customer?: QuickbooksCustomer[];
+    startPosition?: number;
+    maxResults?: number;
+  };
+  time: string;
+}
+
+export interface QuickbooksCustomer {
+  domain: string;
+  FamilyName: string;
+  DisplayName: string;
+  DefaultTaxCodeRef?: QuickbooksReference;
+  PrimaryEmailAddr?: QuickbooksEmailAddress;
+  PreferredDeliveryMethod: string;
+  GivenName: string;
+  FullyQualifiedName: string;
+  BillWithParent: boolean;
+  Job: boolean;
+  BalanceWithJobs: number;
+  PrimaryPhone?: QuickbooksPhoneNumber;
+  Active: boolean;
+  MetaData: QuickbooksMetaData;
+  BillAddr?: QuickbooksAddress;
+  MiddleName?: string;
+  Notes?: string;
+  Taxable: boolean;
+  Balance: number;
+  SyncToken: string;
+  CompanyName?: string;
+  ShipAddr?: QuickbooksAddress;
+  PrintOnCheckName?: string;
+  sparse?: boolean;
+  Id: string;
+}
+
+interface QuickbooksReference {
+  value: string;
+}
+
+interface QuickbooksEmailAddress {
+  Address: string;
+}
+
+interface QuickbooksPhoneNumber {
+  FreeFormNumber: string;
+}
+
+interface QuickbooksMetaData {
+  CreateTime: string;
+  LastUpdatedTime: string;
+}
+
+export interface CreateIntuitServiceInput {
+  consumerKey?: string;
+  consumerSecret?: string;
+  accessToken: string;
+  withTokenSecret?: boolean;
+  realmId: string;
+  useSandbox?: boolean;
+  enableDebugging?: boolean;
+  /**Set minorversion or null for the latest version */
+  minorVersion?: string;
+  oAuthVersion?: string;
+  refreshToken: string;
+}
+
+export interface QuickbooksCreateEstimateInput {
+  TotalAmt: number;
+  BillEmail: {
+    Address: string;
+  };
+  CustomerMemo: {
+    value: string;
+  };
+  ShipAddr: QuickbooksAddressInput;
+  PrintStatus: string;
+  EmailStatus: string;
+  BillAddr: QuickbooksAddressInput;
+  Line: Partial<QuickbooksEstimateLineInput>[];
+  CustomerRef: {
+    name: string;
+    value: string;
+  };
+  TxnTaxDetail: {
+    TotalTax: number;
+  };
+  ApplyTaxAfterDiscount: boolean;
+}
+
+interface QuickbooksAddressInput {
+  City: string;
+  Line1: string;
+  PostalCode: number;
+  Lat: number;
+  Long: number;
+  CountrySubDivisionCode: string;
+  Id: number;
+}
+
+interface QuickbooksEstimateLineInput {
+  Description?: string;
+  DetailType: string;
+  // TODO: Made this partial, since I don't know yet what is required
+  SalesItemLineDetail?: Partial<QuickbooksSalesItemLineDetailInput>;
+  SubTotalLineDetail?: Record<string, unknown>;
+  DiscountLineDetail?: QuickbooksDiscountLineDetailInput;
+  LineNum?: number;
+  Amount: number;
+  Id?: string;
+}
+
+interface QuickbooksSalesItemLineDetailInput {
+  TaxCodeRef: {
+    value: string;
+  };
+  Qty: number;
+  UnitPrice: number;
+  ItemRef: {
+    name: string;
+    value: number;
+  };
+}
+
+interface QuickbooksDiscountLineDetailInput {
+  DiscountAccountRef: {
+    name: string;
+    value: string;
+  };
+  PercentBased: boolean;
+  DiscountPercent: number;
+}
+
+export interface QuickbooksEstimateResponse {
+  QueryResponse: {
+    Estimate: QuickbooksEstimate[];
+    startPosition: number;
+    maxResults: number;
+  };
+  time: string;
+}
+
+export interface QuickbooksEstimate {
+  domain: string;
+  sparse: boolean;
+  Id: string;
+  SyncToken: string;
+  MetaData: {
+    CreateTime: string;
+    LastUpdatedTime: string;
+  };
+  CustomField: any[];
+  DocNumber: string;
+  TxnDate: string;
+  CurrencyRef: {
+    value: string;
+    name: string;
+  };
+  TxnStatus: string;
+  LinkedTxn: QuickbooksLinkedTransaction[];
+  Line: QuickbooksEstimateLine[];
+  TxnTaxDetail: {
+    TxnTaxCodeRef?: {
+      value: string;
+    };
+    TotalTax: number;
+    TaxLine?: QuickbooksTaxLine[];
+  };
+  CustomerRef: {
+    value: string;
+    name: string;
+  };
+  CustomerMemo: {
+    value: string;
+  };
+  BillAddr: QuickbooksAddress;
+  ShipAddr: QuickbooksAddress;
+  FreeFormAddress: boolean;
+  TotalAmt: number;
+  ApplyTaxAfterDiscount: boolean;
+  PrintStatus: string;
+  EmailStatus: string;
+  BillEmail: {
+    Address: string;
+  };
+  DeliveryInfo?: {
+    DeliveryType: string;
+  };
+}
+
+interface QuickbooksLinkedTransaction {
+  TxnId: string;
+  TxnType: string;
+}
+
+interface QuickbooksEstimateLine {
+  Id?: string;
+  LineNum?: number;
+  Description?: string;
+  Amount: number;
+  DetailType: string;
+  SalesItemLineDetail?: QuickbooksSalesItemLineDetail;
+  SubTotalLineDetail?: Record<string, unknown>;
+}
+
+interface QuickbooksSalesItemLineDetail {
+  ItemRef: {
+    value: string;
+    name: string;
+  };
+  UnitPrice: number;
+  Qty: number;
+  ItemAccountRef: {
+    value: string;
+    name: string;
+  };
+  TaxCodeRef: {
+    value: string;
+  };
+}
+
+interface QuickbooksTaxLine {
+  Amount: number;
+  DetailType: string;
+  TaxLineDetail: QuickbooksTaxLineDetail;
+}
+
+interface QuickbooksTaxLineDetail {
+  TaxRateRef: {
+    value: string;
+  };
+  PercentBased: boolean;
+  TaxPercent: number;
+  NetAmountTaxable: number;
+}
+
+interface QuickbooksAddress {
+  Id: string;
+  Line1: string;
+  Line2?: string;
+  Line3?: string;
+  Line4?: string;
+  City?: string;
+  CountrySubDivisionCode?: string;
+  PostalCode?: string;
+  Lat: string;
+  Long: string;
+}
 
 export interface DataProducer {
-  orgs: OrgCreationEventListener;
+  closedWon: SalesforceClosedWonResourceListener;
 }
 
-export interface OrgCreationEventListener {
-  display: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  search: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
-  seo: (cb: (orgs: OrgCreationCandidate[]) => void) => void;
+export interface SalesforceClosedWonResourceListener {
+  all: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  display: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  search: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
+  seo: (cb: (orgs: SalesforceClosedWonResource[]) => void) => void;
 }
 
-export interface OrgCreationCandidate {
+export interface SalesforceClosedWonResource {
+  opportunity: Opportunity;
+  opportunityLineItems: OpportunityLineItem[];
+  account: Account;
+  contact: Contact;
+  products: Product[];
+  parentId?: string;
+  parentName?: string;
+  // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;
-  description: string;
+  amount: number;
   user?: {
     id: string;
     name: string;
@@ -36,12 +319,11 @@ export interface OrgCreationCandidate {
     username: string;
     phone: string;
   };
-  parentId?: string;
 }
 
-export type OrgCreationCandidateWithUsers = OrgCreationCandidate & {};
+export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
 
-export interface OrgCreationEventListenerParams {
+export interface SalesforceClosedWonEventListenerParams {
   config: Config;
   logger: Logger;
 }
@@ -111,6 +393,17 @@ export interface Product {
   Id: string;
   Name: string;
   Family: string;
+  ProductCode: string;
+  Description: string;
+  attributes: PushTopicRecordAttributes;
+}
+
+export interface OpportunityLineItem {
+  Id: string;
+  Name: string;
+  Quantity: number;
+  UnitPrice: number;
+  TotalPrice: number;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -118,6 +411,17 @@ export interface Account {
   Id: string;
   Name: string;
   ParentId: string;
+  ShippingCity: string;
+  ShippingStreet: string;
+  ShippingPostalCode: number;
+  ShippingLatitude: number;
+  ShippingLongitude: number;
+  BillingCity: string;
+  BillingStreet: string;
+  BillingPostalCode: number;
+  BillingLatitude: number;
+  BillingLongitude: number;
+  BillingCountryCode: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -129,20 +433,15 @@ export interface PushTopicRecordAttributes {
 export interface SalesforceService {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
+  mutation: ReturnType<typeof createSalesforceMutations>;
 }
 
-export type FindOrCreateOrgParams = Pick<
-  CreateOrgMutationVariables,
-  "name" | "description" | "salesforceId"
-> &
+export type FindOrCreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
   GetOrgBySalesforceIdQueryVariables & {
     salesforceParentId?: string;
   };
 
-export type CreateOrgParams = Pick<
-  CreateOrgMutationVariables,
-  "name" | "description" | "salesforceId"
-> &
+export type CreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
   GetOrgBySalesforceIdQueryVariables & {
     parentOrgId?: string;
   };
@@ -157,11 +456,21 @@ export type UpdateOrgParams = UpdateOrgMutationVariables;
 
 export type QueryAttribute = { attributes: PushTopicRecordAttributes };
 
+interface IntuitConfig {
+  clientId: string;
+  clientSecret: string;
+  redirectUri: string;
+  environment: "sandbox" | "production";
+  accessToken: string;
+  refreshToken: string;
+  realmId: string;
+}
 export interface Config {
   salesforce: SalesforceConfig;
   graphql: GraphQLConfig;
   server: ExpressServerConfig;
   logLevel: LogLevel;
+  intuit: IntuitConfig;
 }
 
 export type AppConfig = {
@@ -172,7 +481,9 @@ export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 export type Logger = ReturnType<typeof createLogger>;
 
-export type SalesforceConfig = ConnectionOptions;
+export type SalesforceConfig = ConnectionOptions & {
+  salesforceChannel: "live" | "test";
+};
 
 export type ExpressServerConfig = {
   port: number;
@@ -184,8 +495,7 @@ export type GraphQLConfig = ClientOptions & { X_API_KEY: string };
 export type GraphQLService = ReturnType<typeof createGraphqlService>;
 
 export type Org = Awaited<
-  | ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]>
-  | ReturnType<GraphQLService["mutations"]["createOrg"]>
+  ReturnType<GraphQLService["queries"]["getOrgBySalesforceId"]> | ReturnType<GraphQLService["mutations"]["createOrg"]>
 >;
 
 export type App = ReturnType<typeof createApp>;

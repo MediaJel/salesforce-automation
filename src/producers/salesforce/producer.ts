@@ -1,12 +1,12 @@
-import { Config, DataProducer } from "@/utils/types";
-import createOrgCreationEventListener from "@/producers/salesforce/orgs";
+import createSalesforceClosedWonEventListener from "@/producers/salesforce/closed-won";
 import createLogger from "@/utils/logger";
+import { Config, DataProducer } from "@/utils/types";
 
 const logger = createLogger("Salesforce Producer");
 
 const createSalesforceProducer = (config: Config): DataProducer => {
   return {
-    orgs: createOrgCreationEventListener({ config, logger }),
+    closedWon: createSalesforceClosedWonEventListener({ config, logger }),
   };
 };
 

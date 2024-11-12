@@ -1,10 +1,11 @@
-import { Connection, ConnectionOptions } from "jsforce";
-import { SalesforceService } from "@/utils/types";
+import { Connection, ConnectionOptions } from 'jsforce';
 
-import createSalesforceQueries from "@/services/salesforce/query";
-import createSalesforceAuth from "@/services/salesforce/auth";
-import createSalesforceStream from "@/services/salesforce/stream";
-import createLogger from "@/utils/logger";
+import createSalesforceAuth from '@/services/salesforce/auth';
+import createSalesforceMutations from '@/services/salesforce/mutations';
+import createSalesforceQueries from '@/services/salesforce/query';
+import createSalesforceStream from '@/services/salesforce/stream';
+import createLogger from '@/utils/logger';
+import { SalesforceService } from '@/utils/types';
 
 /**
  * Create a SalesforceService instance. Authentication &
@@ -31,11 +32,12 @@ const SalesforceService = (
       .authenticate()
       .catch((err) => {
         logger.error({ message: "Error authenticating to Salesforce", err });
-        throw new Error(err);
       });
+    if (!client) return;
 
     callback(client, {
       query: createSalesforceQueries(client, logger),
+      mutation: createSalesforceMutations(client, logger),
       stream: createSalesforceStream(client, logger),
     });
   };

@@ -1,15 +1,11 @@
+import createSalesforceListener from '@/producers/salesforce/closed-won/listener';
 import {
-  OrgCreationEventListenerParams,
-  SalesforceChannel,
-  SalesforceStreamSubscriptionParams,
-} from "@/utils/types";
-import { isDeployed } from "@/utils/utils";
-
-import createSalesforceListener from "@/producers/salesforce/orgs/listener";
+    SalesforceChannel, SalesforceClosedWonEventListenerParams, SalesforceStreamSubscriptionParams
+} from '@/utils/types';
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
-  replayId: -2,
+  replayId: -1,
 };
 
 const test: SalesforceStreamSubscriptionParams = {
@@ -17,13 +13,14 @@ const test: SalesforceStreamSubscriptionParams = {
   replayId: -1,
 };
 
-const createSalesforceOrgCreationEventListener = ({
-  config,
-  logger,
-}: OrgCreationEventListenerParams) => {
-  const topic = isDeployed ? live : test;
+const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
+  // Live vs Test mainly relies on the "is_Active__c" field in Salesforce
+  // if opportunity is active, it's live, otherwise it's test
+  const topic = config.salesforce.salesforceChannel === "live" ? live : test;
+  logger.info(`Listening to Salesforce channel: ${topic.channel}`);
   const listenerParams = { config, logger, topic };
   return {
+    all: createSalesforceListener({ ...listenerParams }),
     display: createSalesforceListener({
       ...listenerParams,
       condition: {
@@ -48,4 +45,4 @@ const createSalesforceOrgCreationEventListener = ({
   };
 };
 
-export default createSalesforceOrgCreationEventListener;
+export default createSalesforceClosedWonEventListener;
