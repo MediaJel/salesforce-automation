@@ -7,9 +7,6 @@ import {
 import { match } from '@/utils/utils';
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
-  client.update({
-    
-  })
   return new Promise<T[]>((resolve, reject) => {
     client.query(query, {}, (err, result) => {
       if (err) reject(err);
@@ -23,15 +20,15 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
 const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
     // TODO: Always blank
-    opportunityLineItemByOpportunityId: async (id: string): Promise<OpportunityLineItem> => {
+    opportunityLineItemByOpportunityId: async (id: string): Promise<OpportunityLineItem[]> => {
       const soql = `SELECT Id,Name, Quantity, UnitPrice, TotalPrice FROM OpportunityLineItem WHERE OpportunityId = '${id}'`;
 
-      const [opportunityLineItem] = await query<OpportunityLineItem>(client, soql).catch((err) => {
+      const opportunityLineItems = await query<OpportunityLineItem>(client, soql).catch((err) => {
         logger.error({ message: "Opportunity Line Item by ID error", err });
         return [];
       });
 
-      return opportunityLineItem;
+      return opportunityLineItems;
     },
     productsByOpportunityId: async ({ id, where: condition }: ProductsByOpportunityIdParams): Promise<Product[]> => {
       const soql = `SELECT Id, Name, Family, Description, ProductCode FROM Product2 WHERE Id IN (SELECT Product2Id FROM OpportunityLineItem WHERE OpportunityId = '${id}')`;
