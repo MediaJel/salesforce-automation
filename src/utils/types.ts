@@ -32,6 +32,11 @@ export interface QuickbooksCreateCustomerInput {
   CompanyName?: string;
   BillAddr?: QuickbooksAddress;
   GivenName: string;
+  //* TODO: Tentative
+  Job?: boolean;
+  ParentRef?: {
+    value: string;
+  };
 }
 
 export interface QuickbooksFindCustomersResponse {

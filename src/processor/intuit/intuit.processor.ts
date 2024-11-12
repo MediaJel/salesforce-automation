@@ -3,36 +3,46 @@ import createIntuitService, { IntuitService } from '@/services/intuit/service';
 import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
-    QuickbooksCreateEstimateInput, QuickbooksCustomer, QuickbooksEstimate,
-    QuickbooksEstimateResponse, SalesforceClosedWonResource
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
 } from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
-const processCustomer = async (service: IntuitService, name: string): Promise<QuickbooksCustomer> => {
-  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: name }]);
+const processCustomer = async (
+  service: IntuitService,
+  input: Partial<QuickbooksCreateCustomerInput>
+): Promise<QuickbooksCustomer> => {
+  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: input.DisplayName }]);
   const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
   const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
 
   if (isMoreThanOneCustomer) {
-    logger.warn(`Multiple customers found with name: ${name}, assigning first customer as default`);
+    logger.warn(`Multiple customers found with name: ${input.DisplayName}, assigning first customer as default`);
     return results.QueryResponse.Customer[0];
     // TODO: Send slack message???
   }
 
   if (isOneCustomer) {
-    logger.info(`Customer found with name: ${name}`);
+    logger.info(`Customer found with name: ${input.DisplayName}`);
     return results.QueryResponse.Customer[0];
   }
 
   if (isNoCustomers) {
-    logger.warn(`No customer found with name: ${name}, creating new customer`);
-    const customer = await service.customers.create({ DisplayName: name });
+    logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
+    const customer = await service.customers.create(input).catch((err) => {
+      logger.error({ message: "Error creating customer", err });
+      return null;
+    });
 
-    logger.info(`Customer created: ${name}`);
+    if (!customer) {
+      logger.error({ message: "Customer not created" });
+      return null;
+    }
+    logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
 
-    return customer.Customer;
+    return customer;
   }
 };
 
@@ -43,15 +53,31 @@ const processCustomerHierarchy = async (
   const { account, parentId, parentName } = resource;
 
   if (parentId && parentName) {
-    //* Create Parent customer first
-    const parent = await processCustomer(service, parentName);
+    const parent = await processCustomer(service, {
+      DisplayName: parentName,
+      CompanyName: parentName,
+    });
     if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+
+    // * Create Child, probably only works for 1 level of hierarchy
+    const customer = await processCustomer(service, {
+      DisplayName: account.Name,
+      Job: true,
+      ParentRef: {
+        value: parent.Id,
+      },
+    });
+
+    if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+
+    return customer;
   }
 
-  // * Create Child, probably only works for 1 level of hierarchy
-  const customer = await processCustomer(service, account.Name);
-  if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+  const customer = await processCustomer(service, {
+    DisplayName: account.Name,
+  });
 
+  if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
   return customer;
 };
 
