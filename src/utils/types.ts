@@ -7,6 +7,7 @@ import {
     GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
     UpdateOrgMutationVariables, User
 } from '@/services/graphql/generated/graphql';
+import createSalesforceMutations from '@/services/salesforce/mutations';
 import createSalesforceQueries from '@/services/salesforce/query';
 import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
@@ -31,6 +32,11 @@ export interface QuickbooksCreateCustomerInput {
   CompanyName?: string;
   BillAddr?: QuickbooksAddress;
   GivenName: string;
+  //* TODO: Tentative
+  Job?: boolean;
+  ParentRef?: {
+    value: string;
+  };
 }
 
 export interface QuickbooksFindCustomersResponse {
@@ -176,7 +182,7 @@ export interface QuickbooksEstimateResponse {
   time: string;
 }
 
-interface QuickbooksEstimate {
+export interface QuickbooksEstimate {
   domain: string;
   sparse: boolean;
   Id: string;
@@ -301,6 +307,7 @@ export interface SalesforceClosedWonResource {
   contact: Contact;
   products: Product[];
   parentId?: string;
+  parentName?: string;
   // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;
@@ -426,6 +433,7 @@ export interface PushTopicRecordAttributes {
 export interface SalesforceService {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
+  mutation: ReturnType<typeof createSalesforceMutations>;
 }
 
 export type FindOrCreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
@@ -473,7 +481,9 @@ export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 export type Logger = ReturnType<typeof createLogger>;
 
-export type SalesforceConfig = ConnectionOptions;
+export type SalesforceConfig = ConnectionOptions & {
+  salesforceChannel: "live" | "test";
+};
 
 export type ExpressServerConfig = {
   port: number;

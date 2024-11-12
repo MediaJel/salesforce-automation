@@ -1,6 +1,6 @@
-import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from "@/constants";
-import { Config, LogLevel, SalesforceChannel } from "@/utils/types";
-import { isProduction, isStaging } from "@/utils/utils";
+import { DEFAULT_LOG_LEVEL, DEFAULT_SERVER_PORT } from '@/constants';
+import { Config, LogLevel, SalesforceChannel } from '@/utils/types';
+import { isProduction, isStaging } from '@/utils/utils';
 
 const config: Config = {
   salesforce: {
@@ -13,6 +13,7 @@ const config: Config = {
     refreshToken: process.env.SALESFORCE_REFRESH_TOKEN,
     instanceUrl: process.env.SALESFORCE_INSTANCE_URL,
     version: "56.0",
+    salesforceChannel: process.env.SALESFORCE_CHANNEL as "live" | "test",
   },
   intuit: {
     clientId: process.env.INTUIT_CLIENT_ID,

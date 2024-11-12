@@ -6,10 +6,11 @@ import {
 //* Client is any since node-quickbooks don't got types
 const createIntuitCustomersService = (client: any) => {
   return {
-    create: async (input: Partial<QuickbooksCreateCustomerInput>): Promise<{ Customer: QuickbooksCustomer }> => {
+    create: async (input: Partial<QuickbooksCreateCustomerInput>): Promise<QuickbooksCustomer> => {
       return new Promise((resolve, reject) => {
         client.createCustomer(input, (err: any, customer: any) => {
           if (err) reject(err);
+          console.log(`Create Customer input: ${JSON.stringify(input, null, 2)}`);
           resolve(customer);
         });
       });

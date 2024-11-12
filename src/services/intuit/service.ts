@@ -10,8 +10,17 @@ export interface IntuitService {
   customers: ReturnType<typeof createIntuitCustomersService>;
   estimates: ReturnType<typeof createIntuitEstimatesService>;
 }
+let intuitServiceInstance: IntuitService | null = null;
 
-const createIntuitService = (input: CreateIntuitServiceInput, callback: (service: IntuitService) => void) => {
+const createIntuitService = async (
+  input: CreateIntuitServiceInput,
+  callback?: (service: IntuitService) => void
+): Promise<IntuitService> => {
+  if (intuitServiceInstance) {
+    if (callback) callback(intuitServiceInstance);
+    return intuitServiceInstance;
+  }
+
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {
@@ -23,14 +32,19 @@ const createIntuitService = (input: CreateIntuitServiceInput, callback: (service
 
     if (!client) return;
 
-    callback({
+    intuitServiceInstance = {
       customers: createIntuitCustomersService(client),
       estimates: createIntuitEstimatesService(client),
-    });
+    };
+
+    if (callback) callback(intuitServiceInstance);
+
+    // Optional: refresh authentication in the background
+    setInterval(establishConnection, time);
   };
 
-  establishConnection();
-  setInterval(establishConnection, time);
+  await establishConnection();
+  return intuitServiceInstance;
 };
 
 export default createIntuitService;

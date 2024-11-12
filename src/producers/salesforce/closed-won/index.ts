@@ -1,25 +1,23 @@
-import createSalesforceListener from "@/producers/salesforce/closed-won/listener";
+import createSalesforceListener from '@/producers/salesforce/closed-won/listener';
 import {
-  SalesforceChannel,
-  SalesforceClosedWonEventListenerParams,
-  SalesforceStreamSubscriptionParams,
-} from "@/utils/types";
-import { isDeployed } from "@/utils/utils";
+    SalesforceChannel, SalesforceClosedWonEventListenerParams, SalesforceStreamSubscriptionParams
+} from '@/utils/types';
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
-  replayId: -2,
+  replayId: -1,
 };
 
 const test: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdateTest,
-  replayId: -1,
+  replayId: -2,
 };
 
 const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
   // Live vs Test mainly relies on the "is_Active__c" field in Salesforce
   // if opportunity is active, it's live, otherwise it's test
-  const topic = isDeployed ? live : test;
+  const topic = config.salesforce.salesforceChannel === "live" ? live : test;
+  logger.info(`Listening to Salesforce channel: ${topic.channel}`);
   const listenerParams = { config, logger, topic };
   return {
     all: createSalesforceListener({ ...listenerParams }),

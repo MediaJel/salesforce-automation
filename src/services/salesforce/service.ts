@@ -1,6 +1,7 @@
 import { Connection, ConnectionOptions } from 'jsforce';
 
 import createSalesforceAuth from '@/services/salesforce/auth';
+import createSalesforceMutations from '@/services/salesforce/mutations';
 import createSalesforceQueries from '@/services/salesforce/query';
 import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
@@ -36,6 +37,7 @@ const SalesforceService = (
 
     callback(client, {
       query: createSalesforceQueries(client, logger),
+      mutation: createSalesforceMutations(client, logger),
       stream: createSalesforceStream(client, logger),
     });
   };

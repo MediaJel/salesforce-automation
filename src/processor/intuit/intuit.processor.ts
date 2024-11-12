@@ -1,48 +1,92 @@
 import config from '@/config';
 import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
-    QuickbooksCreateEstimateInput, QuickbooksCustomer, QuickbooksEstimateResponse,
-    SalesforceClosedWonResource
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
 } from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
-const processCustomer = async (service: IntuitService, name: string): Promise<QuickbooksCustomer> => {
-  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: name }]);
+const processCustomer = async (
+  service: IntuitService,
+  input: Partial<QuickbooksCreateCustomerInput>
+): Promise<QuickbooksCustomer> => {
+  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: input.DisplayName }]);
   const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
   const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
 
   if (isMoreThanOneCustomer) {
-    logger.warn(`Multiple customers found with name: ${name}, assigning first customer as default`);
+    logger.warn(`Multiple customers found with name: ${input.DisplayName}, assigning first customer as default`);
     return results.QueryResponse.Customer[0];
     // TODO: Send slack message???
   }
 
   if (isOneCustomer) {
-    logger.info(`Customer found with name: ${name}`);
+    logger.info(`Customer found with name: ${input.DisplayName}`);
     return results.QueryResponse.Customer[0];
   }
 
   if (isNoCustomers) {
-    logger.warn(`No customer found with name: ${name}, creating new customer`);
-    const customer = await service.customers
-      .create({
-        DisplayName: name,
-      })
-      .catch((err) => {
-        logger.error({ message: "Error creating customer", err });
-      });
+    logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
+    const customer = await service.customers.create(input).catch((err) => {
+      logger.error({ message: "Error creating customer", err });
+      return null;
+    });
 
-    logger.info(`Customer created: ${name}`);
+    if (!customer) {
+      logger.error({ message: "Customer not created" });
+      return null;
+    }
+    logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
 
-    if (customer) return customer.Customer;
-    return null;
+    return customer;
   }
 };
 
-const processEstimate = async (service: IntuitService, customer: QuickbooksCustomer, resource: SalesforceClosedWonResource) => {
+const processCustomerHierarchy = async (
+  service: IntuitService,
+  resource: SalesforceClosedWonResource
+): Promise<QuickbooksCustomer> => {
+  const { account, parentId, parentName } = resource;
+
+  //* TODO: main problem here is creating if it does not already exist
+  if (parentId && parentName) {
+    const parent = await processCustomer(service, {
+      DisplayName: parentName,
+      CompanyName: parentName,
+    });
+    if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+
+    // * Create Child, probably only works for 1 level of hierarchy
+    const customer = await processCustomer(service, {
+      DisplayName: account.Name,
+      Job: true,
+      ParentRef: {
+        value: parent.Id,
+      },
+    });
+
+    if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+
+    return customer;
+  }
+
+  const customer = await processCustomer(service, {
+    DisplayName: account.Name,
+  });
+
+  if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+  return customer;
+};
+
+const processEstimate = async (
+  service: IntuitService,
+  customer: QuickbooksCustomer,
+  resource: SalesforceClosedWonResource
+): Promise<QuickbooksEstimate> => {
   const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
@@ -102,28 +146,90 @@ const processEstimate = async (service: IntuitService, customer: QuickbooksCusto
       },
     ],
   };
-  service.estimates
-    .create(mapping)
-    .then((estimate: QuickbooksEstimateResponse) => {
-      logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
-    })
-    .catch((err) => {
-      logger.error({ message: "Error creating estimate", err });
-    });
+  const estimate = await service.estimates.create(mapping);
+
+  if (!estimate) {
+    logger.error({ message: "Error creating estimate" });
+    return null;
+  }
+
+  logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
+
+  return estimate;
 };
 
-const createIntuitProcessor = () => {
+const createIntuitProcessor = async () => {
+  const intuitService = await createIntuitService(config.intuit);
+
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      createIntuitService(config.intuit, async (service) => {
-        const promises = resources.map(async (resource) => {
-          const customer = await processCustomer(service, resource.account.Name);
-          if (!customer) return logger.warn(`Customer not found for account: ${resource.account.Name}`);
-          const estimate = await processEstimate(service,customer, resource);
-        });
+      const processed = [];
+      for (const resource of resources) {
+        const customer = await processCustomerHierarchy(intuitService, resource);
+        if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
 
-        await Promise.all(promises);
+        const estimate = await processEstimate(intuitService, customer, resource);
+        if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
+
+        processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+      }
+
+      if (!processed || processed.length === 0) {
+        logger.error({ message: "No data returned from processing resources" });
+        return;
+      }
+
+      SalesforceService(config.salesforce, async (_, svc) => {
+        for (const proc of processed) {
+          const { opportunityId, Id } = proc;
+
+          const result = await svc.mutation.updateOpportunity({
+            Id: opportunityId,
+            AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+            // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+          });
+
+          logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+        }
       });
+
+      logger.info("Completed processing resources");
+
+      // createIntuitService(config.intuit, async (service) => {
+      //   const processed = [];
+      //   for (const resource of resources) {
+      //     const customer = await processCustomerHierarchy(service, resource);
+      //     if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
+
+      //     const estimate = await processEstimate(service, customer, resource);
+      //     if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
+
+      //     processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+      //   }
+
+      //   if (!processed || processed.length === 0) {
+      //     logger.error({ message: "No data returned from processing resources" });
+      //     return;
+      //   }
+
+      //   logger.info(`Completed processing resources: ${JSON.stringify(processed, null, 2)}`);
+
+      //   SalesforceService(config.salesforce, async (_, svc) => {
+      //     for (const proc of processed) {
+      //       const { opportunityId, Id } = proc;
+
+      //       const result = await svc.mutation.updateOpportunity({
+      //         Id: opportunityId,
+      //         AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+      //         // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+      //       });
+
+      //       logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+      //     }
+      //   });
+
+      //   logger.info("Completed processing resources");
+      // });
     },
   };
 };
