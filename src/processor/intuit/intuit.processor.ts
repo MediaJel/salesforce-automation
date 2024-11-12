@@ -144,8 +144,7 @@ const createIntuitProcessor = () => {
             const result = await svc.mutation.updateOpportunity({
               Id: opportunityId,
               AVSFQB__QB_ERROR__C: "Estimate Created by Microservice",
-              AVFSQB__Quickbooks_Id__c: Id,
-              //TODO: Assign Ids only in production
+              AVFSQB__Quickbooks_Id__C: Id,
             });
 
             logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
