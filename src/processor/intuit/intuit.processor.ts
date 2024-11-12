@@ -28,18 +28,11 @@ const processCustomer = async (service: IntuitService, name: string): Promise<Qu
 
   if (isNoCustomers) {
     logger.warn(`No customer found with name: ${name}, creating new customer`);
-    const customer = await service.customers
-      .create({
-        DisplayName: name,
-      })
-      .catch((err) => {
-        logger.error({ message: "Error creating customer", err });
-      });
+    const customer = await service.customers.create({ DisplayName: name });
 
     logger.info(`Customer created: ${name}`);
 
-    if (customer) return customer.Customer;
-    return null;
+    return customer.Customer;
   }
 };
 
@@ -127,20 +120,37 @@ const createIntuitProcessor = () => {
       createIntuitService(config.intuit, async (service) => {
         const processes = resources.map(async (resource) => {
           const customer = await processCustomer(service, resource.account.Name);
-          if (!customer) return logger.warn(`Customer not found for account: ${resource.account.Name}`);
-          const estimate = await processEstimate(service, customer, resource);
-          if (!estimate) return logger.warn(`Estimate not created for account: ${resource.account.Name}`);
+          if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
 
-          return estimate;
+          const estimate = await processEstimate(service, customer, resource);
+          if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
+
+          return { ...estimate.QueryResponse.Estimate, opportunityId: resource.opportunity.Id };
         });
 
-        const data = await Promise.all(processes);
+        const processed = await Promise.all(processes);
 
-        logger.info(`Completed processing resources: ${JSON.stringify(data, null, 2)}`);
+        if (!processed || processed.length === 0) {
+          logger.error({ message: "No data returned from processing resources" });
+          return;
+        }
+
+        logger.info(`Completed processing resources: ${JSON.stringify(processed, null, 2)}`);
 
         // TODO: Attach data to DBSync in salesforce
         SalesforceService(config.salesforce, async (_, svc) => {
-          data.map(async (estimate) => {});
+          const promises = processed.map(async (resource) => {
+            const { opportunityId } = resource;
+            const result = await svc.mutation.updateOpportunity({
+              Id: opportunityId,
+              AVSFQB__QB_ERROR__C: "Estimate Created by Pach",
+              
+            });
+
+            logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+          });
+
+          await Promise.all(promises);
         });
       });
     },

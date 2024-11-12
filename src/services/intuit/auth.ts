@@ -26,11 +26,18 @@ const createIntuitAuth = (logger: Logger) => {
           oAuthVersion = "2.0",
         } = input;
 
-        const auth = await intuitOAuth2.refreshUsingToken(config.intuit.refreshToken);
+        const auth = await intuitOAuth2.refreshUsingToken(config.intuit.refreshToken).catch((err) => {
+          logger.error({ message: "Error refreshing Intuit OAuth2 token", err });
+          reject(err);
+        });
+
+        if (!auth?.token) {
+          return reject("No token returned from Intuit OAuth2 refresh");
+        }
 
         logger.debug(`Intuit OAuth2 Refreshed: ${JSON.stringify(auth.token, null, 2)}`);
 
-        resolve(
+        return resolve(
           new Quickbooks(
             consumerKey,
             consumerSecret,

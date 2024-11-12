@@ -7,6 +7,7 @@ import {
     GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
     UpdateOrgMutationVariables, User
 } from '@/services/graphql/generated/graphql';
+import createSalesforceMutations from '@/services/salesforce/mutations';
 import createSalesforceQueries from '@/services/salesforce/query';
 import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
@@ -426,6 +427,7 @@ export interface PushTopicRecordAttributes {
 export interface SalesforceService {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
+  mutation: ReturnType<typeof createSalesforceMutations>;
 }
 
 export type FindOrCreateOrgParams = Pick<CreateOrgMutationVariables, "name" | "description" | "salesforceId"> &
