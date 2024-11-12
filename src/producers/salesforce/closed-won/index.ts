@@ -6,7 +6,7 @@ import { isDeployed, isProduction, isStaging } from '@/utils/utils';
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
-  replayId: -2,
+  replayId: -1,
 };
 
 const test: SalesforceStreamSubscriptionParams = {
@@ -17,7 +17,8 @@ const test: SalesforceStreamSubscriptionParams = {
 const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
   // Live vs Test mainly relies on the "is_Active__c" field in Salesforce
   // if opportunity is active, it's live, otherwise it's test
-  const topic = isStaging ? test : live;
+  const topic = config.salesforce.salesforceChannel === "live" ? live : test;
+  logger.info(`Listening to Salesforce channel: ${topic.channel}`);
   const listenerParams = { config, logger, topic };
   return {
     all: createSalesforceListener({ ...listenerParams }),

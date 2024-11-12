@@ -21,7 +21,7 @@ const createIntuitAuth = (logger: Logger) => {
           consumerSecret = null,
           withTokenSecret = false,
           useSandbox = true,
-          enableDebugging = true,
+          enableDebugging = false,
           minorVersion = null,
           oAuthVersion = "2.0",
         } = input;

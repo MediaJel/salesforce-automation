@@ -475,7 +475,9 @@ export type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
 export type Logger = ReturnType<typeof createLogger>;
 
-export type SalesforceConfig = ConnectionOptions;
+export type SalesforceConfig = ConnectionOptions & {
+  salesforceChannel: "live" | "test";
+};
 
 export type ExpressServerConfig = {
   port: number;
