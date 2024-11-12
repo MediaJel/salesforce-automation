@@ -52,6 +52,7 @@ const processCustomerHierarchy = async (
 ): Promise<QuickbooksCustomer> => {
   const { account, parentId, parentName } = resource;
 
+  //* TODO: main problem here is creating if it does not already exist
   if (parentId && parentName) {
     const parent = await processCustomer(service, {
       DisplayName: parentName,
