@@ -36,6 +36,25 @@ const processCustomer = async (service: IntuitService, name: string): Promise<Qu
   }
 };
 
+const processCustomerHierarchy = async (
+  service: IntuitService,
+  resource: SalesforceClosedWonResource
+): Promise<QuickbooksCustomer> => {
+  const { account, parentId, parentName } = resource;
+
+  if (parentId && parentName) {
+    //* Create Parent customer first
+    const parent = await processCustomer(service, parentName);
+    if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+  }
+
+  // * Create Child, probably only works for 1 level of hierarchy
+  const customer = await processCustomer(service, account.Name);
+  if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+
+  return customer;
+};
+
 const processEstimate = async (
   service: IntuitService,
   customer: QuickbooksCustomer,
@@ -109,7 +128,6 @@ const processEstimate = async (
 
   logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
 
-  //* We're only creating 1 estimate
   return estimate;
 };
 
@@ -118,7 +136,7 @@ const createIntuitProcessor = () => {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       createIntuitService(config.intuit, async (service) => {
         const processes = resources.map(async (resource) => {
-          const customer = await processCustomer(service, resource.account.Name);
+          const customer = await processCustomerHierarchy(service, resource);
           if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
 
           const estimate = await processEstimate(service, customer, resource);
@@ -143,8 +161,8 @@ const createIntuitProcessor = () => {
 
             const result = await svc.mutation.updateOpportunity({
               Id: opportunityId,
-              AVSFQB__QB_ERROR__C: "Estimate Created by Microservice",
-              AVFSQB__Quickbooks_Id__C: Id,
+              AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+              // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
             });
 
             logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);

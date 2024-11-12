@@ -302,6 +302,7 @@ export interface SalesforceClosedWonResource {
   contact: Contact;
   products: Product[];
   parentId?: string;
+  parentName?: string;
   // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;

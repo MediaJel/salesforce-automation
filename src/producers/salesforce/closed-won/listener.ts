@@ -1,15 +1,9 @@
-import SalesforceService from "@/services/salesforce";
+import SalesforceService from '@/services/salesforce';
 import {
-  Account,
-  Contact,
-  Logger,
-  Opportunity,
-  OpportunityLineItem,
-  Product,
-  SalesforceClosedWonEventListenerParams,
-  SalesforceClosedWonResource,
-  SalesforceStreamSubscriptionParams,
-} from "@/utils/types";
+    Account, Contact, Logger, Opportunity, OpportunityLineItem, Product,
+    SalesforceClosedWonEventListenerParams, SalesforceClosedWonResource,
+    SalesforceStreamSubscriptionParams
+} from '@/utils/types';
 
 type StreamListener = SalesforceClosedWonEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
@@ -64,11 +58,10 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
     account,
     opportunityLineItem,
     parentId: account?.ParentId || null,
-
+    parentName: parent?.Name || null,
     // Legacy types, mainly here for the GraphQL processor
     id: account.Id,
     name: account.Name,
-
     amount: opportunity.Amount,
   });
 

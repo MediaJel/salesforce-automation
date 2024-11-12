@@ -12,10 +12,7 @@ const createProcessor = (producer: DataProducer, config: Config) => {
   const intuit = createIntuitProcessor();
 
   const process = async (type: string, resources: SalesforceClosedWonResource[]) => {
-    resources.forEach((resource) => {
-      logger.info(`Received Closed Won resource: ${JSON.stringify(resource, null, 2)}`);
-    });
-
+    logger.info(`Recieved Closed Won resources: ${JSON.stringify(resources, null, 2)}`);
     await intuit.process(type, resources);
     // mediajel.process(type, candidates);
   };

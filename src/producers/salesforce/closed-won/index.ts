@@ -2,7 +2,6 @@ import createSalesforceListener from '@/producers/salesforce/closed-won/listener
 import {
     SalesforceChannel, SalesforceClosedWonEventListenerParams, SalesforceStreamSubscriptionParams
 } from '@/utils/types';
-import { isDeployed, isProduction, isStaging } from '@/utils/utils';
 
 const live: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdate,
@@ -11,7 +10,7 @@ const live: SalesforceStreamSubscriptionParams = {
 
 const test: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdateTest,
-  replayId: -1,
+  replayId: -2,
 };
 
 const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
