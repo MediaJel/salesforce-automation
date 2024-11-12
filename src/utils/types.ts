@@ -177,7 +177,7 @@ export interface QuickbooksEstimateResponse {
   time: string;
 }
 
-interface QuickbooksEstimate {
+export interface QuickbooksEstimate {
   domain: string;
   sparse: boolean;
   Id: string;

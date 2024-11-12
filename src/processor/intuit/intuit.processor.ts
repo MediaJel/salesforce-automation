@@ -3,8 +3,8 @@ import createIntuitService, { IntuitService } from '@/services/intuit/service';
 import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
-    QuickbooksCreateEstimateInput, QuickbooksCustomer, QuickbooksEstimateResponse,
-    SalesforceClosedWonResource
+    QuickbooksCreateEstimateInput, QuickbooksCustomer, QuickbooksEstimate,
+    QuickbooksEstimateResponse, SalesforceClosedWonResource
 } from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
@@ -40,7 +40,7 @@ const processEstimate = async (
   service: IntuitService,
   customer: QuickbooksCustomer,
   resource: SalesforceClosedWonResource
-): Promise<QuickbooksEstimateResponse> => {
+): Promise<QuickbooksEstimate> => {
   const { opportunity, account, contact, opportunityLineItem, products } = resource;
 
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
@@ -100,9 +100,7 @@ const processEstimate = async (
       },
     ],
   };
-  const estimate = await service.estimates.create(mapping).catch((err) => {
-    logger.error({ message: "Error creating estimate", err });
-  });
+  const estimate = await service.estimates.create(mapping);
 
   if (!estimate) {
     logger.error({ message: "Error creating estimate" });
@@ -111,6 +109,7 @@ const processEstimate = async (
 
   logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
 
+  //* We're only creating 1 estimate
   return estimate;
 };
 
@@ -125,7 +124,7 @@ const createIntuitProcessor = () => {
           const estimate = await processEstimate(service, customer, resource);
           if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
 
-          return { ...estimate.QueryResponse.Estimate, opportunityId: resource.opportunity.Id };
+          return { ...estimate, opportunityId: resource.opportunity.Id };
         });
 
         const processed = await Promise.all(processes);
@@ -139,18 +138,22 @@ const createIntuitProcessor = () => {
 
         // TODO: Attach data to DBSync in salesforce
         SalesforceService(config.salesforce, async (_, svc) => {
-          const promises = processed.map(async (resource) => {
-            const { opportunityId } = resource;
+          const promises = processed.map(async (proc) => {
+            const { opportunityId, Id } = proc;
+
             const result = await svc.mutation.updateOpportunity({
               Id: opportunityId,
-              AVSFQB__QB_ERROR__C: "Estimate Created by Pach",
-              
+              AVSFQB__QB_ERROR__C: "Estimate Created by Microservice",
+              AVFSQB__Quickbooks_Id__c: Id,
+              //TODO: Assign Ids only in production
             });
 
             logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
           });
 
-          await Promise.all(promises);
+          await Promise.all(promises).then(() => {
+            logger.info("All opportunities updated");
+          });
         });
       });
     },
