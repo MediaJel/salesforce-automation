@@ -7,9 +7,9 @@ const logger = createLogger("Processor");
 
 // Use a logging library
 
-const createProcessor = (producer: DataProducer, config: Config) => {
+const createProcessor = async (producer: DataProducer, config: Config) => {
   // const mediajel = createMediajelProcessor(config);
-  const intuit = createIntuitProcessor();
+  const intuit = await createIntuitProcessor();
 
   const process = async (type: string, resources: SalesforceClosedWonResource[]) => {
     logger.info(`Recieved Closed Won resources: ${JSON.stringify(resources, null, 2)}`);

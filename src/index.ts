@@ -6,9 +6,9 @@ const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);
 
 const startApp = async () => {
-  const app = createApp(config);
+  const app = await createApp(config);
 
-  app.start();
+  await app.start();
 };
 
 startApp().catch((err) => {

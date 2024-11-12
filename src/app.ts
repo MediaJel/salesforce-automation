@@ -1,19 +1,19 @@
-import createProcessor from "@/processor/processor";
-import createSalesforceProducer from "@/producers/salesforce";
-import createServer from "@/server";
-import { DataProducer } from "@/utils/types";
+import createProcessor from '@/processor/processor';
+import createSalesforceProducer from '@/producers/salesforce';
+import createServer from '@/server';
+import { DataProducer } from '@/utils/types';
 
-import { Config } from "./utils/types";
+import { Config } from './utils/types';
 
-const createApp = (config: Config) => {
+const createApp = async (config: Config) => {
   const server = createServer(config.server);
   const salesforceProducer: DataProducer = createSalesforceProducer(config);
-  const processor = createProcessor(salesforceProducer, config);
+  const processor = await createProcessor(salesforceProducer, config);
 
   return {
-    start() {
+    async start() {
       server.start();
-      processor.listen();
+      await processor.listen();
     },
   };
 };

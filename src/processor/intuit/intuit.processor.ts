@@ -158,45 +158,78 @@ const processEstimate = async (
   return estimate;
 };
 
-const createIntuitProcessor = () => {
+const createIntuitProcessor = async () => {
+  const intuitService = await createIntuitService(config.intuit);
+
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      createIntuitService(config.intuit, async (service) => {
-        const processed = [];
-        for (const resource of resources) {
-          const customer = await processCustomerHierarchy(service, resource);
-          if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
+      const processed = [];
+      for (const resource of resources) {
+        const customer = await processCustomerHierarchy(intuitService, resource);
+        if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
 
-          const estimate = await processEstimate(service, customer, resource);
-          if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
+        const estimate = await processEstimate(intuitService, customer, resource);
+        if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
 
-          processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+        processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+      }
+
+      if (!processed || processed.length === 0) {
+        logger.error({ message: "No data returned from processing resources" });
+        return;
+      }
+
+      SalesforceService(config.salesforce, async (_, svc) => {
+        for (const proc of processed) {
+          const { opportunityId, Id } = proc;
+
+          const result = await svc.mutation.updateOpportunity({
+            Id: opportunityId,
+            AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+            // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+          });
+
+          logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
         }
-
-        if (!processed || processed.length === 0) {
-          logger.error({ message: "No data returned from processing resources" });
-          return;
-        }
-
-        logger.info(`Completed processing resources: ${JSON.stringify(processed, null, 2)}`);
-
-        // TODO: Attach data to DBSync in salesforce
-        SalesforceService(config.salesforce, async (_, svc) => {
-          for (const proc of processed) {
-            const { opportunityId, Id } = proc;
-
-            const result = await svc.mutation.updateOpportunity({
-              Id: opportunityId,
-              AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-              // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
-            });
-
-            logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
-          }
-        });
-
-        logger.info("Completed processing resources");
       });
+
+      logger.info("Completed processing resources");
+
+      // createIntuitService(config.intuit, async (service) => {
+      //   const processed = [];
+      //   for (const resource of resources) {
+      //     const customer = await processCustomerHierarchy(service, resource);
+      //     if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
+
+      //     const estimate = await processEstimate(service, customer, resource);
+      //     if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
+
+      //     processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+      //   }
+
+      //   if (!processed || processed.length === 0) {
+      //     logger.error({ message: "No data returned from processing resources" });
+      //     return;
+      //   }
+
+      //   logger.info(`Completed processing resources: ${JSON.stringify(processed, null, 2)}`);
+
+      //   SalesforceService(config.salesforce, async (_, svc) => {
+      //     for (const proc of processed) {
+      //       const { opportunityId, Id } = proc;
+
+      //       const result = await svc.mutation.updateOpportunity({
+      //         Id: opportunityId,
+      //         AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+      //         // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+      //       });
+
+      //       logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+      //     }
+      //   });
+
+      //   logger.info("Completed processing resources");
+      // });
     },
   };
 };
