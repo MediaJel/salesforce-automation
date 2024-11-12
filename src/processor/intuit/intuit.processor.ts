@@ -162,17 +162,16 @@ const createIntuitProcessor = () => {
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       createIntuitService(config.intuit, async (service) => {
-        const processes = resources.map(async (resource) => {
+        const processed = [];
+        for (const resource of resources) {
           const customer = await processCustomerHierarchy(service, resource);
           if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
 
           const estimate = await processEstimate(service, customer, resource);
           if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
 
-          return { ...estimate, opportunityId: resource.opportunity.Id };
-        });
-
-        const processed = await Promise.all(processes);
+          processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
+        }
 
         if (!processed || processed.length === 0) {
           logger.error({ message: "No data returned from processing resources" });
@@ -183,7 +182,7 @@ const createIntuitProcessor = () => {
 
         // TODO: Attach data to DBSync in salesforce
         SalesforceService(config.salesforce, async (_, svc) => {
-          const promises = processed.map(async (proc) => {
+          for (const proc of processed) {
             const { opportunityId, Id } = proc;
 
             const result = await svc.mutation.updateOpportunity({
@@ -193,12 +192,10 @@ const createIntuitProcessor = () => {
             });
 
             logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
-          });
-
-          await Promise.all(promises).then(() => {
-            logger.info("All opportunities updated");
-          });
+          }
         });
+
+        logger.info("Completed processing resources");
       });
     },
   };
