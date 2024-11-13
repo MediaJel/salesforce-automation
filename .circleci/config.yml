@@ -35,6 +35,7 @@ jobs:
             echo "export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
+            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME} >> $BASH_ENV
       - run:
           name: Install kubectl
           command: |
@@ -42,28 +43,13 @@ jobs:
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
       - run:
-          name: Install AWS CLI
-          command: |
-            sudo apt-get install -y unzip
-            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-            aws --version
-      - run:
-          name: Configure AWS CLI and ENV
-          command: |
-            aws configure set aws_access_key_id ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
-            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
-            aws configure set region ${AWS_ECR_REGION} >> $BASH_ENV
-            export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
-            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
-      - run:
           name: Install helm 3
           command: |
             wget https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz
             tar -xf helm-v3.5.2-linux-amd64.tar.gz
             chmod +x ./linux-amd64/helm
             sudo mv ./linux-amd64/helm /usr/local/bin/helm3
+            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME} >> $BASH_ENV
             kops export kubecfg --admin
             helm3 version
       - run:
@@ -101,6 +87,7 @@ jobs:
             echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $BASH_ENV
             echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
+            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME} >> $BASH_ENV
       - run:
           name: Install kubectl
           command: |
@@ -108,28 +95,13 @@ jobs:
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
       - run:
-          name: Install AWS CLI
-          command: |
-            sudo apt-get install -y unzip
-            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-            aws --version
-      - run:
-          name: Configure AWS CLI and ENV
-          command: |
-            aws configure set aws_access_key_id ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
-            aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
-            aws configure set region ${AWS_ECR_REGION} >> $BASH_ENV
-            export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
-            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
-      - run:
           name: Install helm 3
           command: |
             wget https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz
             tar -xf helm-v3.5.2-linux-amd64.tar.gz
             chmod +x ./linux-amd64/helm
             sudo mv ./linux-amd64/helm /usr/local/bin/helm3
+            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME} >> $BASH_ENV
             kops export kubecfg --admin
             helm3 version
       - run:
