@@ -13,6 +13,19 @@ import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
 import { ClientOptions } from '@urql/core';
 
+export type IntuitAuthResponse = {
+  realmId: string;
+  token_type: string;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  x_refresh_token_expires_in: number;
+  id_token: string;
+  latency: number;
+  createdAt: number;
+  state: string;
+};
+
 export interface QuickbooksFindCustomersInput {
   field: string;
   value: string;

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022", "ES6", "DOM"],
+    "lib": [
+      "ES2022",
+      "ES6",
+      "DOM"
+    ],
     "module": "CommonJS",
     "target": "esnext",
     "moduleResolution": "node",
@@ -18,12 +22,20 @@
     "noImplicitAny": false,
     "baseUrl": "src",
     "rootDir": "src",
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["*"]
+      "@/*": [
+        "*"
+      ]
     }
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
