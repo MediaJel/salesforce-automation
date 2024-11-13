@@ -10,5 +10,5 @@ memoryRequest: 1024Mi
 memoryLimit: 2048Mi
 global:
   environment: STAGE
-salesForceChannel: "test" # Must either be "live" or "test", production must use "live"
+salesForceChannel: "live" # Must either be "live" or "test", production must use "live"
 intuitEnvironment: sandbox
