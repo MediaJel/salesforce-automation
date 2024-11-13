@@ -55,6 +55,8 @@ jobs:
             aws configure set aws_access_key_id ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
             aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
             aws configure set region ${AWS_ECR_REGION} >> $BASH_ENV
+            export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
+            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
       - run:
           name: Install helm 3
           command: |
@@ -119,6 +121,8 @@ jobs:
             aws configure set aws_access_key_id ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
             aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY} >> $BASH_ENV
             aws configure set region ${AWS_ECR_REGION} >> $BASH_ENV
+            export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
+            export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
       - run:
           name: Install helm 3
           command: |
