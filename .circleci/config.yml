@@ -32,7 +32,7 @@ jobs:
             sudo mv ./kops /usr/local/bin/kops
             echo "export KOPS_CLUSTER_NAME=${KOPS_CLUSTER_NAME}" >> $BASH_ENV
             echo "export KOPS_STATE_STORE=s3://${KOPS_STATE_STORE}" >> $BASH_ENV
-            echo "export AWS_ACCESS_KEY_ID=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
+            echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $BASH_ENV
             echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
       - run:
@@ -41,7 +41,6 @@ jobs:
             wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
-            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME}
       - run:
           name: Install helm 3
           command: |
@@ -92,7 +91,6 @@ jobs:
             wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
             chmod +x ./kubectl
             sudo mv ./kubectl /usr/local/bin/kubectl
-            kops export kubecfg --state=s3://${KOPS_STATE_STORE} --admin ${KOPS_CLUSTER_NAME}
       - run:
           name: Install helm 3
           command: |
