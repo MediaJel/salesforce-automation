@@ -20,6 +20,8 @@ spec:
     port: 4040
     protocol: TCP
     targetPort: 4000
+  externalIPs:
+  - 10.28.97.100
   selector:
     # This needs to match the selector in the RC/Deployment
     app: |-
