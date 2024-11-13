@@ -139,7 +139,7 @@ workflows:
           attach_workspace: true
           workspace_root: .
           extra_build_args: "--build-arg ACCOUNT_URL=${AWS_ECR_ACCOUNT_URL}"
-          dockerfile: .
+          dockerfile: ./Dockerfile
           filters:
             branches:
               only: staging
@@ -170,7 +170,7 @@ workflows:
           attach_workspace: true
           workspace_root: .
           extra_build_args: "--build-arg ACCOUNT_URL=${AWS_ECR_ACCOUNT_URL}"
-          dockerfile: ./docker/Dockerfile
+          dockerfile: ./Dockerfile
           filters:
             branches:
               only: master
