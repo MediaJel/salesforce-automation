@@ -84,6 +84,7 @@ export interface QuickbooksCustomer {
   SyncToken: string;
   CompanyName?: string;
   ShipAddr?: QuickbooksAddress;
+  ParentRef?: QuickbooksReference;
   PrintOnCheckName?: string;
   sparse?: boolean;
   Id: string;

@@ -1,11 +1,15 @@
-import config from '@/config';
-import createIntuitService, { IntuitService } from '@/services/intuit/service';
-import SalesforceService from '@/services/salesforce';
-import createLogger from '@/utils/logger';
+import config from "@/config";
+import createIntuitService, { IntuitService } from "@/services/intuit/service";
+import SalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCreateEstimateInput,
+  QuickbooksCustomer,
+  QuickbooksEstimate,
+  QuickbooksEstimateResponse,
+  SalesforceClosedWonResource,
+} from "@/utils/types";
 
 const logger = createLogger("Intuit Processor");
 
@@ -45,14 +49,12 @@ const processCustomer = async (
     return customer;
   }
 };
-
 const processCustomerHierarchy = async (
   service: IntuitService,
   resource: SalesforceClosedWonResource
 ): Promise<QuickbooksCustomer> => {
   const { account, parentId, parentName } = resource;
 
-  //* TODO: main problem here is creating if it does not already exist
   if (parentId && parentName) {
     const parent = await processCustomer(service, {
       DisplayName: parentName,
@@ -208,42 +210,6 @@ const createIntuitProcessor = async () => {
       });
 
       logger.info("Completed processing resources");
-
-      // createIntuitService(config.intuit, async (service) => {
-      //   const processed = [];
-      //   for (const resource of resources) {
-      //     const customer = await processCustomerHierarchy(service, resource);
-      //     if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
-
-      //     const estimate = await processEstimate(service, customer, resource);
-      //     if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
-
-      //     processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
-      //   }
-
-      //   if (!processed || processed.length === 0) {
-      //     logger.error({ message: "No data returned from processing resources" });
-      //     return;
-      //   }
-
-      //   logger.info(`Completed processing resources: ${JSON.stringify(processed, null, 2)}`);
-
-      //   SalesforceService(config.salesforce, async (_, svc) => {
-      //     for (const proc of processed) {
-      //       const { opportunityId, Id } = proc;
-
-      //       const result = await svc.mutation.updateOpportunity({
-      //         Id: opportunityId,
-      //         AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-      //         // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
-      //       });
-
-      //       logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
-      //     }
-      //   });
-
-      //   logger.info("Completed processing resources");
-      // });
     },
   };
 };
