@@ -49,90 +49,40 @@ const processCustomer = async (
     return customer;
   }
 };
-
 const processCustomerHierarchy = async (
   service: IntuitService,
   resource: SalesforceClosedWonResource
 ): Promise<QuickbooksCustomer> => {
   const { account, parentId, parentName } = resource;
 
-  // Recursive helper function to process the hierarchy
-  const findOrCreateParent = async (
-    service: IntuitService,
-    parentId?: string,
-    parentName?: string
-  ): Promise<QuickbooksCustomer | null> => {
-    if (!parentId || !parentName) {
-      return null;
-    }
-
-    // Process parent customer if exists
+  if (parentId && parentName) {
     const parent = await processCustomer(service, {
       DisplayName: parentName,
       CompanyName: parentName,
     });
+    if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
-    if (!parent) {
-      throw new Error(`Parent customer not created for account: ${parentName}`);
-    }
+    // * Create Child, probably only works for 1 level of hierarchy
+    const customer = await processCustomer(service, {
+      DisplayName: account.Name,
+      Job: true,
+      ParentRef: {
+        value: parent.Id,
+      },
+    });
 
-    // If parent has its own parent, recursively process it
-    if (parent.ParentRef) {
-      await findOrCreateParent(service, parent.ParentRef.value, parentName);
-    }
+    if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
 
-    return parent;
-  };
-
-  // Start the hierarchy processing from the current resource
-  const parentCustomer = await findOrCreateParent(service, parentId, parentName);
+    return customer;
+  }
 
   const customer = await processCustomer(service, {
     DisplayName: account.Name,
-    Job: !!parentCustomer, // true if there's a parent customer
-    ParentRef: parentCustomer ? { value: parentCustomer.Id } : undefined,
   });
 
   if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
-
   return customer;
 };
-
-// const processCustomerHierarchy = async (
-//   service: IntuitService,
-//   resource: SalesforceClosedWonResource
-// ): Promise<QuickbooksCustomer> => {
-//   const { account, parentId, parentName } = resource;
-
-//   //* TODO: main problem here is creating if it does not already exist
-//   if (parentId && parentName) {
-//     const parent = await processCustomer(service, {
-//       DisplayName: parentName,
-//       CompanyName: parentName,
-//     });
-//     if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
-
-//     // * Create Child, probably only works for 1 level of hierarchy
-//     const customer = await processCustomer(service, {
-//       DisplayName: account.Name,
-//       Job: true,
-//       ParentRef: {
-//         value: parent.Id,
-//       },
-//     });
-
-//     if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
-
-//     return customer;
-//   }
-
-//   const customer = await processCustomer(service, {
-//     DisplayName: account.Name,
-//   });
-
-//   if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
-//   return customer;
-// };
 
 const processEstimate = async (
   service: IntuitService,
