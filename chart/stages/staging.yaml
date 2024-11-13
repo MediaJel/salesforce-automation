@@ -1,7 +1,7 @@
 repoUrl: 105618632367.dkr.ecr.us-east-1.amazonaws.com
 # GRAPHQL_ENDPOINT="https://graphql-dojo.dmp.mediajel.ninja/"
 gqlEndpoint: http://graphqlserver-dojo.default.svc.cluster.local:80
-httpEndpoint: salesforce.mediajel.ninja
+httpEndpoint: salesforce.dmp.mediajel.ninja
 logLevel: DEBUG
 nodeEnv: staging
 cpuRequest: 0.5
