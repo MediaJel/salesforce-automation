@@ -1,4 +1,4 @@
-FROM node:18.12.1-slim
+FROM node:22.11.0-slim
 
 WORKDIR /rootDir
 

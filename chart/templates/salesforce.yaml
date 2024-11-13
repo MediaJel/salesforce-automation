@@ -8,6 +8,7 @@ metadata:
       {{ .Release.Name }}
   annotations: {}
 spec:
+  type: ClusterIP
   ports:
   - name: http
     port: 4041
@@ -21,6 +22,36 @@ spec:
     # This needs to match the selector in the RC/Deployment
     app: |-
       {{ .Release.Name }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: |-
+    {{ .Release.Name }}
+  labels:
+    name: |-
+      {{ .Release.Name }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
+    nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: |-
+      {{ .Values.httpEndpoint }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: |-
+              {{ .Release.Name }}
+            port:
+              number: 4000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -50,7 +81,7 @@ spec:
           {{ .Release.Name }}
     spec:
       nodeSelector:
-        kops.k8s.io/instancegroup: nodes
+        kops.k8s.io/instancegroup: small-nodes
       containers:
       - name: |-
           {{ .Release.Name }}
@@ -82,38 +113,79 @@ spec:
         - name: NODE_ENV
           value: |-
             {{ .Values.nodeEnv }}
+        - name: SALESFORCE_CHANNEL
+          value: |-
+            {{ .Values.salesForceChannel }}
+        - name: INTUIT_ENVIRONMENT
+          value: |-
+            {{ .Values.intuitEnvironment }}
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: GRAPHQL_KEY
         - name: SALESFORCE_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_ACCESS_TOKEN
         - name: SALESFORCE_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_CLIENT_ID
         - name: SALESFORCE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_CLIENT_SECRET
         - name: SALESFORCE_INSTANCE_URL
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_INSTANCE_URL
+        - name: SALESFORCE_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: SALESFORCE_REDIRECT_URI
         - name: SALESFORCE_REFRESH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_REFRESH_TOKEN
         - name: SERVER_KEY
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SERVER_KEY
+        - name: INTUIT_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_CLIENT_ID
+        - name: INTUIT_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_CLIENT_SECRET
+        - name: INTUIT_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_ACCESS_TOKEN
+        - name: INTUIT_REFRESH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REFRESH_TOKEN
+        - name: INTUIT_REALM_ID
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REALM_ID
+        - name: INTUIT_REALM_ID
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REALM_ID
