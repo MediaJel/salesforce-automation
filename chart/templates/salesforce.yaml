@@ -6,8 +6,9 @@ metadata:
   labels:
     name: |-
       {{ .Release.Name }}
-  annotations: |-
+  annotations: {
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.httpEndpoint }}
+  }
 spec:
   type: LoadBalancer
   ports:
