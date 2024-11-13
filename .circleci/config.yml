@@ -5,6 +5,7 @@ executors:
       - image: node:22.11.0-slim
     working_directory: ~/salesforce-automation
 orbs:
+  aws-cli: circleci/aws-cli@4.0
   aws-ecr: circleci/aws-ecr@9.0.2
 jobs:
   pre-integration-build:
