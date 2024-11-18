@@ -1,15 +1,11 @@
-import config from "@/config";
-import createIntuitService, { IntuitService } from "@/services/intuit/service";
-import SalesforceService from "@/services/salesforce";
-import createLogger from "@/utils/logger";
+import config from '@/config';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
+import createLogger from '@/utils/logger';
 import {
-  QuickbooksCreateCustomerInput,
-  QuickbooksCreateEstimateInput,
-  QuickbooksCustomer,
-  QuickbooksEstimate,
-  QuickbooksEstimateResponse,
-  SalesforceClosedWonResource,
-} from "@/utils/types";
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
+} from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
@@ -53,38 +49,35 @@ const processCustomerHierarchy = async (
   service: IntuitService,
   resources: SalesforceClosedWonResource[]
 ): Promise<QuickbooksCustomer[]> => {
-  return await Promise.all(
-    resources.map(async (resource) => {
-      const { account, parentId, parentName } = resource;
-      if (parentId && parentName) {
-        const parent = await processCustomer(service, {
-          DisplayName: parentName,
-          CompanyName: parentName,
-        });
-        if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+  const customers = [];
 
-        // * Create Child, probably only works for 1 level of hierarchy
-        const customer = await processCustomer(service, {
-          DisplayName: account.Name,
-          Job: true,
-          ParentRef: {
-            value: parent.Id,
-          },
-        });
-
-        if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
-
-        return customer;
-      }
-
-      const customer = await processCustomer(service, {
-        DisplayName: account.Name,
+  for (const resource of resources) {
+    const { account, parentId, parentName } = resource;
+    if (parentId && parentName) {
+      const parent = await processCustomer(service, {
+        DisplayName: parentName,
+        CompanyName: parentName,
       });
+      if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
-      if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
-      return customer;
-    })
-  );
+      await processCustomer(service, {
+        DisplayName: account.Name,
+        Job: true,
+        ParentRef: {
+          value: parent.Id,
+        },
+      });
+    }
+
+    const customer = await processCustomer(service, {
+      DisplayName: account.Name,
+    });
+
+    if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+    customers.push(customer);
+  }
+
+  return customers;
 };
 
 const processEstimate = async (
