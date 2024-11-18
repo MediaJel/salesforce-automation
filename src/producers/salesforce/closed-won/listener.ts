@@ -78,16 +78,17 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
       const products = await svc.query.productsByOpportunityId({
         id: opp.Id,
         where: condition ? condition : null,
-      });
+      }); // DONE
+
       if (!products) return logger.warn(`No ${condition.Family} Products`);
 
-      const account = await svc.query.accountById(opp.AccountId);
+      const account = await svc.query.accountById(opp.AccountId); // DONE
       if (!account) return logger.warn("No Account");
 
-      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
+      const contact = await svc.query.contactById(opp.Deal_Signatory__c); // DONE
       if (!contact) return logger.warn("No Contact");
 
-      const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
+      const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id); // DONE
       if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
 
       const resources = await handleResourcesHierarchy({
