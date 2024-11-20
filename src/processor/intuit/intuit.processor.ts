@@ -7,7 +7,6 @@ import {
   QuickbooksCreateEstimateInput,
   QuickbooksCustomer,
   QuickbooksEstimate,
-  QuickbooksEstimateResponse,
   SalesforceClosedWonResource,
 } from "@/utils/types";
 
@@ -17,6 +16,7 @@ const processCustomer = async (
   service: IntuitService,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
+  // TODO: Don't filter by name, filter by salesforce customer id field
   const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: input.DisplayName }]);
   const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
@@ -134,7 +134,8 @@ const processEstimate = async (
       Id: (i + 1).toString(),
       DetailType: "SalesItemLineDetail",
       Amount: opportunityLineItem.TotalPrice,
-      Description: products[i].Description,
+      Description: opportunityLineItem.Description,
+
       SalesItemLineDetail: {
         Qty: opportunityLineItem.Quantity,
         UnitPrice: opportunityLineItem.UnitPrice,
@@ -144,30 +145,6 @@ const processEstimate = async (
         },
       },
     })),
-
-    //* TODO: Needs more clarification due to "OpportunityOpportunityLineItems.records"
-    //* Right now, only creating 1 line item
-    // Line: [
-    //   {
-    //     //* According to Warren's Mapping, is important for this to be "1"?
-    //     Id: "1",
-    //     //* Ask what Salesforce data maps to DetailType to Provide here??
-    //     DetailType: "SalesItemLineDetail",
-    //     //* Amount shouuld contain the sum of totalprice of opportunityLineItem Question where the records is on OpportunityLineItem
-    //     Amount: opportunityLineItem.TotalPrice,
-    //     Description: products[0].Description,
-    //     SalesItemLineDetail: {
-    //       Qty: opportunityLineItem.Quantity,
-    //       UnitPrice: opportunityLineItem.UnitPrice,
-    //       //* TODO: Only uses 1 product for now
-    //       ItemRef: {
-    //         name: products[0].Name,
-    //         //* IremRef.Value expects a number but ProductCode is a string
-    //         value: 1,
-    //       },
-    //     },
-    //   },
-    // ],
   };
   const estimate = await service.estimates.create(mapping);
 

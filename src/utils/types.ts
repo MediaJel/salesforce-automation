@@ -1,20 +1,17 @@
-import { ConnectionOptions } from "jsforce";
+import { ConnectionOptions } from 'jsforce';
 
-import createApp from "@/app";
-import createGraphqlService from "@/services/graphql";
+import createApp from '@/app';
+import createGraphqlService from '@/services/graphql';
 import {
-  CreateDashboardUserMutationVariables,
-  CreateOrgMutationVariables,
-  GetOrgBySalesforceIdQueryVariables,
-  GetUserBySalesforceIdOrEmailQueryVariables,
-  UpdateOrgMutationVariables,
-  User,
-} from "@/services/graphql/generated/graphql";
-import createSalesforceMutations from "@/services/salesforce/mutations";
-import createSalesforceQueries from "@/services/salesforce/query";
-import createSalesforceStream from "@/services/salesforce/stream";
-import createLogger from "@/utils/logger";
-import { ClientOptions } from "@urql/core";
+    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
+    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
+    UpdateOrgMutationVariables, User
+} from '@/services/graphql/generated/graphql';
+import createSalesforceMutations from '@/services/salesforce/mutations';
+import createSalesforceQueries from '@/services/salesforce/query';
+import createSalesforceStream from '@/services/salesforce/stream';
+import createLogger from '@/utils/logger';
+import { ClientOptions } from '@urql/core';
 
 export type IntuitAuthResponse = {
   realmId: string;
@@ -328,13 +325,6 @@ export interface SalesforceClosedWonResource {
   id: string;
   name: string;
   amount: number;
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    username: string;
-    phone: string;
-  };
 }
 
 export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
@@ -402,6 +392,7 @@ export interface Contact {
   Name: string;
   Email: string;
   Phone: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -411,6 +402,7 @@ export interface Product {
   Family: string;
   ProductCode: string;
   Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -420,6 +412,9 @@ export interface OpportunityLineItem {
   Quantity: number;
   UnitPrice: number;
   TotalPrice: number;
+  Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  ServiceDate: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -438,6 +433,7 @@ export interface Account {
   BillingLatitude: number;
   BillingLongitude: number;
   BillingCountryCode: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
