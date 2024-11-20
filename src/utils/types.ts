@@ -1,17 +1,20 @@
-import { ConnectionOptions } from 'jsforce';
+import { ConnectionOptions } from "jsforce";
 
-import createApp from '@/app';
-import createGraphqlService from '@/services/graphql';
+import createApp from "@/app";
+import createGraphqlService from "@/services/graphql";
 import {
-    CreateDashboardUserMutationVariables, CreateOrgMutationVariables,
-    GetOrgBySalesforceIdQueryVariables, GetUserBySalesforceIdOrEmailQueryVariables,
-    UpdateOrgMutationVariables, User
-} from '@/services/graphql/generated/graphql';
-import createSalesforceMutations from '@/services/salesforce/mutations';
-import createSalesforceQueries from '@/services/salesforce/query';
-import createSalesforceStream from '@/services/salesforce/stream';
-import createLogger from '@/utils/logger';
-import { ClientOptions } from '@urql/core';
+  CreateDashboardUserMutationVariables,
+  CreateOrgMutationVariables,
+  GetOrgBySalesforceIdQueryVariables,
+  GetUserBySalesforceIdOrEmailQueryVariables,
+  UpdateOrgMutationVariables,
+  User,
+} from "@/services/graphql/generated/graphql";
+import createSalesforceMutations from "@/services/salesforce/mutations";
+import createSalesforceQueries from "@/services/salesforce/query";
+import createSalesforceStream from "@/services/salesforce/stream";
+import createLogger from "@/utils/logger";
+import { ClientOptions } from "@urql/core";
 
 export type IntuitAuthResponse = {
   realmId: string;
@@ -33,6 +36,7 @@ export interface QuickbooksFindCustomersInput {
 }
 
 export interface QuickbooksCreateCustomerInput {
+  Id?: string;
   FullyQualifiedName: string;
   PrimaryEmailAddr?: QuickbooksEmailAddress;
   DisplayName: string;

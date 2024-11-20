@@ -16,17 +16,10 @@ const processCustomer = async (
   service: IntuitService,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
-  // TODO: Don't filter by name, filter by salesforce customer id field
-  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: input.DisplayName }]);
+  // TODO: Update Salesforce account with Quickbooks Id
+  const results = await service.customers.find([{ field: "Id", operator: "=", value: input.Id }]);
   const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
-  const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
   const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
-
-  if (isMoreThanOneCustomer) {
-    logger.warn(`Multiple customers found with name: ${input.DisplayName}, assigning first customer as default`);
-    return results.QueryResponse.Customer[0];
-    // TODO: Send slack message???
-  }
 
   if (isOneCustomer) {
     logger.info(`Customer found with name: ${input.DisplayName}`);
@@ -59,6 +52,7 @@ const processCustomerHierarchy = async (
     const { account, parent } = resource;
     if (parent) {
       const parentCustomer = await processCustomer(service, {
+        Id: parent.AVSFQB__Quickbooks_Id__c,
         DisplayName: parent.Name,
         CompanyName: parent.Name,
         BillAddr: {
@@ -73,7 +67,17 @@ const processCustomerHierarchy = async (
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
       await processCustomer(service, {
+        Id: account.AVSFQB__Quickbooks_Id__c,
         DisplayName: account.Name,
+        CompanyName: account.Name,
+        BillAddr: {
+          City: account.BillingCity,
+          Line1: account.BillingStreet,
+          PostalCode: account.BillingPostalCode?.toString(),
+          Lat: account.BillingLatitude?.toString(),
+          Long: account.BillingLongitude?.toString(),
+          CountrySubDivisionCode: account.BillingCountryCode,
+        },
         Job: true,
         ParentRef: {
           value: parentCustomer.Id,
@@ -135,10 +139,10 @@ const processEstimate = async (
       DetailType: "SalesItemLineDetail",
       Amount: opportunityLineItem.TotalPrice,
       Description: opportunityLineItem.Description,
-
       SalesItemLineDetail: {
         Qty: opportunityLineItem.Quantity,
         UnitPrice: opportunityLineItem.UnitPrice,
+        // TODO: Requires mirrored environment
         ItemRef: {
           name: products[i].Name,
           value: 1,
