@@ -18,7 +18,7 @@ const createSalesforceMutations = (client: Connection, logger: Logger) => {
       return new Promise((resolve, reject) => {
         client.sobject("Opportunity").update(input, (err, result) => {
           if (err) {
-            logger.error({ message: "Error updating Opportunity", err });
+            logger.error({ message: "Error updating Opportunity", err: err.message });
             reject(err);
           }
 

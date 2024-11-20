@@ -32,6 +32,16 @@ const createIntuitCustomersService = (client: any) => {
         });
       });
     },
+
+    get: async (id: string): Promise<QuickbooksCustomer> => {
+      return new Promise((resolve, reject) => {
+        client.getCustomer(id, (err: any, customer: any) => {
+          console.warn(`Customer found`, customer);
+          if (err) reject(err);
+          resolve(customer);
+        });
+      });
+    },
   };
 };
 

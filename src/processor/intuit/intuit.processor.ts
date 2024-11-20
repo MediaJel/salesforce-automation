@@ -1,25 +1,25 @@
-import config from "@/config";
-import createIntuitService, { IntuitService } from "@/services/intuit/service";
-import SalesforceService from "@/services/salesforce";
-import createLogger from "@/utils/logger";
+import config from '@/config';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
+import createLogger from '@/utils/logger';
 import {
-  QuickbooksCreateCustomerInput,
-  QuickbooksCreateEstimateInput,
-  QuickbooksCustomer,
-  QuickbooksEstimate,
-  SalesforceClosedWonResource,
-} from "@/utils/types";
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, SalesforceClosedWonResource
+} from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
 const processCustomer = async (
   service: IntuitService,
   salesforceAccountId: string,
-  input: Partial<QuickbooksCreateCustomerInput>
+  input: Partial<QuickbooksCreateCustomerInput & { quickbooksId: string }>
 ): Promise<QuickbooksCustomer> => {
+  const { quickbooksId, ...rest } = input;
   // TODO: Update Salesforce account with Quickbooks Id
-  logger.debug(`Finding customer: ${input.Id} in Quickbooks`);
-  const results = await service.customers.find([{ field: "Id", operator: "=", value: input.Id }]).catch((err) => {
+
+  logger.warn(`Process Customer: ${JSON.stringify(input, null, 2)}`);
+
+  const results = await service.customers.get(quickbooksId).catch((err) => {
     logger.error({ message: "Error finding customer", err });
     return null;
   });
@@ -32,12 +32,12 @@ const processCustomer = async (
   const isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
 
   if (isCustomerFound) {
-    logger.info(`Customer found in Quickbooks with id ${input.Id} : ${input.DisplayName}`);
+    logger.info(`Customer found in Quickbooks with id ${input.quickbooksId} : ${input.DisplayName}`);
     return results.QueryResponse.Customer[0];
   }
 
-  logger.warn(`No customer found with id ${input.Id}: ${input.DisplayName}, creating new customer`);
-  const customer = await service.customers.create(input).catch((err) => {
+  logger.warn(`No customer found with id ${input.quickbooksId}: ${input.DisplayName}, creating new customer`);
+  const customer = await service.customers.create(rest).catch((err) => {
     logger.error({ message: "Error creating customer", err });
     return null;
   });
@@ -67,9 +67,10 @@ const processCustomerHierarchy = async (
 
   for (const resource of resources) {
     const { account, parent } = resource;
+
     if (parent) {
       const parentCustomer = await processCustomer(service, parent.Id, {
-        Id: parent.AVSFQB__Quickbooks_Id__c,
+        quickbooksId: parent.AVSFQB__Quickbooks_Id__c,
         DisplayName: parent.Name,
         CompanyName: parent.Name,
         BillAddr: {
@@ -84,7 +85,7 @@ const processCustomerHierarchy = async (
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
       await processCustomer(service, account.Id, {
-        Id: account.AVSFQB__Quickbooks_Id__c,
+        quickbooksId: account.AVSFQB__Quickbooks_Id__c,
         DisplayName: account.Name,
         CompanyName: account.Name,
         BillAddr: {
@@ -103,7 +104,17 @@ const processCustomerHierarchy = async (
     }
 
     const customer = await processCustomer(service, account.Id, {
+      quickbooksId: account.AVSFQB__Quickbooks_Id__c,
       DisplayName: account.Name,
+      CompanyName: account.Name,
+      BillAddr: {
+        City: account.BillingCity,
+        Line1: account.BillingStreet,
+        PostalCode: account.BillingPostalCode?.toString(),
+        Lat: account.BillingLatitude?.toString(),
+        Long: account.BillingLongitude?.toString(),
+        CountrySubDivisionCode: account.BillingCountryCode,
+      },
     });
 
     if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
@@ -122,7 +133,6 @@ const processEstimate = async (
 
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
     TotalAmt: opportunity.Amount,
-
     BillEmail: {
       Address: contact.Email,
     },
@@ -185,17 +195,17 @@ const createIntuitProcessor = async () => {
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
-        logger.error({ message: "Error processing resources", err });
+        logger.error({ message: "Error processing customers", err: err.message });
         return [] as QuickbooksCustomer[];
       });
 
-      if (!customers) {
+      if (customers.length === 0) {
         logger.error({ message: "No customers returned from processing resources" });
         return;
       }
 
       const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
-        logger.error({ message: "Error processing resources", err });
+        logger.error({ message: "Error processing estimates", err: err.message });
         return {} as QuickbooksEstimate & { opportunityId: string };
       });
 
@@ -206,6 +216,10 @@ const createIntuitProcessor = async () => {
 
       SalesforceService(config.salesforce, async (_, svc) => {
         const { opportunityId } = estimate;
+        if (!opportunityId) {
+          logger.error({ message: "No opportunity ID found in estimate" });
+          return;
+        }
         const result = await svc.mutation
           .updateOpportunity({
             Id: opportunityId,
@@ -216,6 +230,11 @@ const createIntuitProcessor = async () => {
             logger.error({ message: "Error updating opportunity", err: err.message });
             return null;
           });
+
+        if (!result) {
+          logger.error({ message: "No result returned from updating opportunity" });
+          return;
+        }
 
         logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
       });

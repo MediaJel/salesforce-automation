@@ -36,7 +36,6 @@ export interface QuickbooksFindCustomersInput {
 }
 
 export interface QuickbooksCreateCustomerInput {
-  Id?: string;
   FullyQualifiedName: string;
   PrimaryEmailAddr?: QuickbooksEmailAddress;
   DisplayName: string;
