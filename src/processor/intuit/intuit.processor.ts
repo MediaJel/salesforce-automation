@@ -1,11 +1,15 @@
-import config from '@/config';
-import createIntuitService, { IntuitService } from '@/services/intuit/service';
-import SalesforceService from '@/services/salesforce';
-import createLogger from '@/utils/logger';
+import config from "@/config";
+import createIntuitService, { IntuitService } from "@/services/intuit/service";
+import SalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCreateEstimateInput,
+  QuickbooksCustomer,
+  QuickbooksEstimate,
+  QuickbooksEstimateResponse,
+  SalesforceClosedWonResource,
+} from "@/utils/types";
 
 const logger = createLogger("Intuit Processor");
 
@@ -52,11 +56,19 @@ const processCustomerHierarchy = async (
   const customers = [];
 
   for (const resource of resources) {
-    const { account, parentId, parentName } = resource;
-    if (parentId && parentName) {
-      const parent = await processCustomer(service, {
-        DisplayName: parentName,
-        CompanyName: parentName,
+    const { account, parent } = resource;
+    if (parent) {
+      const parentCustomer = await processCustomer(service, {
+        DisplayName: parent.Name,
+        CompanyName: parent.Name,
+        BillAddr: {
+          City: parent.BillingCity,
+          Line1: parent.BillingStreet,
+          PostalCode: parent?.BillingPostalCode?.toString(),
+          Lat: parent.BillingLatitude?.toString(),
+          Long: parent.BillingLongitude?.toString(),
+          CountrySubDivisionCode: parent.BillingCountryCode,
+        },
       });
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
@@ -64,7 +76,7 @@ const processCustomerHierarchy = async (
         DisplayName: account.Name,
         Job: true,
         ParentRef: {
-          value: parent.Id,
+          value: parentCustomer.Id,
         },
       });
     }
@@ -174,17 +186,6 @@ const createIntuitProcessor = async () => {
 
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      // const processed = [];
-      // for (const resource of resources) {
-      //   const customer = await processCustomerHierarchy(intuitService, resource);
-      //   if (!customer) throw new Error(`Customer not created for account: ${resource.account.Name}`);
-
-      //   const estimate = await processEstimate(intuitService, customer, resource);
-      //   if (!estimate) throw new Error(`Estimate not created for account: ${resource.account.Name}`);
-
-      //   processed.push({ ...estimate, opportunityId: resource.opportunity.Id });
-      // }
-
       const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
         logger.error({ message: "Error processing resources", err });
         throw err;

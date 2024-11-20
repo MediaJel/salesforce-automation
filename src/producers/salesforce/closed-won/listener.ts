@@ -1,9 +1,15 @@
-import SalesforceService from '@/services/salesforce';
+import SalesforceService from "@/services/salesforce";
 import {
-    Account, Contact, Logger, Opportunity, OpportunityLineItem, Product,
-    SalesforceClosedWonEventListenerParams, SalesforceClosedWonResource,
-    SalesforceStreamSubscriptionParams
-} from '@/utils/types';
+  Account,
+  Contact,
+  Logger,
+  Opportunity,
+  OpportunityLineItem,
+  Product,
+  SalesforceClosedWonEventListenerParams,
+  SalesforceClosedWonResource,
+  SalesforceStreamSubscriptionParams,
+} from "@/utils/types";
 
 type StreamListener = SalesforceClosedWonEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
@@ -57,8 +63,7 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
     products,
     account,
     opportunityLineItems,
-    parentId: account?.ParentId || null,
-    parentName: parent?.Name || null,
+    parent: parent ?? null,
     // Legacy types, mainly here for the GraphQL processor
     id: account.Id,
     name: account.Name,
@@ -114,8 +119,8 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
 
       // Organize the array starting from the highest parent account to the lowest child account
       const sorted = resources.reverse().sort((a, b) => {
-        if (a.parentId === b.id) return 1;
-        if (a.id === b.parentId) return -1;
+        if (a.parent.Id === b.id) return 1;
+        if (a.id === b.parent.Id) return -1;
         return 0;
       });
 
