@@ -1,7 +1,9 @@
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCustomer, QuickbooksFindCustomersInput,
-    QuickbooksFindCustomersResponse
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCustomer,
+  QuickbooksFindCustomersInput,
+  QuickbooksFindCustomersResponse,
+} from "@/utils/types";
 
 //* Client is any since node-quickbooks don't got types
 const createIntuitCustomersService = (client: any) => {

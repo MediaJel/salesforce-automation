@@ -18,7 +18,16 @@ const processCustomer = async (
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
   // TODO: Update Salesforce account with Quickbooks Id
-  const results = await service.customers.find([{ field: "Id", operator: "=", value: input.Id }]);
+  logger.debug(`Finding customer: ${input.Id} in Quickbooks`);
+  const results = await service.customers.find([{ field: "Id", operator: "=", value: input.Id }]).catch((err) => {
+    logger.error({ message: "Error finding customer", err });
+    return null;
+  });
+
+  if (!results) {
+    logger.error({ message: "No results returned from finding customer" });
+    return null;
+  }
   // const isCustomerNotFound = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
 
@@ -35,7 +44,7 @@ const processCustomer = async (
 
   SalesforceService(config.salesforce, async (_, svc) => {
     const result = await svc.mutation.updateAccount({
-      Id: input.Id,
+      Id: salesforceAccountId,
       AVSFQB__Quickbooks_Id__c: customer.Id,
     });
 
@@ -177,7 +186,7 @@ const createIntuitProcessor = async () => {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
         logger.error({ message: "Error processing resources", err });
-        throw err;
+        return [] as QuickbooksCustomer[];
       });
 
       if (!customers) {
@@ -187,7 +196,7 @@ const createIntuitProcessor = async () => {
 
       const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
         logger.error({ message: "Error processing resources", err });
-        throw err;
+        return {} as QuickbooksEstimate & { opportunityId: string };
       });
 
       if (!estimate) {
@@ -197,11 +206,16 @@ const createIntuitProcessor = async () => {
 
       SalesforceService(config.salesforce, async (_, svc) => {
         const { opportunityId } = estimate;
-        const result = await svc.mutation.updateOpportunity({
-          Id: opportunityId,
-          AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-          // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
-        });
+        const result = await svc.mutation
+          .updateOpportunity({
+            Id: opportunityId,
+            AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+            // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+          })
+          .catch((err) => {
+            logger.error({ message: "Error updating opportunity", err: err.message });
+            return null;
+          });
 
         logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
       });
