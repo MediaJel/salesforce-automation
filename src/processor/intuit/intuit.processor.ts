@@ -1,11 +1,14 @@
-import config from '@/config';
-import createIntuitService, { IntuitService } from '@/services/intuit/service';
-import SalesforceService from '@/services/salesforce';
-import createLogger from '@/utils/logger';
+import config from "@/config";
+import createIntuitService, { IntuitService } from "@/services/intuit/service";
+import SalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, SalesforceClosedWonResource
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCreateEstimateInput,
+  QuickbooksCustomer,
+  QuickbooksEstimate,
+  SalesforceClosedWonResource,
+} from "@/utils/types";
 
 const logger = createLogger("Intuit Processor");
 
@@ -19,15 +22,12 @@ const processCustomer = async (
 
   logger.warn(`Process Customer: ${JSON.stringify(input, null, 2)}`);
 
-  const results = await service.customers.get(quickbooksId).catch((err) => {
-    logger.error({ message: "Error finding customer", err });
-    return null;
-  });
+  const results = (await service.customers.get(quickbooksId)) as any;
 
-  if (!results) {
-    logger.error({ message: "No results returned from finding customer" });
-    return null;
-  }
+  logger.info(`Quickbooks Customer Results: ${JSON.stringify(results, null, 2)}`);
+
+  if (!results) logger.warn(`No Quickbook results returned from finding customer ${quickbooksId}: ${rest.DisplayName}`);
+
   // const isCustomerNotFound = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
 

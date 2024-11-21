@@ -1,9 +1,7 @@
 import {
-  QuickbooksCreateCustomerInput,
-  QuickbooksCustomer,
-  QuickbooksFindCustomersInput,
-  QuickbooksFindCustomersResponse,
-} from "@/utils/types";
+    QuickbooksCreateCustomerInput, QuickbooksCustomer, QuickbooksFindCustomersInput,
+    QuickbooksFindCustomersResponse
+} from '@/utils/types';
 
 //* Client is any since node-quickbooks don't got types
 const createIntuitCustomersService = (client: any) => {
@@ -36,8 +34,10 @@ const createIntuitCustomersService = (client: any) => {
     get: async (id: string): Promise<QuickbooksCustomer> => {
       return new Promise((resolve, reject) => {
         client.getCustomer(id, (err: any, customer: any) => {
-          console.warn(`Customer found`, customer);
-          if (err) reject(err);
+          if (err) {
+            console.log(`Customer not found`, err);
+            resolve(null)
+          }
           resolve(customer);
         });
       });
