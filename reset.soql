@@ -1,0 +1,9 @@
+List<Account> accountsToUpdate = [SELECT Id, AVSFQB__Quickbooks_Id__c 
+                                  FROM Account 
+                                  WHERE Id IN ('001Jw00000b2xtCIAQ', '001Jw00000b31bpIAA', '001Jw00000bE7KVIA0')];
+
+for (Account acc : accountsToUpdate) {
+    acc.AVSFQB__Quickbooks_Id__c = null;
+}
+
+update accountsToUpdate;

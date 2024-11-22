@@ -65,9 +65,9 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
     opportunityLineItems,
     parent: parent ?? null,
     // Legacy types, mainly here for the GraphQL processor
-    id: account.Id,
-    name: account.Name,
-    amount: opportunity.Amount,
+    // id: account.Id,
+    // name: account.Name,
+    // amount: opportunity.Amount,
   });
 
   return resources.reverse();
@@ -108,8 +108,8 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
 
       // Organize the array starting from the highest parent account to the lowest child account
       const sorted = resources.reverse().sort((a, b) => {
-        if (a?.parent?.Id === b.id) return 1;
-        if (a.id === b?.parent?.Id) return -1;
+        if (a?.parent?.Id === b.account.Id) return 1;
+        if (a.account.Id === b?.parent?.Id) return -1;
         return 0;
       });
 

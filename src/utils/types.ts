@@ -325,9 +325,9 @@ export interface SalesforceClosedWonResource {
   products: Product[];
   parent?: Account;
   // Legacy types, mainly here for the GraphQL processor
-  id: string;
-  name: string;
-  amount: number;
+  // id: string;
+  // name: string;
+  // amount: number;
 }
 
 export type SalesforceClosedWonResourceWithUser = SalesforceClosedWonResource & {};
@@ -432,10 +432,10 @@ export interface Account {
   ShippingLongitude: number;
   BillingCity: string;
   BillingStreet: string;
-  BillingPostalCode: number;
+  BillingPostalCode: string;
   BillingLatitude: number;
   BillingLongitude: number;
-  BillingCountryCode: string;
+  BillingCountry: string;
   AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }

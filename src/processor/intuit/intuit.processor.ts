@@ -1,14 +1,11 @@
-import config from "@/config";
-import createIntuitService, { IntuitService } from "@/services/intuit/service";
-import SalesforceService from "@/services/salesforce";
-import createLogger from "@/utils/logger";
+import config from '@/config';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
+import createLogger from '@/utils/logger';
 import {
-  QuickbooksCreateCustomerInput,
-  QuickbooksCreateEstimateInput,
-  QuickbooksCustomer,
-  QuickbooksEstimate,
-  SalesforceClosedWonResource,
-} from "@/utils/types";
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, SalesforceClosedWonResource
+} from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
@@ -18,37 +15,25 @@ const processCustomer = async (
   input: Partial<QuickbooksCreateCustomerInput & { quickbooksId: string }>
 ): Promise<QuickbooksCustomer> => {
   const { quickbooksId, ...rest } = input;
-  // TODO: Update Salesforce account with Quickbooks Id
 
-  logger.warn(`Process Customer: ${JSON.stringify(input, null, 2)}`);
-
-  const results = (await service.customers.get(quickbooksId)) as any;
+  // TODO: Revise this?
+  const results = await service.customers.find([
+    { field: "Id", operator: "=", value: quickbooksId },
+    { field: "DisplayName", operator: "=", value: input.DisplayName },
+  ]);
+  const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
 
   logger.info(`Quickbooks Customer Results: ${JSON.stringify(results, null, 2)}`);
 
-  if (!results) logger.warn(`No Quickbook results returned from finding customer ${quickbooksId}: ${rest.DisplayName}`);
-
-  // const isCustomerNotFound = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
-  const isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
-
-  if (isCustomerFound) {
-    logger.info(`Customer found in Quickbooks with id ${input.quickbooksId} : ${input.DisplayName}`);
+  if (isOneCustomer) {
+    logger.info(`Customer found with name: ${input.DisplayName}`);
     return results.QueryResponse.Customer[0];
   }
 
-  logger.warn(`No customer found with id ${input.quickbooksId}: ${input.DisplayName}, creating new customer`);
+  logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
   const customer = await service.customers.create(rest).catch((err) => {
     logger.error({ message: "Error creating customer", err });
     return null;
-  });
-
-  SalesforceService(config.salesforce, async (_, svc) => {
-    const result = await svc.mutation.updateAccount({
-      Id: salesforceAccountId,
-      AVSFQB__Quickbooks_Id__c: customer.Id,
-    });
-
-    logger.info(`Account updated: ${JSON.stringify(result, null, 2)}`);
   });
 
   if (!customer) {
@@ -57,8 +42,19 @@ const processCustomer = async (
   }
   logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
 
+  logger.warn(`No customer found with id ${input.quickbooksId}: ${input.DisplayName}, creating new customer`);
+
+  SalesforceService(config.salesforce, async (_, svc) => {
+    const result = await svc.mutation.updateAccount({
+      Id: salesforceAccountId,
+      AVSFQB__Quickbooks_Id__c: customer.Id,
+    });
+    logger.info(`Account updated: ${JSON.stringify(result, null, 2)}`);
+  });
+
   return customer;
 };
+
 const processCustomerHierarchy = async (
   service: IntuitService,
   resources: SalesforceClosedWonResource[]
@@ -68,34 +64,25 @@ const processCustomerHierarchy = async (
   for (const resource of resources) {
     const { account, parent } = resource;
 
-    if (parent) {
+    if (parent?.Id && parent?.Name) {
       const parentCustomer = await processCustomer(service, parent.Id, {
-        quickbooksId: parent.AVSFQB__Quickbooks_Id__c,
+        quickbooksId: parent?.AVSFQB__Quickbooks_Id__c,
         DisplayName: parent.Name,
         CompanyName: parent.Name,
-        BillAddr: {
-          City: parent.BillingCity,
-          Line1: parent.BillingStreet,
-          PostalCode: parent?.BillingPostalCode?.toString(),
-          Lat: parent.BillingLatitude?.toString(),
-          Long: parent.BillingLongitude?.toString(),
-          CountrySubDivisionCode: parent.BillingCountryCode,
-        },
+        // BillAddr: {
+        //   City: parent.BillingCity,
+        //   Line1: parent.BillingStreet,
+        //   PostalCode: parent?.BillingPostalCode?.toString(),
+        //   Lat: parent.BillingLatitude?.toString(),
+        //   Long: parent.BillingLongitude?.toString(),
+        //   CountrySubDivisionCode: parent.BillingCountryCode,
+        // },
       });
-      if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+      if (!parentCustomer) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
+      
       await processCustomer(service, account.Id, {
-        quickbooksId: account.AVSFQB__Quickbooks_Id__c,
         DisplayName: account.Name,
-        CompanyName: account.Name,
-        BillAddr: {
-          City: account.BillingCity,
-          Line1: account.BillingStreet,
-          PostalCode: account.BillingPostalCode?.toString(),
-          Lat: account.BillingLatitude?.toString(),
-          Long: account.BillingLongitude?.toString(),
-          CountrySubDivisionCode: account.BillingCountryCode,
-        },
         Job: true,
         ParentRef: {
           value: parentCustomer.Id,
@@ -104,17 +91,7 @@ const processCustomerHierarchy = async (
     }
 
     const customer = await processCustomer(service, account.Id, {
-      quickbooksId: account.AVSFQB__Quickbooks_Id__c,
       DisplayName: account.Name,
-      CompanyName: account.Name,
-      BillAddr: {
-        City: account.BillingCity,
-        Line1: account.BillingStreet,
-        PostalCode: account.BillingPostalCode?.toString(),
-        Lat: account.BillingLatitude?.toString(),
-        Long: account.BillingLongitude?.toString(),
-        CountrySubDivisionCode: account.BillingCountryCode,
-      },
     });
 
     if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
@@ -123,6 +100,58 @@ const processCustomerHierarchy = async (
 
   return customers;
 };
+
+// const processCustomerHierarchy = async (
+//   service: IntuitService,
+//   resources: SalesforceClosedWonResource[]
+// ): Promise<QuickbooksCustomer[]> => {
+//   const customers = [];
+
+//   for (const resource of resources) {
+//     const { account, parent } = resource;
+//     let parentCustomer = null;
+
+//     if (parent) {
+//       parentCustomer = await processCustomer(service, parent.Id, {
+//         quickbooksId: parent.AVSFQB__Quickbooks_Id__c,
+//         DisplayName: parent.Name,
+//         CompanyName: parent.Name,
+//         BillAddr: {
+//           City: parent.BillingCity,
+//           Line1: parent.BillingStreet,
+//           PostalCode: parent?.BillingPostalCode?.toString(),
+//           Lat: parent.BillingLatitude?.toString(),
+//           Long: parent.BillingLongitude?.toString(),
+//           CountrySubDivisionCode: parent.BillingCountryCode,
+//         },
+//       });
+//       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+//     }
+
+//     const customer = await processCustomer(service, account.Id, {
+//       quickbooksId: account.AVSFQB__Quickbooks_Id__c,
+//       DisplayName: account.Name,
+//       CompanyName: account.Name,
+//       BillAddr: {
+//         City: account.BillingCity,
+//         Line1: account.BillingStreet,
+//         PostalCode: account.BillingPostalCode?.toString(),
+//         Lat: account.BillingLatitude?.toString(),
+//         Long: account.BillingLongitude?.toString(),
+//         CountrySubDivisionCode: account.BillingCountryCode,
+//       },
+//       Job: !!parent,
+//       ParentRef: {
+//         value: parentCustomer?.Id,
+//       },
+//     });
+
+//     if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+//     customers.push(customer);
+//   }
+
+//   return customers;
+// };
 
 const processEstimate = async (
   service: IntuitService,
@@ -144,17 +173,17 @@ const processEstimate = async (
       PostalCode: account.ShippingPostalCode,
       Lat: account.ShippingLatitude,
       Long: account.ShippingLongitude,
-      CountrySubDivisionCode: account.BillingCountryCode,
+      CountrySubDivisionCode: account.BillingCountry,
     },
     BillAddr: {
       //* TODO: Note sure if to use account.id here, was not included in the mappings
       Id: 69420,
       City: account.BillingCity,
       Line1: account.BillingStreet,
-      PostalCode: account.BillingPostalCode,
+      PostalCode: parseInt(account.BillingPostalCode),
       Lat: account.BillingLatitude,
       Long: account.BillingLongitude,
-      CountrySubDivisionCode: account.BillingCountryCode,
+      CountrySubDivisionCode: account.BillingCountry,
     },
     CustomerRef: {
       name: customer.DisplayName,
@@ -199,7 +228,7 @@ const createIntuitProcessor = async () => {
         return [] as QuickbooksCustomer[];
       });
 
-      if (customers.length === 0) {
+      if (customers?.length === 0 || !customers) {
         logger.error({ message: "No customers returned from processing resources" });
         return;
       }

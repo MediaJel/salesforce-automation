@@ -1,7 +1,11 @@
+import axios from "axios";
+
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCustomer, QuickbooksFindCustomersInput,
-    QuickbooksFindCustomersResponse
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCustomer,
+  QuickbooksFindCustomersInput,
+  QuickbooksFindCustomersResponse,
+} from "@/utils/types";
 
 //* Client is any since node-quickbooks don't got types
 const createIntuitCustomersService = (client: any) => {
@@ -31,12 +35,16 @@ const createIntuitCustomersService = (client: any) => {
       });
     },
 
+    // find2: async (input: QuickbooksFindCustomersInput): Promise<QuickbooksFindCustomersResponse> => {
+    //   const token = client.getToken();
+    //   const resultaxios
+    // },
     get: async (id: string): Promise<QuickbooksCustomer> => {
       return new Promise((resolve, reject) => {
         client.getCustomer(id, (err: any, customer: any) => {
           if (err) {
             console.log(`Customer not found`, err);
-            resolve(null)
+            resolve(null);
           }
           resolve(customer);
         });
