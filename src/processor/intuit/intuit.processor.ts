@@ -4,49 +4,53 @@ import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
     QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
+    QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
+    SalesforceClosedWonResource
 } from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
+// TODO: This doesn't work well right now because we can't store the value of the created customer id in salesforce
+//! properly
 const processCustomer = async (
   service: IntuitService,
+  salesforceId: string,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
-  const results = await service.customers.find([
-    { field: "DisplayName", operator: "=", value: input.DisplayName },
-    // { field: "Id", operator: "=", value: input.Id },
-  ]);
-  const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
-  const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
-  const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
+  let isCustomerFound = false;
+  let foundCustomer = null;
 
-  if (isMoreThanOneCustomer) {
-    logger.warn(`Multiple customers found with name: ${input.DisplayName}, assigning first customer as default`);
-    return results.QueryResponse.Customer[0];
-    // TODO: Send slack message???
+  logger.debug(`Finding customer with Quickbooks id: ${salesforceId}`);
+
+  if (salesforceId !== null) {
+    logger.debug(`Salesforce Id is not null, finding customer with id: ${salesforceId}`);
+    const filters: QuickbooksFindCustomersInput[] = [{ field: "Id", operator: "=", value: salesforceId }];
+    const results = await service.customers.find(filters);
+
+    isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
+    foundCustomer = isCustomerFound ? results?.QueryResponse?.Customer[0] : null;
   }
 
-  if (isOneCustomer) {
+  logger.debug(`Customer found: ${isCustomerFound}, `);
+  logger.debug(`Found customer: ${JSON.stringify(foundCustomer, null, 2)}`);
+  if (isCustomerFound && foundCustomer) {
     logger.info(`Customer found with name: ${input.DisplayName}`);
-    return results.QueryResponse.Customer[0];
+    return foundCustomer;
   }
 
-  if (isNoCustomers) {
-    logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
-    const customer = await service.customers.create(input).catch((err) => {
-      logger.error({ message: "Error creating customer", err });
-      return null;
-    });
+  logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
+  const customer = await service.customers.create(input).catch((err) => {
+    logger.error({ message: "Error creating customer", err });
+    return null;
+  });
 
-    if (!customer) {
-      logger.error({ message: "Customer not created" });
-      return null;
-    }
-    logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
-
-    return customer;
+  if (!customer) {
+    logger.error({ message: "Customer not created" });
+    return null;
   }
+  logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
+
+  return customer;
 };
 const processCustomerHierarchy = async (
   service: IntuitService,
@@ -57,7 +61,7 @@ const processCustomerHierarchy = async (
   for (const resource of resources) {
     const { account, parent } = resource;
     if (parent) {
-      const parentCustomer = await processCustomer(service, {
+      const parentCustomer = await processCustomer(service, parent?.AVSFQB__Quickbooks_Id__c, {
         DisplayName: parent.Name,
         CompanyName: parent.Name,
         BillAddr: {
@@ -71,7 +75,7 @@ const processCustomerHierarchy = async (
       });
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
-      await processCustomer(service, {
+      await processCustomer(service, account.AVSFQB__Quickbooks_Id__c, {
         DisplayName: account.Name,
         CompanyName: account.Name,
         BillAddr: {
@@ -89,7 +93,7 @@ const processCustomerHierarchy = async (
       });
     }
 
-    const customer = await processCustomer(service, {
+    const customer = await processCustomer(service, account.AVSFQB__Quickbooks_Id__c, {
       DisplayName: account.Name,
       CompanyName: account.Name,
       BillAddr: {
@@ -162,8 +166,6 @@ const processEstimate = async (
         },
       },
     })),
-
-
   };
   const estimate = await service.estimates.create(mapping);
 
