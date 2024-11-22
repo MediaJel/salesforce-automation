@@ -402,6 +402,7 @@ export interface Contact {
   Name: string;
   Email: string;
   Phone: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -411,6 +412,7 @@ export interface Product {
   Family: string;
   ProductCode: string;
   Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -420,6 +422,9 @@ export interface OpportunityLineItem {
   Quantity: number;
   UnitPrice: number;
   TotalPrice: number;
+  Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  ServiceDate: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -434,10 +439,11 @@ export interface Account {
   ShippingLongitude: number;
   BillingCity: string;
   BillingStreet: string;
-  BillingPostalCode: number;
+  BillingPostalCode: string;
   BillingLatitude: number;
   BillingLongitude: number;
-  BillingCountryCode: string;
+  BillingCountry: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 

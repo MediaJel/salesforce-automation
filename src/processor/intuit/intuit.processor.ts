@@ -1,15 +1,11 @@
-import config from "@/config";
-import createIntuitService, { IntuitService } from "@/services/intuit/service";
-import SalesforceService from "@/services/salesforce";
-import createLogger from "@/utils/logger";
+import config from '@/config';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
+import createLogger from '@/utils/logger';
 import {
-  QuickbooksCreateCustomerInput,
-  QuickbooksCreateEstimateInput,
-  QuickbooksCustomer,
-  QuickbooksEstimate,
-  QuickbooksEstimateResponse,
-  SalesforceClosedWonResource,
-} from "@/utils/types";
+    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, QuickbooksEstimateResponse, SalesforceClosedWonResource
+} from '@/utils/types';
 
 const logger = createLogger("Intuit Processor");
 
@@ -17,7 +13,10 @@ const processCustomer = async (
   service: IntuitService,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
-  const results = await service.customers.find([{ field: "DisplayName", operator: "=", value: input.DisplayName }]);
+  const results = await service.customers.find([
+    { field: "DisplayName", operator: "=", value: input.DisplayName },
+    // { field: "Id", operator: "=", value: input.Id },
+  ]);
   const isNoCustomers = !results?.QueryResponse?.Customer?.length || results?.QueryResponse?.Customer?.length === 0;
   const isMoreThanOneCustomer = results?.QueryResponse?.Customer?.length > 1;
   const isOneCustomer = results?.QueryResponse?.Customer?.length === 1;
@@ -67,13 +66,22 @@ const processCustomerHierarchy = async (
           PostalCode: parent?.BillingPostalCode?.toString(),
           Lat: parent.BillingLatitude?.toString(),
           Long: parent.BillingLongitude?.toString(),
-          CountrySubDivisionCode: parent.BillingCountryCode,
+          CountrySubDivisionCode: parent.BillingCountry,
         },
       });
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
       await processCustomer(service, {
         DisplayName: account.Name,
+        CompanyName: account.Name,
+        BillAddr: {
+          City: account.BillingCity,
+          Line1: account.BillingStreet,
+          PostalCode: account.BillingPostalCode?.toString(),
+          Lat: account.BillingLatitude?.toString(),
+          Long: account.BillingLongitude?.toString(),
+          CountrySubDivisionCode: account.BillingCountry,
+        },
         Job: true,
         ParentRef: {
           value: parentCustomer.Id,
@@ -113,17 +121,17 @@ const processEstimate = async (
       PostalCode: account.ShippingPostalCode,
       Lat: account.ShippingLatitude,
       Long: account.ShippingLongitude,
-      CountrySubDivisionCode: account.BillingCountryCode,
+      CountrySubDivisionCode: account.BillingCountry,
     },
     BillAddr: {
       //* TODO: Note sure if to use account.id here, was not included in the mappings
       Id: 69420,
       City: account.BillingCity,
       Line1: account.BillingStreet,
-      PostalCode: account.BillingPostalCode,
+      PostalCode: parseInt(account?.BillingPostalCode || "0"),
       Lat: account.BillingLatitude,
       Long: account.BillingLongitude,
-      CountrySubDivisionCode: account.BillingCountryCode,
+      CountrySubDivisionCode: account.BillingCountry,
     },
     CustomerRef: {
       name: customer.DisplayName,

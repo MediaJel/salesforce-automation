@@ -119,8 +119,8 @@ const createSalesforceListener = (opts: StreamListener) => (cb: (resources: Sale
 
       // Organize the array starting from the highest parent account to the lowest child account
       const sorted = resources.reverse().sort((a, b) => {
-        if (a.parent.Id === b.id) return 1;
-        if (a.id === b.parent.Id) return -1;
+        if (a?.parent?.Id === b.id) return 1;
+        if (a.id === b?.parent?.Id) return -1;
         return 0;
       });
 
