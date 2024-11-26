@@ -3,7 +3,7 @@ import createIntuitService, { IntuitService } from '@/services/intuit/service';
 import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    Account, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
     QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
     SalesforceClosedWonResource
 } from '@/utils/types';
@@ -11,55 +11,99 @@ import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
+// TODO: Handle situations where the parent has already been created BUT in the next iteration, the value of the salesforce containing
+//* the account id has not yet been updated.
 const processCustomer = async (
   service: IntuitService,
-  salesforceId: string,
+  quickbooksId: string,
+  salesforceAccountId: string,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
-  let isCustomerFound = false;
-  let foundCustomer = null;
+  return new Promise((resolve, reject) => {
+    SalesforceService(config.salesforce, async (_, svc) => {
+      let isCustomerFound = false;
+      let foundCustomer = null;
+      let acc: Account = null;
 
-  logger.debug(`Finding customer with Quickbooks id: ${salesforceId}`);
+      if (quickbooksId !== null) {
+        logger.debug(`Finding customer with Quickbooks id: ${quickbooksId}`);
+        const field = isProduction ? "AVSFQB__Quickbooks_Id__c" : "QBO_Account_ID_Staging__c";
 
-  if (salesforceId !== null) {
-    logger.debug(`Salesforce Id is not null, finding customer with id: ${salesforceId}`);
-    const filters: QuickbooksFindCustomersInput[] = [{ field: "Id", operator: "=", value: salesforceId }];
-    const results = await service.customers.find(filters);
+        acc = await svc.query.accountByQuickbooksId(field, quickbooksId).catch((err) => {
+          logger.error({ message: "Error querying account by quickbooks id", err });
+          reject(err);
+          return null;
+        });
 
-    isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
-    foundCustomer = isCustomerFound ? results?.QueryResponse?.Customer[0] : null;
-  }
+        logger.info(`Account found: ${JSON.stringify(acc, null, 2)}`);
 
-  logger.debug(`Customer found: ${isCustomerFound}, `);
-  logger.debug(`Found customer: ${JSON.stringify(foundCustomer, null, 2)}`);
-  if (isCustomerFound && foundCustomer) {
-    logger.info(`Customer found with name: ${input.DisplayName}`);
-    return foundCustomer;
-  }
+        if (!acc) {
+          logger.error({ message: "Account not found" });
+          resolve(null);
+        }
 
-  logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
-  const customer = await service.customers.create(input).catch((err) => {
-    logger.error({ message: "Error creating customer", err });
-    return null;
-  });
+        logger.debug(`Finding customer with Quickbooks id: ${quickbooksId}`);
 
-  SalesforceService(config.salesforce, async (_, svc) => {
-    const result = await svc.mutation.updateAccount({
-      Id: salesforceId,
-      ...(!isProduction && { QBO_Account_ID_Staging__c: customer.Id }),
-      ...(isProduction && { AVSFQB__Quickbooks_Id__c: customer.Id }),
+        logger.debug(`Salesforce Id is not null, finding customer with id: ${quickbooksId}`);
+        const filters: QuickbooksFindCustomersInput[] = [{ field: "Id", operator: "=", value: quickbooksId }];
+        const results = await service.customers.find(filters);
+
+        isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
+        foundCustomer = isCustomerFound ? resolve(results?.QueryResponse?.Customer[0]) : resolve(null);
+      }
+
+      if (!acc) {
+        logger.debug(`Finding account with id: ${salesforceAccountId}`);
+        acc = await svc.query.accountById(salesforceAccountId).catch((err) => {
+          logger.error({ message: "Error querying account by id", err });
+          reject(err);
+          return null as Account;
+        });
+
+        logger.info(`Account found: ${JSON.stringify(acc, null, 2)}`);
+      }
+
+      if (!acc.Id) {
+        logger.error({ message: "Account not found" });
+        resolve(null);
+        return null;
+      }
+
+      logger.debug(`Customer found: ${isCustomerFound}, `);
+      logger.debug(`Found customer: ${JSON.stringify(foundCustomer, null, 2)}`);
+      if (isCustomerFound && foundCustomer) {
+        logger.info(`Customer found with name: ${input.DisplayName}`);
+        return resolve(foundCustomer);
+      }
+
+      logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
+      const customer = await service.customers.create(input).catch((err) => {
+        reject(err);
+        return null;
+      });
+
+      if (!customer?.Id) {
+        logger.error({ message: "Error creating customer in Quickbooks" });
+        return reject("Error creating customer in Quickbooks");
+      }
+
+      const result = await svc.mutation.updateAccount({
+        Id: acc.Id,
+        ...(!isProduction && { QBO_Account_ID_Staging__c: customer.Id }),
+        ...(isProduction && { AVSFQB__Quickbooks_Id__c: customer.Id }),
+      });
+
+      logger.info(`Account updated: ${JSON.stringify(result)}`);
+
+      if (!customer?.Id) {
+        logger.error({ message: "Error updating Salesforce account with Quickbooks ID" });
+        return reject("Error updating Salesforce account with Quickbooks ID");
+      }
+      logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
+
+      return resolve(customer);
     });
-
-    logger.info(`Account updated: ${JSON.stringify(result)}`);
   });
-
-  if (!customer) {
-    logger.error({ message: "Customer not created" });
-    return null;
-  }
-  logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
-
-  return customer;
 };
 const processCustomerHierarchy = async (
   service: IntuitService,
@@ -74,7 +118,7 @@ const processCustomerHierarchy = async (
     if (parent) {
       const parentProducerId = isProduction ? parent?.AVSFQB__Quickbooks_Id__c : parent.QBO_Account_ID_Staging__c;
 
-      const parentCustomer = await processCustomer(service, parentProducerId, {
+      const parentCustomer = await processCustomer(service, parentProducerId, parent.Id, {
         DisplayName: parent.Name,
         CompanyName: parent.Name,
         BillAddr: {
@@ -86,9 +130,12 @@ const processCustomerHierarchy = async (
           CountrySubDivisionCode: parent.BillingCountry,
         },
       });
-      if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
+      if (!parentCustomer) {
+        logger.error({ message: "Parent customer not created" });
+        return null;
+      }
 
-      await processCustomer(service, accountProducerId, {
+      await processCustomer(service, accountProducerId, account.Id, {
         DisplayName: account.Name,
         CompanyName: account.Name,
         BillAddr: {
@@ -106,7 +153,9 @@ const processCustomerHierarchy = async (
       });
     }
 
-    const customer = await processCustomer(service, accountProducerId, {
+    logger.info(`Account Info: ${JSON.stringify(account, null, 2)}`);
+
+    const customer = await processCustomer(service, accountProducerId, account.Id, {
       DisplayName: account.Name,
       CompanyName: account.Name,
       BillAddr: {

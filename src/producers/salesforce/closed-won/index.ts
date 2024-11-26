@@ -10,7 +10,7 @@ const live: SalesforceStreamSubscriptionParams = {
 
 const test: SalesforceStreamSubscriptionParams = {
   channel: SalesforceChannel.OpportunitiesUpdateTest,
-  replayId: -1,
+  replayId: -2,
 };
 
 const createSalesforceClosedWonEventListener = ({ config, logger }: SalesforceClosedWonEventListenerParams) => {
