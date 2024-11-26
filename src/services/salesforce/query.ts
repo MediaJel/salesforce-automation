@@ -1,15 +1,10 @@
-import { Connection } from "jsforce";
+import { Connection } from 'jsforce';
 
 import {
-  Account,
-  Contact,
-  Logger,
-  OpportunityLineItem,
-  Product,
-  ProductsByOpportunityIdParams,
-  QueryAttribute,
-} from "@/utils/types";
-import { match } from "@/utils/utils";
+    Account, Contact, Logger, OpportunityLineItem, Product, ProductsByOpportunityIdParams,
+    QueryAttribute
+} from '@/utils/types';
+import { match } from '@/utils/utils';
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {
@@ -24,7 +19,6 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
 
 const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
-    // TODO: Always blank
     opportunityLineItemByOpportunityId: async (id: string): Promise<OpportunityLineItem[]> => {
       const soql = `SELECT Id,Name, Quantity, ServiceDate, UnitPrice, TotalPrice, Description, AVSFQB__Quickbooks_Id__c FROM OpportunityLineItem WHERE OpportunityId = '${id}'`;
 
@@ -65,7 +59,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     accountById: async (id: string): Promise<Account> => {
       if (!id) return;
       logger.info(`Searching for account with ID: ${id}`);
-      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c  FROM Account WHERE Id = '${id}'`;
+      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c, QBO_Account_ID_Staging__c  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
         logger.error({ message: "Account By ID error", err });
         return [];

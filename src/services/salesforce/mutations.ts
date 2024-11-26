@@ -4,6 +4,7 @@ import { Logger } from '@/utils/types';
 
 interface SalesforceUpdateOpportunityInput {
   Id: string;
+  QBO_Oppty_ID_Staging__c: string;
   [key: string]: any;
 }
 

@@ -7,6 +7,7 @@ import {
     QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
     SalesforceClosedWonResource
 } from '@/utils/types';
+import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
@@ -60,8 +61,12 @@ const processCustomerHierarchy = async (
 
   for (const resource of resources) {
     const { account, parent } = resource;
+    const accountProducerId = isProduction ? account?.AVSFQB__Quickbooks_Id__c : account.QBO_Account_ID_Staging__c;
+
     if (parent) {
-      const parentCustomer = await processCustomer(service, parent?.AVSFQB__Quickbooks_Id__c, {
+      const parentProducerId = isProduction ? parent?.AVSFQB__Quickbooks_Id__c : parent.QBO_Account_ID_Staging__c;
+
+      const parentCustomer = await processCustomer(service, parentProducerId, {
         DisplayName: parent.Name,
         CompanyName: parent.Name,
         BillAddr: {
@@ -75,7 +80,7 @@ const processCustomerHierarchy = async (
       });
       if (!parent) throw new Error(`Parent customer not created for account: ${account.Name}`);
 
-      await processCustomer(service, account.AVSFQB__Quickbooks_Id__c, {
+      await processCustomer(service, accountProducerId, {
         DisplayName: account.Name,
         CompanyName: account.Name,
         BillAddr: {
@@ -93,7 +98,7 @@ const processCustomerHierarchy = async (
       });
     }
 
-    const customer = await processCustomer(service, account.AVSFQB__Quickbooks_Id__c, {
+    const customer = await processCustomer(service, accountProducerId, {
       DisplayName: account.Name,
       CompanyName: account.Name,
       BillAddr: {
@@ -209,7 +214,9 @@ const createIntuitProcessor = async () => {
         const result = await svc.mutation.updateOpportunity({
           Id: opportunityId,
           AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-          // AVFSQB__Quickbooks_Id__C: Id, //TODO: Enable only for production
+          QBO_Oppty_ID_Staging__c: opportunityId,
+          //* Only mutate this field in production
+          ...(isProduction && { AVFSQB__Quickbooks_Id__C: opportunityId }),
         });
 
         logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
