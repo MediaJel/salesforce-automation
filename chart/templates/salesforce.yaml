@@ -193,6 +193,11 @@ spec:
             secretKeyRef:
               name: one-pass-salesforce
               key: INTUIT_REALM_ID
+        - name: INTUIT_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REDIRECT_URI
         - name: REDIS_URL
           valueFrom:
             secretKeyRef:
