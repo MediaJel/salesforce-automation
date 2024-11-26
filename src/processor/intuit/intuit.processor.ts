@@ -1,13 +1,20 @@
-import config from '@/config';
-import createIntuitService, { IntuitService } from '@/services/intuit/service';
-import SalesforceService from '@/services/salesforce';
-import createLogger from '@/utils/logger';
+import { log } from "console";
+
+import config from "@/config";
+import createIntuitService, { IntuitService } from "@/services/intuit/service";
+import SalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 import {
-    Account, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
-    SalesforceClosedWonResource
-} from '@/utils/types';
-import { isProduction } from '@/utils/utils';
+  Account,
+  QuickbooksCreateCustomerInput,
+  QuickbooksCreateEstimateInput,
+  QuickbooksCustomer,
+  QuickbooksEstimate,
+  QuickbooksEstimateResponse,
+  QuickbooksFindCustomersInput,
+  SalesforceClosedWonResource,
+} from "@/utils/types";
+import { isProduction } from "@/utils/utils";
 
 const logger = createLogger("Intuit Processor");
 
@@ -19,92 +26,109 @@ const processCustomer = async (
   salesforceAccountId: string,
   input: Partial<QuickbooksCreateCustomerInput>
 ): Promise<QuickbooksCustomer> => {
-  return new Promise((resolve, reject) => {
-    SalesforceService(config.salesforce, async (_, svc) => {
-      let isCustomerFound = false;
-      let foundCustomer = null;
-      let acc: Account = null;
+  try {
+    logger.debug(
+      `Processing customer: ${
+        input.DisplayName
+      }, quickbooksid: ${quickbooksId}, salesforceId: ${salesforceAccountId}: ${JSON.stringify(input, null, 2)}`
+    );
+    // Create Salesforce Service instance
+    const svc = await SalesforceService(config.salesforce);
+    const field = isProduction ? "AVSFQB__Quickbooks_Id__c" : "QBO_Account_ID_Staging__c";
+    let isCustomerFound = false;
+    let foundCustomer: QuickbooksCustomer | null = null;
+    let acc: Account | null = null;
 
-      if (quickbooksId !== null) {
-        logger.debug(`Finding customer with Quickbooks id: ${quickbooksId}`);
-        const field = isProduction ? "AVSFQB__Quickbooks_Id__c" : "QBO_Account_ID_Staging__c";
+    //* Find account by Salesforce ID first to get the new account object
+    if (salesforceAccountId) {
+      logger.debug(`Finding account with Salesforce ID: ${salesforceAccountId}`);
+      acc = await svc.query.accountById(salesforceAccountId).catch((err) => {
+        logger.error({ message: "Error querying account by Salesforce ID", err });
+        throw new Error("Error querying account by Salesforce ID");
+      });
 
-        acc = await svc.query.accountByQuickbooksId(field, quickbooksId).catch((err) => {
-          logger.error({ message: "Error querying account by quickbooks id", err });
-          reject(err);
-          return null;
-        });
-
-        logger.info(`Account found: ${JSON.stringify(acc, null, 2)}`);
-
-        if (!acc) {
-          logger.error({ message: "Account not found" });
-          resolve(null);
-        }
-
-        logger.debug(`Finding customer with Quickbooks id: ${quickbooksId}`);
-
-        logger.debug(`Salesforce Id is not null, finding customer with id: ${quickbooksId}`);
-        const filters: QuickbooksFindCustomersInput[] = [{ field: "Id", operator: "=", value: quickbooksId }];
-        const results = await service.customers.find(filters);
-
-        isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
-        foundCustomer = isCustomerFound ? resolve(results?.QueryResponse?.Customer[0]) : resolve(null);
+      if (!acc?.Id) {
+        logger.error({ message: "Account not found for Salesforce ID" });
+        return null;
       }
+
+      quickbooksId = acc[field];
+
+      logger.info(`Account found: ${JSON.stringify(acc, null, 2)}`);
+    }
+
+    if (quickbooksId) {
+      logger.debug(`Finding customer with Quickbooks ID: ${quickbooksId}`);
+
+      acc = await svc.query.accountByQuickbooksId(field, quickbooksId).catch((err) => {
+        logger.error({ message: "Error querying account by Quickbooks ID", err });
+        return null;
+      });
 
       if (!acc) {
-        logger.debug(`Finding account with id: ${salesforceAccountId}`);
-        acc = await svc.query.accountById(salesforceAccountId).catch((err) => {
-          logger.error({ message: "Error querying account by id", err });
-          reject(err);
-          return null as Account;
-        });
-
-        logger.info(`Account found: ${JSON.stringify(acc, null, 2)}`);
-      }
-
-      if (!acc.Id) {
-        logger.error({ message: "Account not found" });
-        resolve(null);
+        logger.error({ message: "Account not found for Quickbooks ID" });
         return null;
       }
 
-      logger.debug(`Customer found: ${isCustomerFound}, `);
-      logger.debug(`Found customer: ${JSON.stringify(foundCustomer, null, 2)}`);
-      if (isCustomerFound && foundCustomer) {
-        logger.info(`Customer found with name: ${input.DisplayName}`);
-        return resolve(foundCustomer);
+      logger.info(`Salesforce Account found by filtering for Quickbooks ID: ${JSON.stringify(acc, null, 2)}`);
+
+      logger.debug(`Searching for Quickbooks customer with ID: ${quickbooksId}`);
+      const filters: QuickbooksFindCustomersInput[] = [{ field: "Id", operator: "=", value: quickbooksId }];
+      const results = await service.customers.find(filters);
+
+      isCustomerFound = results?.QueryResponse?.Customer?.length === 1;
+
+      logger.info(`Customer found in Quickbooks with Quickbooks ID ${quickbooksId}: ${isCustomerFound}`);
+
+      if (isCustomerFound) {
+        foundCustomer = results.QueryResponse.Customer[0];
+        logger.info(`Customer found: ${JSON.stringify(foundCustomer, null, 2)}`);
+        return foundCustomer;
       }
+    }
 
-      logger.warn(`No customer found with name: ${input.DisplayName}, creating new customer`);
-      const customer = await service.customers.create(input).catch((err) => {
-        reject(err);
-        return null;
-      });
+    if (isCustomerFound || foundCustomer) {
+      logger.info(`Customer already exists: ${foundCustomer.DisplayName}`);
+      return foundCustomer;
+    }
 
-      if (!customer?.Id) {
-        logger.error({ message: "Error creating customer in Quickbooks" });
-        return reject("Error creating customer in Quickbooks");
-      }
+    // If Salesforce field that contains the quickbooks id has a value
+    if (acc[field]) {
+    }
 
-      const result = await svc.mutation.updateAccount({
-        Id: acc.Id,
-        ...(!isProduction && { QBO_Account_ID_Staging__c: customer.Id }),
-        ...(isProduction && { AVSFQB__Quickbooks_Id__c: customer.Id }),
-      });
-
-      logger.info(`Account updated: ${JSON.stringify(result)}`);
-
-      if (!customer?.Id) {
-        logger.error({ message: "Error updating Salesforce account with Quickbooks ID" });
-        return reject("Error updating Salesforce account with Quickbooks ID");
-      }
-      logger.info(`Customer created: ${JSON.stringify(customer.DisplayName, null, 2)}`);
-
-      return resolve(customer);
+    logger.warn(`No customer found, creating a new customer: ${input.DisplayName}`);
+    const customer = await service.customers.create(input).catch((err) => {
+      logger.error({ message: "Error creating customer in Quickbooks", err });
+      throw new Error("Error creating customer in Quickbooks");
     });
-  });
+
+    if (!customer?.Id) {
+      throw new Error("Customer creation failed");
+    }
+
+    logger.debug(`Updating Salesforce account with Quickbooks ID: ${customer.Id}`);
+    const updateFields = {
+      Id: acc.Id,
+      ...(!isProduction && { QBO_Account_ID_Staging__c: customer.Id }),
+      ...(isProduction && { AVSFQB__Quickbooks_Id__c: customer.Id }),
+    };
+
+    logger.debug(`Updating Salesforce account: ${JSON.stringify(updateFields, null, 2)}`);
+
+    const result = await svc.mutation.updateAccount(updateFields).catch((err) => {
+      logger.error({ message: "Error updating Salesforce account", err });
+      throw new Error("Error updating Salesforce account with Quickbooks ID");
+    });
+
+    logger.info(`Account updated: ${JSON.stringify(result)}`);
+    logger.info(`Customer created successfully: ${customer.DisplayName}`);
+    return customer;
+  } catch (err) {
+    logger.error({ message: "Error in processCustomer", err });
+    throw err;
+  }
 };
+
 const processCustomerHierarchy = async (
   service: IntuitService,
   resources: SalesforceClosedWonResource[]
@@ -115,7 +139,8 @@ const processCustomerHierarchy = async (
     const { account, parent } = resource;
     const accountProducerId = isProduction ? account?.AVSFQB__Quickbooks_Id__c : account.QBO_Account_ID_Staging__c;
 
-    if (parent) {
+    if (parent?.Id) {
+      logger.warn(`Parent exists for account: ${account.Name}`);
       const parentProducerId = isProduction ? parent?.AVSFQB__Quickbooks_Id__c : parent.QBO_Account_ID_Staging__c;
 
       const parentCustomer = await processCustomer(service, parentProducerId, parent.Id, {
@@ -168,6 +193,7 @@ const processCustomerHierarchy = async (
       },
     });
 
+    logger.info(`Finish Customer Creation`);
     if (!customer) {
       logger.error({ message: "Customer not created" });
       return null;
@@ -269,18 +295,17 @@ const createIntuitProcessor = async () => {
         return;
       }
 
-      SalesforceService(config.salesforce, async (_, svc) => {
-        const { opportunityId } = estimate;
-        const result = await svc.mutation.updateOpportunity({
-          Id: opportunityId,
-          AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-          ...(!isProduction && { QBO_Oppty_ID_Staging__c: opportunityId }),
-          //* Only mutate this field in production
-          ...(isProduction && { AVFSQB__Quickbooks_Id__C: opportunityId }),
-        });
-
-        logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+      const salesforce = await SalesforceService(config.salesforce);
+      const { opportunityId } = estimate;
+      const result = await salesforce.mutation.updateOpportunity({
+        Id: opportunityId,
+        AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+        ...(!isProduction && { QBO_Oppty_ID_Staging__c: opportunityId }),
+        //* Only mutate this field in production
+        ...(isProduction && { AVFSQB__Quickbooks_Id__C: opportunityId }),
       });
+
+      logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
 
       logger.info("Completed processing resources");
     },

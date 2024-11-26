@@ -28,7 +28,7 @@ export type IntuitAuthResponse = {
 
 export interface QuickbooksFindCustomersInput {
   field: string;
-  value: string;
+  value: string | number
   operator?: string;
 }
 
@@ -450,7 +450,7 @@ export interface PushTopicRecordAttributes {
   url: string;
 }
 
-export interface SalesforceService {
+export interface SalesforceServiceType {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
   mutation: ReturnType<typeof createSalesforceMutations>;
