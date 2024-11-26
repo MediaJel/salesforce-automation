@@ -26,6 +26,18 @@ spec:
     # This needs to match the selector in the RC/Deployment
     app: |-
       {{ .Release.Name }}
+  - host: |-
+        {{ .Values.httpEndpoint }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: /intuit
+        backend:
+          service:
+            name: |-
+              {{ .Release.Name }}
+            port:
+              number: 4000
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
