@@ -28,7 +28,7 @@ export type IntuitAuthResponse = {
 
 export interface QuickbooksFindCustomersInput {
   field: string;
-  value: string;
+  value: string | number
   operator?: string;
 }
 
@@ -291,7 +291,7 @@ interface QuickbooksTaxLineDetail {
 }
 
 interface QuickbooksAddress {
-  Id: string;
+  Id?: string;
   Line1: string;
   Line2?: string;
   Line3?: string;
@@ -320,8 +320,7 @@ export interface SalesforceClosedWonResource {
   account: Account;
   contact: Contact;
   products: Product[];
-  parentId?: string;
-  parentName?: string;
+  parent?: Account;
   // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;
@@ -400,6 +399,7 @@ export interface Contact {
   Name: string;
   Email: string;
   Phone: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -409,6 +409,7 @@ export interface Product {
   Family: string;
   ProductCode: string;
   Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -418,6 +419,9 @@ export interface OpportunityLineItem {
   Quantity: number;
   UnitPrice: number;
   TotalPrice: number;
+  Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  ServiceDate: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -432,10 +436,12 @@ export interface Account {
   ShippingLongitude: number;
   BillingCity: string;
   BillingStreet: string;
-  BillingPostalCode: number;
+  BillingPostalCode: string;
   BillingLatitude: number;
   BillingLongitude: number;
-  BillingCountryCode: string;
+  BillingCountry: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  QBO_Account_ID_Staging__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -444,7 +450,7 @@ export interface PushTopicRecordAttributes {
   url: string;
 }
 
-export interface SalesforceService {
+export interface SalesforceServiceType {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
   mutation: ReturnType<typeof createSalesforceMutations>;

@@ -5,45 +5,54 @@ import createSalesforceMutations from '@/services/salesforce/mutations';
 import createSalesforceQueries from '@/services/salesforce/query';
 import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
-import { SalesforceService } from '@/utils/types';
+import { SalesforceServiceType } from '@/utils/types';
 
 /**
- * Create a SalesforceService instance. Authentication &
- * re-authentication to the Salesforce APIs are handled behind the scenes
- * automatically. This is important forlong running processes that need
- * to be authenticated for long periods of time such as streaming data
- * from Salesforce in real time.
- *
- *
- * @param {ConnectionOptions} params - Salesforce connection params
- * @param callback - callback function to be called when the connection is established
+ * Create a singleton SalesforceService instance. Handles automatic authentication
+ * and re-authentication to Salesforce APIs, making it suitable for long-running processes.
  */
 
 const logger = createLogger("Salesforce Service");
 
-const SalesforceService = (
+let salesforceServiceInstance: SalesforceServiceType | null = null;
+
+const createSalesforceService = async (
   params: ConnectionOptions,
-  callback: (client: Connection, svc: SalesforceService) => void
-) => {
+  callback?: (service: SalesforceServiceType) => void
+): Promise<SalesforceServiceType> => {
+  if (salesforceServiceInstance) {
+    if (callback) callback(salesforceServiceInstance);
+    return salesforceServiceInstance;
+  }
+
   const time = 3600000; // Re-authenticate every hour
 
   const establishConnection = async () => {
-    const client = await createSalesforceAuth(params, logger)
-      .authenticate()
-      .catch((err) => {
-        logger.error({ message: "Error authenticating to Salesforce", err });
-      });
-    if (!client) return;
+    try {
+      const client = await createSalesforceAuth(params, logger).authenticate();
+      if (!client) {
+        throw new Error("Failed to authenticate with Salesforce");
+      }
 
-    callback(client, {
-      query: createSalesforceQueries(client, logger),
-      mutation: createSalesforceMutations(client, logger),
-      stream: createSalesforceStream(client, logger),
-    });
+      salesforceServiceInstance = {
+        query: createSalesforceQueries(client, logger),
+        mutation: createSalesforceMutations(client, logger),
+        stream: createSalesforceStream(client, logger),
+      };
+
+      if (callback) callback(salesforceServiceInstance);
+      logger.info("Salesforce connection established");
+    } catch (err) {
+      logger.error({ message: "Error authenticating to Salesforce", err });
+    }
   };
 
-  establishConnection();
+  await establishConnection();
+
+  // Optional: refresh authentication in the background
   setInterval(establishConnection, time);
+
+  return salesforceServiceInstance!;
 };
 
-export default SalesforceService;
+export default createSalesforceService;
