@@ -11,8 +11,6 @@ import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
-// TODO: This doesn't work well right now because we can't store the value of the created customer id in salesforce
-//! properly
 const processCustomer = async (
   service: IntuitService,
   salesforceId: string,
@@ -43,6 +41,16 @@ const processCustomer = async (
   const customer = await service.customers.create(input).catch((err) => {
     logger.error({ message: "Error creating customer", err });
     return null;
+  });
+
+  SalesforceService(config.salesforce, async (_, svc) => {
+    const result = await svc.mutation.updateAccount({
+      Id: salesforceId,
+      ...(!isProduction && { QBO_Account_ID_Staging__c: customer.Id }),
+      ...(isProduction && { AVSFQB__Quickbooks_Id__c: customer.Id }),
+    });
+
+    logger.info(`Account updated: ${JSON.stringify(result)}`);
   });
 
   if (!customer) {
@@ -111,7 +119,10 @@ const processCustomerHierarchy = async (
       },
     });
 
-    if (!customer) throw new Error(`Customer not created for account: ${account.Name}`);
+    if (!customer) {
+      logger.error({ message: "Customer not created" });
+      return null;
+    }
     customers.push(customer);
   }
 
@@ -214,7 +225,7 @@ const createIntuitProcessor = async () => {
         const result = await svc.mutation.updateOpportunity({
           Id: opportunityId,
           AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-          QBO_Oppty_ID_Staging__c: opportunityId,
+          ...(!isProduction && { QBO_Oppty_ID_Staging__c: opportunityId }),
           //* Only mutate this field in production
           ...(isProduction && { AVFSQB__Quickbooks_Id__C: opportunityId }),
         });
