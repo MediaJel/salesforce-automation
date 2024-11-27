@@ -7,23 +7,25 @@ metadata:
     name: |-
       {{ .Release.Name }}
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: |-
-      {{ .Values.httpEndpoint }}
+    # external-dns.alpha.kubernetes.io/hostname: |-
+    #   {{ .Values.httpEndpoint }}
     service.beta.kubernetes.io/aws-load-balancer-ssl-cert: |-
       {{ .Values.certificateArn }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
     service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    dns.alpha.kubernetes.io/external: |-
+      {{ .Values.httpEndpoint }}
 spec:
   type: LoadBalancer
   ports:
   - name: http
-    port: 80
+    port: 4041
     protocol: TCP
     targetPort: 4000
   - name: https
-    port: 443
+    port: 4040
     protocol: TCP
     targetPort: 4000
   externalIPs:
