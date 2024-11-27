@@ -26,8 +26,6 @@ spec:
     # This needs to match the selector in the RC/Deployment
     app: |-
       {{ .Release.Name }}
-  - host: |-
-        {{ .Values.httpEndpoint }}
     http:
       paths:
       - pathType: Prefix
