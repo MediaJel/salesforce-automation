@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import intuitOAuth2Client from "intuit-oauth";
 import jsforce from "jsforce";
@@ -26,6 +27,7 @@ const intuitOAuth2 = new intuitOAuth2Client({
 });
 
 const createServer = async (config: ExpressServerConfig) => {
+  app.use(cors());
   const redis = await redisService();
 
   const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
