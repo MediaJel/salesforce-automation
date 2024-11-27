@@ -23,11 +23,11 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 4000
+    targetPort: 1234
   - name: https
     port: 443
     protocol: TCP
-    targetPort: 4000
+    targetPort: 1234
   externalIPs:
   - 10.28.97.100
   selector:
@@ -102,7 +102,7 @@ spec:
         imagePullPolicy: Always 
         ports:
           - name: salesforce
-            containerPort: 4000
+            containerPort: 1234
             protocol: TCP
         resources:
           limits:
