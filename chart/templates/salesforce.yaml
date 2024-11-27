@@ -7,8 +7,10 @@ metadata:
     name: |-
       {{ .Release.Name }}
   annotations: 
-    external-dns.alpha.kubernetes.io/hostname: {{ .Values.httpEndpoint }}
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: {{ .Values.certificateArn }}
+    external-dns.alpha.kubernetes.io/hostname: |-
+      {{ .Values.httpEndpoint }}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: |-
+      {{ .Values.certificateArn }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
     service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
