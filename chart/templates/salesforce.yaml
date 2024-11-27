@@ -157,10 +157,14 @@ spec:
               name: one-pass-salesforce
               key: SALESFORCE_INSTANCE_URL
         - name: SALESFORCE_REDIRECT_URI
-          valueFrom:
-            secretKeyRef:
-              name: one-pass-salesforce
-              key: SALESFORCE_REDIRECT_URI
+          # * This is a hack, for some reason AWS isn't serving the app via public DNS
+          # * so what I did is just port forward to the pod and use ngrok to forward the request
+          # * through ngrok to get OAuth2 for the pod
+          value: https://f537-143-44-165-185.ngrok-free.app/intuit/oauth2/callback
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: one-pass-salesforce
+          #     key: SALESFORCE_REDIRECT_URI
         - name: SALESFORCE_REFRESH_TOKEN
           valueFrom:
             secretKeyRef:
