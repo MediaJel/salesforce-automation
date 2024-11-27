@@ -19,11 +19,11 @@ spec:
   type: LoadBalancer
   ports:
   - name: http
-    port: 4041
+    port: 80
     protocol: TCP
     targetPort: 4000
   - name: https
-    port: 4040
+    port: 443
     protocol: TCP
     targetPort: 4000
   externalIPs:
