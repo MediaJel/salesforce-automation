@@ -13,12 +13,12 @@ spec:
   type: LoadBalancer
   ports:
   - name: http
-    path: /intuit
+    path: /
     port: 4041
     protocol: TCP
     targetPort: 4000
   - name: https
-    path: /intuit
+    path: /
     port: 4040
     protocol: TCP
     targetPort: 4000
