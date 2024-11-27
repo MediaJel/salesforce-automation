@@ -13,10 +13,12 @@ spec:
   type: LoadBalancer
   ports:
   - name: http
+    path: /intuit
     port: 4041
     protocol: TCP
     targetPort: 4000
   - name: https
+    path: /intuit
     port: 4040
     protocol: TCP
     targetPort: 4000
@@ -26,16 +28,6 @@ spec:
     # This needs to match the selector in the RC/Deployment
     app: |-
       {{ .Release.Name }}
-    http:
-      paths:
-      - pathType: Prefix
-        path: /intuit
-        backend:
-          service:
-            name: |-
-              {{ .Release.Name }}
-            port:
-              number: 4000
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
