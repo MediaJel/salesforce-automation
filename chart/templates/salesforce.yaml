@@ -13,8 +13,6 @@ metadata:
       {{ .Values.certificateArn }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: 'true'
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
     # dns.alpha.kubernetes.io/external: |-
     #   {{ .Values.httpEndpoint }}
 spec:
@@ -31,11 +29,11 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 4000
+    targetPort: 2000
   - name: https
     port: 443
     protocol: TCP
-    targetPort: 4000
+    targetPort: 2000
   externalIPs:
   - 10.28.97.100
   selector:
@@ -113,7 +111,7 @@ spec:
           #   containerPort: 1234
           #   protocol: TCP
           - name: salesforce
-            containerPort: 4000
+            containerPort: 2000
             protocol: TCP
         resources:
           limits:
