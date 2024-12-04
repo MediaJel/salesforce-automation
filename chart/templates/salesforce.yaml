@@ -102,7 +102,7 @@ spec:
         imagePullPolicy: Always 
         ports:
           - name: salesforce
-            containerPort: 1234
+            containerPort: 4000
             protocol: TCP
         resources:
           limits:
