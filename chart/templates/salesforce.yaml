@@ -23,11 +23,11 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 1234
+    targetPort: 4000
   - name: https
     port: 443
     protocol: TCP
-    targetPort: 1234
+    targetPort: 4000
   externalIPs:
   - 10.28.97.100
   selector:
