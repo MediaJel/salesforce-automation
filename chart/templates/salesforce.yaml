@@ -20,12 +20,20 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
+  # - name: http
+  #   port: 80
+  #   protocol: TCP
+  #   targetPort: 1234
+  # - name: https
+  #   port: 443
+  #   protocol: TCP
+  #   targetPort: 1234
   - name: http
-    port: 80
+    port: 4041
     protocol: TCP
     targetPort: 4000
   - name: https
-    port: 443
+    port: 4040
     protocol: TCP
     targetPort: 4000
   externalIPs:
@@ -101,6 +109,9 @@ spec:
           {{ .Values.repoUrl }}/salesforce-automation:{{ .Values.commitSha }}
         imagePullPolicy: Always 
         ports:
+          # - name: salesforce
+          #   containerPort: 1234
+          #   protocol: TCP
           - name: salesforce
             containerPort: 4000
             protocol: TCP
