@@ -206,17 +206,39 @@ const processEstimate = async (
 ): Promise<QuickbooksEstimate & { opportunityId: string }> => {
   const { opportunity, account, contact, opportunityLineItems, products } = resource;
 
-  const linesPromises = opportunityLineItems.map((opportunityLineItem, i) => {
-    let itemRef: { name: string; value: number } = {
-      name: "Service",
-      value: 1,
+  const linesPromises = opportunityLineItems.map(async (opportunityLineItem, i) => {
+    const DEFAULT_ITEM_REF = {
+      name: "Services",
+      value: "1",
     };
+    let itemRef: { name: string; value: string } | null = null;
 
-    // TODO: Find item by name and/or id then attach it to the item ref.
+    logger.debug(`Finding item with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
 
-    service.items.find({ field: "Name", operator: "=", value: products[i].Name });
-    logger.warn(`Opportunity Line Item: ${JSON.stringify(opportunityLineItem, null, 2)}`);
-    logger.warn(`Product: ${JSON.stringify(products[i], null, 2)}`);
+    await service.items
+      .find({ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] })
+      .then((items) => {
+        if (items?.QueryResponse?.Item?.length === 1) {
+          itemRef = {
+            name: items.QueryResponse.Item[0].Name,
+            value: items.QueryResponse.Item[0].Id,
+          };
+        }
+      });
+
+    if (!itemRef) {
+      logger.warn(`Item not found with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
+      logger.debug(`Finding item with Name: ${products[i].Name}`);
+      await service.items.find({ field: "Name", operator: "=", value: products[i].Name }).then((items) => {
+        if (items?.QueryResponse?.Item?.length === 1) {
+          itemRef = {
+            name: items.QueryResponse.Item[0].Name,
+            value: items.QueryResponse.Item[0].Id,
+          };
+        }
+      });
+    }
+
     return {
       Id: (i + 1).toString(),
       DetailType: "SalesItemLineDetail",
@@ -225,11 +247,7 @@ const processEstimate = async (
       SalesItemLineDetail: {
         Qty: opportunityLineItem.Quantity,
         UnitPrice: opportunityLineItem.UnitPrice,
-
-        ItemRef: {
-          name: products[i].Name,
-          value: 1,
-        },
+        ItemRef: itemRef || DEFAULT_ITEM_REF,
       },
     };
   });

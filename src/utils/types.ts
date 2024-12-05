@@ -28,7 +28,7 @@ export type IntuitAuthResponse = {
 
 export interface QuickbooksFindItemsResponse {
   QueryResponse: {
-    Item?: QuickbooksCustomer[];
+    Item?: QuicksbooksItem[];
     startPosition?: number;
     maxResults?: number;
   };
@@ -211,7 +211,7 @@ interface QuickbooksSalesItemLineDetailInput {
   UnitPrice: number;
   ItemRef: {
     name: string;
-    value: number;
+    value: string;
   };
 }
 
