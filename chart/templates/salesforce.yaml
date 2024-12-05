@@ -29,11 +29,11 @@ spec:
   - name: http
     port: 80
     protocol: TCP
-    targetPort: 2000
+    targetPort: 1234
   - name: https
     port: 443
     protocol: TCP
-    targetPort: 2000
+    targetPort: 1234
   externalIPs:
   - 10.28.97.100
   selector:
@@ -111,7 +111,7 @@ spec:
           #   containerPort: 1234
           #   protocol: TCP
           - name: salesforce
-            containerPort: 2000
+            containerPort: 1234
             protocol: TCP
         resources:
           limits:
