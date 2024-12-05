@@ -9,8 +9,8 @@ metadata:
   annotations: 
     external-dns.alpha.kubernetes.io/hostname: |-
       {{ .Values.httpEndpoint }}
-    # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: |-
-    #   {{ .Values.certificateArn }}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: |-
+      {{ .Values.certificateArn }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
     # dns.alpha.kubernetes.io/external: |-
@@ -18,14 +18,6 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  # - name: http
-  #   port: 80
-  #   protocol: TCP
-  #   targetPort: 1234
-  # - name: https
-  #   port: 443
-  #   protocol: TCP
-  #   targetPort: 1234
   - name: http
     port: 80
     protocol: TCP
@@ -107,9 +99,6 @@ spec:
           {{ .Values.repoUrl }}/salesforce-automation:{{ .Values.commitSha }}
         imagePullPolicy: Always 
         ports:
-          # - name: salesforce
-          #   containerPort: 1234
-          #   protocol: TCP
           - name: salesforce
             containerPort: 1234
             protocol: TCP
