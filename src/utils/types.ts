@@ -26,11 +26,48 @@ export type IntuitAuthResponse = {
   state: string;
 };
 
-export interface QuickbooksFindCustomersInput {
+export interface QuickbooksFindItemsResponse {
+  QueryResponse: {
+    Item?: QuickbooksCustomer[];
+    startPosition?: number;
+    maxResults?: number;
+  };
+  time: string;
+}
+
+export interface QuicksbooksItem {
+  Name: string;
+  Sku: string;
+  Description: string;
+  Active: boolean;
+  FullyQualifiedName: string;
+  Taxable: boolean;
+  UnitPrice: number;
+  Type: string;
+  IncomeAccountRef: {
+    value: string;
+    name: string;
+  };
+  PurchaseCost: number;
+  TrackQtyOnHand: boolean;
+  domain: string;
+  sparse: boolean;
+  Id: string;
+  SyncToken: string;
+  MetaData: {
+    CreateTime: string;
+    LastUpdatedTime: string;
+  };
+}
+
+export interface QuickbooksFindResourceInput {
   field: string;
-  value: string | number
+  value: string | number;
   operator?: string;
 }
+export interface QuickbooksFindCustomersInput extends QuickbooksFindResourceInput {}
+
+export interface QuickbooksFindItemsInput extends QuickbooksFindResourceInput {}
 
 export interface QuickbooksCreateCustomerInput {
   FullyQualifiedName: string;

@@ -1,20 +1,15 @@
-import { log } from "console";
+import { log } from 'console';
 
-import config from "@/config";
-import createIntuitService, { IntuitService } from "@/services/intuit/service";
-import SalesforceService from "@/services/salesforce";
-import createLogger from "@/utils/logger";
+import config from '@/config';
+import createIntuitService, { IntuitService } from '@/services/intuit/service';
+import SalesforceService from '@/services/salesforce';
+import createLogger from '@/utils/logger';
 import {
-  Account,
-  QuickbooksCreateCustomerInput,
-  QuickbooksCreateEstimateInput,
-  QuickbooksCustomer,
-  QuickbooksEstimate,
-  QuickbooksEstimateResponse,
-  QuickbooksFindCustomersInput,
-  SalesforceClosedWonResource,
-} from "@/utils/types";
-import { isProduction } from "@/utils/utils";
+    Account, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
+    SalesforceClosedWonResource
+} from '@/utils/types';
+import { isProduction } from '@/utils/utils';
 
 const logger = createLogger("Intuit Processor");
 
@@ -211,6 +206,36 @@ const processEstimate = async (
 ): Promise<QuickbooksEstimate & { opportunityId: string }> => {
   const { opportunity, account, contact, opportunityLineItems, products } = resource;
 
+  const linesPromises = opportunityLineItems.map((opportunityLineItem, i) => {
+    let itemRef: { name: string; value: number } = {
+      name: "Service",
+      value: 1,
+    };
+
+    // TODO: Find item by name and/or id then attach it to the item ref.
+
+    service.items.find({ field: "Name", operator: "=", value: products[i].Name });
+    logger.warn(`Opportunity Line Item: ${JSON.stringify(opportunityLineItem, null, 2)}`);
+    logger.warn(`Product: ${JSON.stringify(products[i], null, 2)}`);
+    return {
+      Id: (i + 1).toString(),
+      DetailType: "SalesItemLineDetail",
+      Amount: opportunityLineItem.TotalPrice,
+      Description: opportunityLineItem.Description,
+      SalesItemLineDetail: {
+        Qty: opportunityLineItem.Quantity,
+        UnitPrice: opportunityLineItem.UnitPrice,
+
+        ItemRef: {
+          name: products[i].Name,
+          value: 1,
+        },
+      },
+    };
+  });
+
+  const lines = await Promise.all(linesPromises);
+
   const mapping: Partial<QuickbooksCreateEstimateInput> = {
     TotalAmt: opportunity.Amount,
 
@@ -242,21 +267,7 @@ const processEstimate = async (
       value: customer.Id,
     },
 
-    Line: opportunityLineItems.map((opportunityLineItem, i) => ({
-      Id: (i + 1).toString(),
-      DetailType: "SalesItemLineDetail",
-      Amount: opportunityLineItem.TotalPrice,
-      Description: opportunityLineItem.Description,
-      SalesItemLineDetail: {
-        Qty: opportunityLineItem.Quantity,
-        UnitPrice: opportunityLineItem.UnitPrice,
-        // TODO: Requires mirrored environment
-        ItemRef: {
-          name: products[i].Name,
-          value: 1,
-        },
-      },
-    })),
+    Line: lines,
   };
   const estimate = await service.estimates.create(mapping);
 
