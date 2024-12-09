@@ -1,8 +1,9 @@
-import createIntuitAuth from "@/services/intuit/auth";
-import createIntuitCustomersService from "@/services/intuit/customers";
-import createIntuitEstimatesService from "@/services/intuit/estimates";
-import createLogger from "@/utils/logger";
-import { CreateIntuitServiceInput } from "@/utils/types";
+import createIntuitAuth from '@/services/intuit/auth';
+import createIntuitCustomersService from '@/services/intuit/customers';
+import createIntuitEstimatesService from '@/services/intuit/estimates';
+import createIntuitItemsService from '@/services/intuit/items';
+import createLogger from '@/utils/logger';
+import { CreateIntuitServiceInput } from '@/utils/types';
 
 const logger = createLogger("Intuit Service");
 
@@ -10,6 +11,7 @@ export interface IntuitService {
   auth: ReturnType<typeof createIntuitAuth>;
   customers: ReturnType<typeof createIntuitCustomersService>;
   estimates: ReturnType<typeof createIntuitEstimatesService>;
+  items: ReturnType<typeof createIntuitItemsService>;
 }
 let intuitServiceInstance: IntuitService | null = null;
 
@@ -37,6 +39,7 @@ const createIntuitService = async (
       auth: createIntuitAuth(logger),
       customers: createIntuitCustomersService(client),
       estimates: createIntuitEstimatesService(client),
+      items: createIntuitItemsService(client),
     };
 
     if (callback) callback(intuitServiceInstance);
