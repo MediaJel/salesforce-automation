@@ -191,7 +191,7 @@ spec:
               key: INTUIT_REFRESH_TOKEN
         - name: INTUIT_REALM_ID
           valueFrom:
-            secretKeyRef:
+            secretKeyRef:ss
               name: one-pass-salesforce
               key: INTUIT_REALM_ID
         - name: INTUIT_REDIRECT_URI
@@ -203,4 +203,4 @@ spec:
           valueFrom:
             secretKeyRef:
               name: one-pass-salesforce
-              key: REDIS_URLs
+              key: REDIS_URL
