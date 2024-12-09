@@ -213,30 +213,70 @@ const processEstimate = async (
     };
     let itemRef: { name: string; value: string } | null = null;
 
+
     logger.debug(`Finding item with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
 
-    await service.items
-      .find({ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] })
+    const id = []
+    products[i]["AVSFQB__Quickbooks_Id__c"] && id.push({ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] })
+
+
+    id.length > 0 && await service.items
+      .find([{ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] }])
       .then((items) => {
-        if (items?.QueryResponse?.Item?.length === 1) {
+
+        if (items?.QueryResponse?.Item?.length >= 1) {
+          logger.info(`Items found via Quickbooks ID in salesforce: ${JSON.stringify(items, null, 2)}`);
           itemRef = {
             name: items.QueryResponse.Item[0].Name,
             value: items.QueryResponse.Item[0].Id,
           };
         }
-      });
+      }).catch(err => {
+        logger.error({ message: "Error finding item by Quickbooks ID", err });
+      })
+
+    if (!id) logger.warn(`No Quickbooks ID found for product: ${products[i].Name}`);
+
+
+
+    if (!itemRef) {
+      logger.warn(`Item not found with ID, finding by Sku: ${products[i].Name}`);
+        logger.debug(`Finding item by SKU: ${products[i].ProductCode}`);
+
+        await service.items.find([{ field: "Sku", operator: "LIKE", value: products[i].ProductCode }]).then((items) => {
+
+          if (items?.QueryResponse?.Item?.length >= 1) {
+            logger.info(`Items found via Sku: ${JSON.stringify(items, null, 2)}`);
+            itemRef = {
+              name: items.QueryResponse.Item[0].Name,
+              value: items.QueryResponse.Item[0].Id,
+            };
+          }
+        }
+        ).catch(err => {
+            logger.error({ message: "Error finding item by SKU", err });
+        });
+    }
 
     if (!itemRef) {
       logger.warn(`Item not found with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
       logger.debug(`Finding item with Name: ${products[i].Name}`);
-      await service.items.find({ field: "Name", operator: "=", value: products[i].Name }).then((items) => {
-        if (items?.QueryResponse?.Item?.length === 1) {
+      await service.items.find([{ field: "Name", operator: "LIKE", value: products[i].Name }]).then((items) => {
+        if (items?.QueryResponse?.Item?.length >= 1) {
+          logger.info(`Items found via Name: ${JSON.stringify(items, null, 2)}`);
           itemRef = {
             name: items.QueryResponse.Item[0].Name,
             value: items.QueryResponse.Item[0].Id,
           };
         }
-      });
+      }).catch(err => {
+        logger.error({message: "Error finding item by Name", err});
+      })
+    }
+
+    if (!itemRef) {
+      logger.warn(`Item not found with SKU: ${products[i].ProductCode}`);
+      logger.warn(`Using default item: ${DEFAULT_ITEM_REF.name}`);
     }
 
     return {
@@ -306,7 +346,7 @@ const createIntuitProcessor = async () => {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
         logger.error({ message: "Error processing resources", err });
-        throw err;
+        return null
       });
 
       if (!customers) {
@@ -316,7 +356,7 @@ const createIntuitProcessor = async () => {
 
       const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
         logger.error({ message: "Error processing resources", err });
-        throw err;
+        return null
       });
 
       if (!estimate) {

@@ -8,10 +8,14 @@ const createIntuitItemsService = (client: any) => {
      * @param input
      * @returns
      */
-    find: async (input: QuickbooksFindItemsInput): Promise<QuickbooksFindItemsResponse | null> => {
+    find: async (input: QuickbooksFindItemsInput[]): Promise<QuickbooksFindItemsResponse | null> => {
       return new Promise((resolve, reject) => {
+        console.log('Find Items Input: ', input);
         client.findItems(input, (err: any, items: any) => {
-          if (err) reject(null);
+          if (err) {
+            console.error('Error finding items: ', JSON.stringify(err, null, 2), "Input: ", input);
+            reject(null);
+          }
           resolve(items);
         });
       });
