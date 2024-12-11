@@ -153,10 +153,11 @@ spec:
               name: one-pass-salesforce
               key: INTUIT_REALM_ID
         - name: INTUIT_REDIRECT_URI
-          valueFrom:
-            secretKeyRef:
-              name: one-pass-salesforce
-              key: INTUIT_REDIRECT_URI
+          value: https://e4ce-143-44-165-185.ngrok-free.app/intuit/oauth2/callback
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: one-pass-salesforce
+          #     key: INTUIT_REDIRECT_URI
         - name: REDIS_URL
           valueFrom:
             secretKeyRef:
