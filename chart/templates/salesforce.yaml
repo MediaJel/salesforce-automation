@@ -6,17 +6,26 @@ metadata:
   labels:
     name: |-
       {{ .Release.Name }}
-  annotations: {}
+  annotations: 
+    external-dns.alpha.kubernetes.io/hostname: |-
+      {{ .Values.httpEndpoint }}
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert: |-
+      {{ .Values.certificateArn }}
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
 spec:
+  type: LoadBalancer
   ports:
   - name: http
-    port: 4041
+    port: 80
     protocol: TCP
-    targetPort: 4000
+    targetPort: 1234
   - name: https
-    port: 4040
+    port: 443
     protocol: TCP
-    targetPort: 4000
+    targetPort: 1234
+  externalIPs:
+  - 10.28.97.100
   selector:
     # This needs to match the selector in the RC/Deployment
     app: |-
@@ -50,7 +59,7 @@ spec:
           {{ .Release.Name }}
     spec:
       nodeSelector:
-        kops.k8s.io/instancegroup: nodes
+        kops.k8s.io/instancegroup: small-nodes
       containers:
       - name: |-
           {{ .Release.Name }}
@@ -59,7 +68,7 @@ spec:
         imagePullPolicy: Always 
         ports:
           - name: salesforce
-            containerPort: 4000
+            containerPort: 1234
             protocol: TCP
         resources:
           limits:
@@ -82,38 +91,74 @@ spec:
         - name: NODE_ENV
           value: |-
             {{ .Values.nodeEnv }}
+        - name: SALESFORCE_CHANNEL
+          value: |-
+            {{ .Values.salesForceChannel }}
+        - name: INTUIT_ENVIRONMENT
+          value: |-
+            {{ .Values.intuitEnvironment }}
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: GRAPHQL_KEY
         - name: SALESFORCE_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_ACCESS_TOKEN
         - name: SALESFORCE_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_CLIENT_ID
         - name: SALESFORCE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_CLIENT_SECRET
         - name: SALESFORCE_INSTANCE_URL
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_INSTANCE_URL
+        - name: SALESFORCE_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: SALESFORCE_REDIRECT_URI
         - name: SALESFORCE_REFRESH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SALESFORCE_REFRESH_TOKEN
         - name: SERVER_KEY
           valueFrom:
             secretKeyRef:
-              name: salesforce
+              name: one-pass-salesforce
               key: SERVER_KEY
+        - name: INTUIT_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_CLIENT_ID
+        - name: INTUIT_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_CLIENT_SECRET
+        - name: INTUIT_REALM_ID
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REALM_ID
+        - name: INTUIT_REDIRECT_URI
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: INTUIT_REDIRECT_URI
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: one-pass-salesforce
+              key: REDIS_URL

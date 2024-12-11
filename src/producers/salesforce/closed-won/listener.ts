@@ -1,7 +1,7 @@
 import SalesforceService from '@/services/salesforce';
 import {
     Account, Contact, Logger, Opportunity, OpportunityLineItem, Product,
-    SalesforceClosedWonEventListenerParams, SalesforceClosedWonResource,
+    SalesforceClosedWonEventListenerParams, SalesforceClosedWonResource, SalesforceServiceType,
     SalesforceStreamSubscriptionParams
 } from '@/utils/types';
 
@@ -11,13 +11,13 @@ type StreamListener = SalesforceClosedWonEventListenerParams & {
 };
 
 interface ListenToOpportunitiesParams {
-  svc: SalesforceService;
+  svc: ReturnType<typeof SalesforceService>;
   logger: Logger;
   topic: SalesforceStreamSubscriptionParams;
 }
 
 interface HandleHierarchyParams {
-  svc: SalesforceService;
+  svc: SalesforceServiceType;
   logger: Logger;
   opportunity: Opportunity;
   opportunityLineItems: OpportunityLineItem[];
@@ -25,17 +25,6 @@ interface HandleHierarchyParams {
   contact: Contact;
   products: Product[];
 }
-
-const listenToOpportunities = async (
-  { svc, logger, topic }: ListenToOpportunitiesParams,
-  cb: (opp: Opportunity) => void
-) => {
-  svc.stream.listen<Opportunity>(topic, async (opp) => {
-    if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
-
-    cb(opp);
-  });
-};
 
 const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
   const { svc, logger, account, opportunity, contact, products, opportunityLineItems } = opts;
@@ -57,8 +46,7 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
     products,
     account,
     opportunityLineItems,
-    parentId: account?.ParentId || null,
-    parentName: parent?.Name || null,
+    parent: parent ?? null,
     // Legacy types, mainly here for the GraphQL processor
     id: account.Id,
     name: account.Name,
@@ -68,58 +56,61 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
   return resources.reverse();
 };
 
-const createSalesforceListener = (opts: StreamListener) => (cb: (resources: SalesforceClosedWonResource[]) => void) => {
-  const { condition, config, logger, topic } = opts;
+const createSalesforceListener =
+  (opts: StreamListener) => async (cb: (resources: SalesforceClosedWonResource[]) => void) => {
+    const { condition, config, logger, topic } = opts;
 
-  SalesforceService(config.salesforce, (_, svc) => {
-    listenToOpportunities({ svc, logger, topic }, async (opp) => {
-      const params = { svc, logger, opp, cb };
+    await SalesforceService(config.salesforce, (svc) => {
+      svc.stream.listen<Opportunity>(topic, async (opp) => {
+        if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
+        const params = { svc, logger, opp, cb };
 
-      const products = await svc.query.productsByOpportunityId({
-        id: opp.Id,
-        where: condition ? condition : null,
+        const products = await svc.query.productsByOpportunityId({
+          id: opp.Id,
+          where: condition ? condition : null,
+        }); // DONE
+
+        if (!products) return logger.warn(`No ${condition.Family} Products`);
+
+        const account = await svc.query.accountById(opp.AccountId); // DONE
+        if (!account) return logger.warn("No Account");
+
+        const contact = await svc.query.contactById(opp.Deal_Signatory__c); // DONE
+        if (!contact) return logger.warn("No Contact");
+
+        const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id); // DONE
+        if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
+
+        const resources = await handleResourcesHierarchy({
+          ...params,
+          account,
+          opportunity: opp,
+          opportunityLineItems,
+          contact: contact,
+          products: products,
+        });
+        if (!resources.length) return;
+
+        // TODO: Remove this
+        if (contact) {
+          resources[0].user = {
+            id: contact.Id,
+            name: contact.Name,
+            email: contact.Email,
+            phone: contact.Phone,
+            username: contact.Name,
+          };
+        }
+
+        // Organize the array starting from the highest parent account to the lowest child account
+        const sorted = resources.reverse().sort((a, b) => {
+          if (a?.parent?.Id === b.id) return 1;
+          if (a.id === b?.parent?.Id) return -1;
+          return 0;
+        });
+
+        cb(sorted);
       });
-      if (!products) return logger.warn(`No ${condition.Family} Products`);
-
-      const account = await svc.query.accountById(opp.AccountId);
-      if (!account) return logger.warn("No Account");
-
-      const contact = await svc.query.contactById(opp.Deal_Signatory__c);
-      if (!contact) return logger.warn("No Contact");
-
-      const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id);
-      if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
-
-      const resources = await handleResourcesHierarchy({
-        ...params,
-        account,
-        opportunity: opp,
-        opportunityLineItems,
-        contact: contact,
-        products: products,
-      });
-      if (!resources.length) return;
-
-      // TODO: Remove this
-      if (contact) {
-        resources[0].user = {
-          id: contact.Id,
-          name: contact.Name,
-          email: contact.Email,
-          phone: contact.Phone,
-          username: contact.Name,
-        };
-      }
-
-      // Organize the array starting from the highest parent account to the lowest child account
-      const sorted = resources.reverse().sort((a, b) => {
-        if (a.parentId === b.id) return 1;
-        if (a.id === b.parentId) return -1;
-        return 0;
-      });
-
-      cb(sorted);
     });
-  });
-};
+  };
 export default createSalesforceListener;

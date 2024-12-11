@@ -4,6 +4,12 @@ import { Logger } from '@/utils/types';
 
 interface SalesforceUpdateOpportunityInput {
   Id: string;
+  QBO_Oppty_ID_Staging__c: string;
+  [key: string]: any;
+}
+
+interface SalesforceUpdateAccountInput {
+  Id: string;
   [key: string]: any;
 }
 
@@ -14,6 +20,18 @@ const createSalesforceMutations = (client: Connection, logger: Logger) => {
         client.sobject("Opportunity").update(input, (err, result) => {
           if (err) {
             logger.error({ message: "Error updating Opportunity", err });
+            reject(err);
+          }
+
+          resolve(result);
+        });
+      });
+    },
+    updateAccount: async (input: SalesforceUpdateAccountInput) => {
+      return new Promise((resolve, reject) => {
+        client.sobject("Account").update(input, (err, result) => {
+          if (err) {
+            logger.error({ message: "Error updating Account", err });
             reject(err);
           }
 

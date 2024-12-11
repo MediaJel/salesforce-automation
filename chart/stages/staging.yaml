@@ -1,10 +1,15 @@
 repoUrl: 105618632367.dkr.ecr.us-east-1.amazonaws.com
+# GRAPHQL_ENDPOINT="https://graphql-dojo.dmp.mediajel.ninja/"
 gqlEndpoint: http://graphqlserver-dojo.default.svc.cluster.local:80
+certificateArn: arn:aws:acm:us-east-1:105618632367:certificate/af54473c-845a-495b-ae6d-8cba77eb8b23
+httpEndpoint: salesforce.dmp.mediajel.ninja
 logLevel: DEBUG
 nodeEnv: staging
-cpuRequest: 0.5
+cpuRequest: 1
 cpuLimit: 1
-memoryRequest: 1024Mi
+memoryRequest: 2048Mi
 memoryLimit: 2048Mi
 global:
   environment: STAGE
+salesForceChannel: "live" # Must either be "live" or "test", production must use "live"
+intuitEnvironment: sandbox

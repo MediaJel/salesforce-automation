@@ -2,11 +2,11 @@ version: 2.1
 executors:
   the-executor:
     docker:
-      - image: node:18.12.1-slim
+      - image: node:22.11.0-slim
     working_directory: ~/salesforce-automation
 orbs:
-  aws-ecr: circleci/aws-ecr@7.0.0
-  aws-s3: circleci/aws-s3@2.0.0
+  aws-cli: circleci/aws-cli@4.0
+  aws-ecr: circleci/aws-ecr@9.0.2
 jobs:
   pre-integration-build:
     executor: the-executor
@@ -19,7 +19,7 @@ jobs:
           paths: .
   deploy-staging:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:22.11.0
     working_directory: ~/salesforce-automation
     steps:
       - checkout
@@ -32,8 +32,8 @@ jobs:
             sudo mv ./kops /usr/local/bin/kops
             echo "export KOPS_CLUSTER_NAME=${KOPS_CLUSTER_NAME}" >> $BASH_ENV
             echo "export KOPS_STATE_STORE=s3://${KOPS_STATE_STORE}" >> $BASH_ENV
-            echo "export AWS_ACCESS_KEY_ID=${ACCESS_KEY_ID}" >> $BASH_ENV
-            echo "export AWS_SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> $BASH_ENV
+            echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
       - run:
           name: Install kubectl
@@ -58,13 +58,18 @@ jobs:
             commitSha=${CIRCLE_SHA1} -f chart/stages/staging.yaml \
             --history-max=1
       - run:
+          name: Restart deployment
+          command: |
+            kops export kubecfg --admin
+            kubectl rollout restart deployment salesforce-automation;
+      - run:
           name: Helm List on version 3
           command: |
             kops export kubecfg --admin
             helm3 list
   deploy-production:
     docker:
-      - image: cimg/node:18.12.1
+      - image: cimg/node:22.11.0
     working_directory: ~/salesforce-automation
     steps:
       - checkout
@@ -77,8 +82,8 @@ jobs:
             sudo mv ./kops /usr/local/bin/kops
             echo "export KOPS_CLUSTER_NAME=${KOPS_CLUSTER_NAME}" >> $BASH_ENV
             echo "export KOPS_STATE_STORE=s3://${KOPS_STATE_STORE}" >> $BASH_ENV
-            echo "export AWS_ACCESS_KEY_ID=${ACCESS_KEY_ID}" >> $BASH_ENV
-            echo "export AWS_SECRET_ACCESS_KEY=${SECRET_ACCESS_KEY}" >> $BASH_ENV
+            echo "export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> $BASH_ENV
+            echo "export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> $BASH_ENV
             echo "export AWS_REGION=${AWS_ECR_REGION}" >> $BASH_ENV
       - run:
           name: Install kubectl
@@ -103,6 +108,11 @@ jobs:
             commitSha=${CIRCLE_SHA1} -f chart/stages/production.yaml \
             --history-max=1
       - run:
+          name: Restart deployment
+          command: |
+            kops export kubecfg --admin
+            kubectl rollout restart deployment salesforce-automation;
+      - run:
           name: Helm List on version 3
           command: |
             kops export kubecfg --admin
@@ -111,23 +121,29 @@ workflows:
   version: 2
   build:
     jobs:
-      - pre-integration-build
-      - aws-ecr/build-and-push-image:
+      - pre-integration-build:
+          name: pre-integration
+      - aws-ecr/build_and_push_image:
           context: STAGING
           name: build-push-staging
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          region: AWS_ECR_REGION
+          account_id: ${AWS_ACCOUNT_ID}
+          auth:
+            - aws-cli/setup:
+              region: ${AWS_ECR_REGION}
+          repo_scan_on_push: true
+          create_repo: false
+          region: ${AWS_ECR_REGION}
           repo: salesforce-automation
           tag: $CIRCLE_SHA1
-          attach-workspace: false
-          workspace-root: .
-          dockerfile: ./docker/Dockerfile
+          platform: linux/amd64
+          attach_workspace: true
+          workspace_root: .
+          extra_build_args: "--build-arg ACCOUNT_URL=${AWS_ECR_ACCOUNT_URL}"
+          dockerfile: ./Dockerfile
           filters:
             branches:
               only: staging
-          requires: [pre-integration-build]
+          requires: [pre-integration]
       - deploy-staging:
           context: STAGING
           filters:
@@ -137,22 +153,28 @@ workflows:
             [
               build-push-staging,
             ]
-      - aws-ecr/build-and-push-image:
+
+      - aws-ecr/build_and_push_image:
           context: PRODUCTION
           name: build-push-production
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: false
-          region: AWS_ECR_REGION
+          account_id: ${AWS_ACCOUNT_ID}
+          auth:
+            - aws-cli/setup:
+              region: ${AWS_ECR_REGION}
+          repo_scan_on_push: true
+          create_repo: false
+          region: ${AWS_ECR_REGION}
           repo: salesforce-automation
           tag: $CIRCLE_SHA1
-          attach-workspace: true
-          workspace-root: .
-          dockerfile: ./docker/Dockerfile
+          platform: linux/amd64
+          attach_workspace: true
+          workspace_root: .
+          extra_build_args: "--build-arg ACCOUNT_URL=${AWS_ECR_ACCOUNT_URL}"
+          dockerfile: ./Dockerfile
           filters:
             branches:
               only: master
-          requires: [pre-integration-build]
+          requires: [pre-integration]
       - deploy-production:
           context: PRODUCTION
           filters:

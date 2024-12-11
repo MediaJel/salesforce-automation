@@ -13,11 +13,61 @@ import createSalesforceStream from '@/services/salesforce/stream';
 import createLogger from '@/utils/logger';
 import { ClientOptions } from '@urql/core';
 
-export interface QuickbooksFindCustomersInput {
+export type IntuitAuthResponse = {
+  realmId: string;
+  token_type: string;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  x_refresh_token_expires_in: number;
+  id_token: string;
+  latency: number;
+  createdAt: number;
+  state: string;
+};
+
+export interface QuickbooksFindItemsResponse {
+  QueryResponse: {
+    Item?: QuicksbooksItem[];
+    startPosition?: number;
+    maxResults?: number;
+  };
+  time: string;
+}
+
+export interface QuicksbooksItem {
+  Name: string;
+  Sku: string;
+  Description: string;
+  Active: boolean;
+  FullyQualifiedName: string;
+  Taxable: boolean;
+  UnitPrice: number;
+  Type: string;
+  IncomeAccountRef: {
+    value: string;
+    name: string;
+  };
+  PurchaseCost: number;
+  TrackQtyOnHand: boolean;
+  domain: string;
+  sparse: boolean;
+  Id: string;
+  SyncToken: string;
+  MetaData: {
+    CreateTime: string;
+    LastUpdatedTime: string;
+  };
+}
+
+export interface QuickbooksFindResourceInput {
   field: string;
-  value: string;
+  value: string | number;
   operator?: string;
 }
+export interface QuickbooksFindCustomersInput extends QuickbooksFindResourceInput {}
+
+export interface QuickbooksFindItemsInput extends QuickbooksFindResourceInput {}
 
 export interface QuickbooksCreateCustomerInput {
   FullyQualifiedName: string;
@@ -71,6 +121,7 @@ export interface QuickbooksCustomer {
   SyncToken: string;
   CompanyName?: string;
   ShipAddr?: QuickbooksAddress;
+  ParentRef?: QuickbooksReference;
   PrintOnCheckName?: string;
   sparse?: boolean;
   Id: string;
@@ -160,7 +211,7 @@ interface QuickbooksSalesItemLineDetailInput {
   UnitPrice: number;
   ItemRef: {
     name: string;
-    value: number;
+    value: string;
   };
 }
 
@@ -277,7 +328,7 @@ interface QuickbooksTaxLineDetail {
 }
 
 interface QuickbooksAddress {
-  Id: string;
+  Id?: string;
   Line1: string;
   Line2?: string;
   Line3?: string;
@@ -306,8 +357,7 @@ export interface SalesforceClosedWonResource {
   account: Account;
   contact: Contact;
   products: Product[];
-  parentId?: string;
-  parentName?: string;
+  parent?: Account;
   // Legacy types, mainly here for the GraphQL processor
   id: string;
   name: string;
@@ -386,6 +436,7 @@ export interface Contact {
   Name: string;
   Email: string;
   Phone: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -395,6 +446,7 @@ export interface Product {
   Family: string;
   ProductCode: string;
   Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -404,6 +456,9 @@ export interface OpportunityLineItem {
   Quantity: number;
   UnitPrice: number;
   TotalPrice: number;
+  Description: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  ServiceDate: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -418,10 +473,12 @@ export interface Account {
   ShippingLongitude: number;
   BillingCity: string;
   BillingStreet: string;
-  BillingPostalCode: number;
+  BillingPostalCode: string;
   BillingLatitude: number;
   BillingLongitude: number;
-  BillingCountryCode: string;
+  BillingCountry: string;
+  AVSFQB__Quickbooks_Id__c?: string;
+  QBO_Account_ID_Staging__c?: string;
   attributes: PushTopicRecordAttributes;
 }
 
@@ -430,7 +487,7 @@ export interface PushTopicRecordAttributes {
   url: string;
 }
 
-export interface SalesforceService {
+export interface SalesforceServiceType {
   query: ReturnType<typeof createSalesforceQueries>;
   stream: ReturnType<typeof createSalesforceStream>;
   mutation: ReturnType<typeof createSalesforceMutations>;

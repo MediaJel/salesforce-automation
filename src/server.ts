@@ -1,11 +1,13 @@
+import cors from "cors";
 import express from "express";
 import intuitOAuth2Client from "intuit-oauth";
 import jsforce from "jsforce";
 
 import config from "@/config";
 import { processorState } from "@/processor";
+import redisService from "@/services/redis/service";
 import createLogger from "@/utils/logger";
-import { ExpressServerConfig } from "@/utils/types";
+import { ExpressServerConfig, IntuitAuthResponse } from "@/utils/types";
 
 const app = express();
 const logger = createLogger("Server");
@@ -24,7 +26,10 @@ const intuitOAuth2 = new intuitOAuth2Client({
   redirectUri: config.intuit.redirectUri,
 });
 
-const createServer = (config: ExpressServerConfig) => {
+const createServer = async (config: ExpressServerConfig) => {
+  app.use(cors());
+  const redis = await redisService();
+
   const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (req.query.key === config.serverKey) {
       return next();
@@ -73,8 +78,9 @@ const createServer = (config: ExpressServerConfig) => {
 
     intuitOAuth2
       .createToken(parseRedirect)
-      .then((authResponse) => {
+      .then(async (authResponse) => {
         logger.info(`Intuit OAuth2 Response: ${JSON.stringify(authResponse.token, null, 2)}`);
+        await redis.setIntuitAuthTokens(authResponse.token as IntuitAuthResponse);
         res.send(authResponse.token);
       })
       .catch((err) => {
