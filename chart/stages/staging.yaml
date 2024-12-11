@@ -5,9 +5,9 @@ certificateArn: arn:aws:acm:us-east-1:105618632367:certificate/af54473c-845a-495
 httpEndpoint: salesforce.dmp.mediajel.ninja
 logLevel: DEBUG
 nodeEnv: staging
-cpuRequest: 0.5
+cpuRequest: 1
 cpuLimit: 1
-memoryRequest: 1024Mi
+memoryRequest: 2048Mi
 memoryLimit: 2048Mi
 global:
   environment: STAGE

@@ -13,8 +13,6 @@ metadata:
       {{ .Values.certificateArn }}
     service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
-    # dns.alpha.kubernetes.io/external: |-
-    #   {{ .Values.httpEndpoint }}
 spec:
   type: LoadBalancer
   ports:
@@ -32,36 +30,6 @@ spec:
     # This needs to match the selector in the RC/Deployment
     app: |-
       {{ .Release.Name }}
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: |-
-#     {{ .Release.Name }}
-#   labels:
-#     name: |-
-#       {{ .Release.Name }}
-#   annotations:
-#     nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
-#     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-#     nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
-#     nginx.ingress.kubernetes.io/proxy-buffer-size: "32k"
-#     nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
-# spec:
-#   ingressClassName: nginx
-#   rules:
-#   - host: |-
-#       {{ .Values.httpEndpoint }}
-#     http:
-#       paths:
-#       - pathType: Prefix
-#         path: /
-#         backend:
-#           service:
-#             name: |-
-#               {{ .Release.Name }}
-#             port:
-#               number: 4000
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -179,16 +147,6 @@ spec:
             secretKeyRef:
               name: one-pass-salesforce
               key: INTUIT_CLIENT_SECRET
-        - name: INTUIT_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: one-pass-salesforce
-              key: INTUIT_ACCESS_TOKEN
-        - name: INTUIT_REFRESH_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: one-pass-salesforce
-              key: INTUIT_REFRESH_TOKEN
         - name: INTUIT_REALM_ID
           valueFrom:
             secretKeyRef:
