@@ -100,65 +100,65 @@ spec:
         - name: GRAPHQL_KEY
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: GRAPHQL_KEY
         - name: SALESFORCE_ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_ACCESS_TOKEN
         - name: SALESFORCE_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_CLIENT_ID
         - name: SALESFORCE_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_CLIENT_SECRET
         - name: SALESFORCE_INSTANCE_URL
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_INSTANCE_URL
         - name: SALESFORCE_REDIRECT_URI
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_REDIRECT_URI
         - name: SALESFORCE_REFRESH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SALESFORCE_REFRESH_TOKEN
         - name: SERVER_KEY
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: SERVER_KEY
         - name: INTUIT_CLIENT_ID
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: INTUIT_CLIENT_ID
         - name: INTUIT_CLIENT_SECRET
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: INTUIT_CLIENT_SECRET
         - name: INTUIT_REALM_ID
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: INTUIT_REALM_ID
         - name: INTUIT_REDIRECT_URI
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: INTUIT_REDIRECT_URI
         - name: REDIS_URL
           valueFrom:
             secretKeyRef:
-              name: one-pass-salesforce
+              name: one-pass-salesforce-env
               key: REDIS_URL
