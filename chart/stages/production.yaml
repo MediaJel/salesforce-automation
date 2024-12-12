@@ -4,10 +4,10 @@ certificateArn: arn:aws:acm:us-east-1:738466439161:certificate/982a5b7b-13ba-4d7
 httpEndpoint: salesforce.dmp.cnna.io
 logLevel: DEBUG
 nodeEnv: production
-cpuRequest: 1
-cpuLimit: 1
-memoryRequest: 2048Mi
-memoryLimit: 2048Mi
+cpuRequest: 2
+cpuLimit: 2
+memoryRequest: 8192Mi
+memoryLimit: 8192Mi
 global:
   environment: PRODUCTION
 salesForceChannel: "live" # Must either be "live" or "test", production must use "live"
