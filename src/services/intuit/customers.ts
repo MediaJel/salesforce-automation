@@ -8,6 +8,7 @@ const createIntuitCustomersService = (client: any) => {
   return {
     create: async (input: Partial<QuickbooksCreateCustomerInput>): Promise<QuickbooksCustomer> => {
       return new Promise((resolve, reject) => {
+        console.log(`Creating customer with Quickbooks client:`, client);
         client.createCustomer(input, (err: any, customer: any) => {
           if (err) reject(err);
           console.log(`Create Customer input: ${JSON.stringify(input, null, 2)}`);
