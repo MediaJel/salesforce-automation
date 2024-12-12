@@ -1,9 +1,10 @@
-import intuitOAuth2Client from "intuit-oauth";
-import Quickbooks from "node-quickbooks";
+import intuitOAuth2Client from 'intuit-oauth';
+import Quickbooks from 'node-quickbooks';
 
-import config from "@/config";
-import redisService from "@/services/redis/service";
-import { CreateIntuitServiceInput, Logger } from "@/utils/types";
+import config from '@/config';
+import redisService from '@/services/redis/service';
+import { CreateIntuitServiceInput, Logger } from '@/utils/types';
+import { isProduction } from '@/utils/utils';
 
 const intuitOAuth2 = new intuitOAuth2Client({
   clientId: config.intuit.clientId,
@@ -25,10 +26,10 @@ const createIntuitAuth = (logger: Logger) => {
 
         logger.info("Authenticating/Reauthenticating to Intuit");
         const {
-          consumerKey = null,
-          consumerSecret = null,
+          consumerKey = undefined,
+          consumerSecret = undefined,
           withTokenSecret = false,
-          useSandbox = true,
+          useSandbox = isProduction ? false : true,
           enableDebugging = false,
           minorVersion = null,
           oAuthVersion = "2.0",
