@@ -1,5 +1,6 @@
 import { Connection, ConnectionOptions } from "jsforce";
 
+import redisService from "@/services/redis/service";
 import createSalesforceAuth from "@/services/salesforce/auth";
 import createSalesforceMutations from "@/services/salesforce/mutations";
 import createSalesforceQueries from "@/services/salesforce/query";
@@ -22,7 +23,7 @@ const createSalesforceService = async (params: ConnectionOptions): Promise<Sales
       throw new Error("Failed to authenticate with Salesforce");
     }
 
-    client.on("refresh", (accessToken: string, res: any) => {
+    client.on("refresh", async (accessToken: string, res: any) => {
       logger.debug(`Salesforce OAuth2 Refreshed: ${JSON.stringify(accessToken, null, 2)}`);
     });
 

@@ -3,7 +3,8 @@ import Quickbooks from "node-quickbooks";
 
 import config from "@/config";
 import redisService from "@/services/redis/service";
-import { CreateIntuitServiceInput, Logger } from "@/utils/types";
+import createLogger from "@/utils/logger";
+import { CreateIntuitServiceInput, IntuitAuthResponse, Logger } from "@/utils/types";
 import { isProduction } from "@/utils/utils";
 
 const intuitOAuth2 = new intuitOAuth2Client({
@@ -13,7 +14,9 @@ const intuitOAuth2 = new intuitOAuth2Client({
   redirectUri: config.intuit.redirectUri,
 });
 
-const createIntuitAuth = (logger: Logger) => {
+const logger = createLogger("Intuit Auth");
+
+const createIntuitAuth = () => {
   return {
     async authenticate(input: CreateIntuitServiceInput) {
       const {
@@ -29,15 +32,35 @@ const createIntuitAuth = (logger: Logger) => {
 
       return new Promise<Quickbooks>(async (resolve, reject) => {
         logger.debug(`Checking for Intuit tokens in Redis...`);
-        const tokens = await redis.getIntuitTokens();
+        const cachedTokens = await redis.getIntuitTokens();
 
-        if (!tokens) {
+        if (!cachedTokens) {
           return reject("No Intuit tokens found in Redis, Must re-authenticate with Intuit");
         }
 
-        logger.info("Authenticating/Reauthenticating to Intuit");
+        // IF tokens NOT expired
+        //* Add a 5 minute buffer to the token expiration
+        if (cachedTokens.createdAt + cachedTokens.expires_in * 1000 - 600000 > Date.now()) {
+          logger.debug("Intuit tokens not expired, using cached tokens");
+          return resolve(
+            new Quickbooks(
+              consumerKey,
+              consumerSecret,
+              cachedTokens.access_token,
+              withTokenSecret,
+              input.realmId,
+              useSandbox,
+              enableDebugging,
+              minorVersion,
+              oAuthVersion,
+              cachedTokens.refresh_token
+            )
+          );
+        }
 
-        const auth = await intuitOAuth2.refreshUsingToken(tokens.refresh_token).catch((err) => {
+        logger.info("Authenticating/Reauthenticating to Intuit since tokens expired...");
+
+        const auth = await intuitOAuth2.refreshUsingToken(cachedTokens.refresh_token).catch((err) => {
           logger.error({ message: "Error refreshing Intuit OAuth2 token", err });
           reject(err);
         });

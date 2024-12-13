@@ -1,12 +1,17 @@
+import config from "@/config";
+import createIntuitAuth from "@/services/intuit/auth";
 import {
-    QuickbooksCreateCustomerInput, QuickbooksCustomer, QuickbooksFindCustomersInput,
-    QuickbooksFindCustomersResponse
-} from '@/utils/types';
+  QuickbooksCreateCustomerInput,
+  QuickbooksCustomer,
+  QuickbooksFindCustomersInput,
+  QuickbooksFindCustomersResponse,
+} from "@/utils/types";
 
 //* Client is any since node-quickbooks don't got types
-const createIntuitCustomersService = (client: any) => {
+const createIntuitCustomersService = () => {
   return {
     create: async (input: Partial<QuickbooksCreateCustomerInput>): Promise<QuickbooksCustomer> => {
+      const client = await createIntuitAuth().authenticate(config.intuit);
       return new Promise((resolve, reject) => {
         console.log(`Creating customer with Quickbooks client:`, client);
         client.createCustomer(input, (err: any, customer: any) => {
@@ -24,6 +29,7 @@ const createIntuitCustomersService = (client: any) => {
      */
 
     find: async (input: QuickbooksFindCustomersInput[]): Promise<QuickbooksFindCustomersResponse> => {
+      const client = await createIntuitAuth().authenticate(config.intuit);
       return new Promise((resolve, reject) => {
         client.findCustomers(input, (err: any, customers: any) => {
           if (err) reject(err);
