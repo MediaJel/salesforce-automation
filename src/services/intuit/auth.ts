@@ -1,10 +1,10 @@
-import intuitOAuth2Client from 'intuit-oauth';
-import Quickbooks from 'node-quickbooks';
+import intuitOAuth2Client from "intuit-oauth";
+import Quickbooks from "node-quickbooks";
 
-import config from '@/config';
-import redisService from '@/services/redis/service';
-import { CreateIntuitServiceInput, Logger } from '@/utils/types';
-import { isProduction } from '@/utils/utils';
+import config from "@/config";
+import redisService from "@/services/redis/service";
+import { CreateIntuitServiceInput, Logger } from "@/utils/types";
+import { isProduction } from "@/utils/utils";
 
 const intuitOAuth2 = new intuitOAuth2Client({
   clientId: config.intuit.clientId,
@@ -16,24 +16,26 @@ const intuitOAuth2 = new intuitOAuth2Client({
 const createIntuitAuth = (logger: Logger) => {
   return {
     async authenticate(input: CreateIntuitServiceInput) {
+      const {
+        consumerKey = undefined,
+        consumerSecret = undefined,
+        withTokenSecret = false,
+        useSandbox = isProduction ? false : true,
+        enableDebugging = false,
+        minorVersion = null,
+        oAuthVersion = "2.0",
+      } = input;
       const redis = await redisService();
+
       return new Promise<Quickbooks>(async (resolve, reject) => {
         logger.debug(`Checking for Intuit tokens in Redis...`);
         const tokens = await redis.getIntuitTokens();
+
         if (!tokens) {
           return reject("No Intuit tokens found in Redis, Must re-authenticate with Intuit");
         }
 
         logger.info("Authenticating/Reauthenticating to Intuit");
-        const {
-          consumerKey = undefined,
-          consumerSecret = undefined,
-          withTokenSecret = false,
-          useSandbox = isProduction ? false : true,
-          enableDebugging = false,
-          minorVersion = null,
-          oAuthVersion = "2.0",
-        } = input;
 
         const auth = await intuitOAuth2.refreshUsingToken(tokens.refresh_token).catch((err) => {
           logger.error({ message: "Error refreshing Intuit OAuth2 token", err });

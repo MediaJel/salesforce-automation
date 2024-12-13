@@ -1,9 +1,16 @@
-import SalesforceService from '@/services/salesforce';
+import SalesforceService from "@/services/salesforce";
 import {
-    Account, Contact, Logger, Opportunity, OpportunityLineItem, Product,
-    SalesforceClosedWonEventListenerParams, SalesforceClosedWonResource, SalesforceServiceType,
-    SalesforceStreamSubscriptionParams
-} from '@/utils/types';
+  Account,
+  Contact,
+  Logger,
+  Opportunity,
+  OpportunityLineItem,
+  Product,
+  SalesforceClosedWonEventListenerParams,
+  SalesforceClosedWonResource,
+  SalesforceServiceType,
+  SalesforceStreamSubscriptionParams,
+} from "@/utils/types";
 
 type StreamListener = SalesforceClosedWonEventListenerParams & {
   topic: SalesforceStreamSubscriptionParams;
@@ -11,13 +18,13 @@ type StreamListener = SalesforceClosedWonEventListenerParams & {
 };
 
 interface ListenToOpportunitiesParams {
-  svc: ReturnType<typeof SalesforceService>;
+  salesforce: ReturnType<typeof SalesforceService>;
   logger: Logger;
   topic: SalesforceStreamSubscriptionParams;
 }
 
 interface HandleHierarchyParams {
-  svc: SalesforceServiceType;
+  salesforce: SalesforceServiceType;
   logger: Logger;
   opportunity: Opportunity;
   opportunityLineItems: OpportunityLineItem[];
@@ -27,10 +34,10 @@ interface HandleHierarchyParams {
 }
 
 const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<SalesforceClosedWonResource[]> => {
-  const { svc, logger, account, opportunity, contact, products, opportunityLineItems } = opts;
+  const { salesforce, logger, account, opportunity, contact, products, opportunityLineItems } = opts;
   const resources: SalesforceClosedWonResource[] = [];
 
-  const parent = await svc.query.accountById(account.ParentId);
+  const parent = await salesforce.query.accountById(account.ParentId);
 
   if (parent) {
     const parentOrg = await handleResourcesHierarchy({
@@ -60,57 +67,57 @@ const createSalesforceListener =
   (opts: StreamListener) => async (cb: (resources: SalesforceClosedWonResource[]) => void) => {
     const { condition, config, logger, topic } = opts;
 
-    await SalesforceService(config.salesforce, (svc) => {
-      svc.stream.listen<Opportunity>(topic, async (opp) => {
-        if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
-        const params = { svc, logger, opp, cb };
+    const salesforce = await SalesforceService(config.salesforce);
 
-        const products = await svc.query.productsByOpportunityId({
-          id: opp.Id,
-          where: condition ? condition : null,
-        }); // DONE
+    salesforce.stream.listen<Opportunity>(topic, async (opp) => {
+      if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
+      const params = { salesforce, logger, opp, cb };
 
-        if (!products) return logger.warn(`No ${condition.Family} Products`);
+      const products = await salesforce.query.productsByOpportunityId({
+        id: opp.Id,
+        where: condition ? condition : null,
+      }); // DONE
 
-        const account = await svc.query.accountById(opp.AccountId); // DONE
-        if (!account) return logger.warn("No Account");
+      if (!products) return logger.warn(`No ${condition.Family} Products`);
 
-        const contact = await svc.query.contactById(opp.Deal_Signatory__c); // DONE
-        if (!contact) return logger.warn("No Contact");
+      const account = await salesforce.query.accountById(opp.AccountId); // DONE
+      if (!account) return logger.warn("No Account");
 
-        const opportunityLineItems = await svc.query.opportunityLineItemByOpportunityId(opp.Id); // DONE
-        if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
+      const contact = await salesforce.query.contactById(opp.Deal_Signatory__c); // DONE
+      if (!contact) return logger.warn("No Contact");
 
-        const resources = await handleResourcesHierarchy({
-          ...params,
-          account,
-          opportunity: opp,
-          opportunityLineItems,
-          contact: contact,
-          products: products,
-        });
-        if (!resources.length) return;
+      const opportunityLineItems = await salesforce.query.opportunityLineItemByOpportunityId(opp.Id); // DONE
+      if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
 
-        // TODO: Remove this
-        if (contact) {
-          resources[0].user = {
-            id: contact.Id,
-            name: contact.Name,
-            email: contact.Email,
-            phone: contact.Phone,
-            username: contact.Name,
-          };
-        }
-
-        // Organize the array starting from the highest parent account to the lowest child account
-        const sorted = resources.reverse().sort((a, b) => {
-          if (a?.parent?.Id === b.id) return 1;
-          if (a.id === b?.parent?.Id) return -1;
-          return 0;
-        });
-
-        cb(sorted);
+      const resources = await handleResourcesHierarchy({
+        ...params,
+        account,
+        opportunity: opp,
+        opportunityLineItems,
+        contact: contact,
+        products: products,
       });
+      if (!resources.length) return;
+
+      // TODO: Remove this
+      if (contact) {
+        resources[0].user = {
+          id: contact.Id,
+          name: contact.Name,
+          email: contact.Email,
+          phone: contact.Phone,
+          username: contact.Name,
+        };
+      }
+
+      // Organize the array starting from the highest parent account to the lowest child account
+      const sorted = resources.reverse().sort((a, b) => {
+        if (a?.parent?.Id === b.id) return 1;
+        if (a.id === b?.parent?.Id) return -1;
+        return 0;
+      });
+
+      cb(sorted);
     });
   };
 export default createSalesforceListener;
