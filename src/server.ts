@@ -88,6 +88,11 @@ const createServer = async (config: ExpressServerConfig) => {
       });
   });
 
+  app.get("/intuit/tokens", auth, async (req, res) => {
+    const tokens = await redis.getIntuitTokens();
+    res.send(tokens);
+  });
+
   app.get("/disable", auth, (req, res) => {
     const msg = "Sending signal to disable Processor State...";
     logger.warn(msg);
