@@ -373,7 +373,7 @@ const createIntuitProcessor = async () => {
         AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
         ...(!isProduction && { QBO_Oppty_ID_Staging__c: opportunityId }),
         //* Only mutate this field in production
-        ...(isProduction && { AVFSQB__Quickbooks_Id__c: opportunityId }),
+        ...(isProduction && { AVSFQB__Quickbooks_Id__c: opportunityId }),
       });
 
       logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
