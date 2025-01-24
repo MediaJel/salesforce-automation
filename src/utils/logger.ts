@@ -1,6 +1,8 @@
 // import { LogLevel } from "@/utils/types";
 
 import chalk from "chalk";
+import winston from "winston";
+
 import config from "@/config";
 
 type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
@@ -24,7 +26,29 @@ const template = <T>(level: LogLevel, name: string, message: T) => {
   return `${date} | ${level} | [${name}]: ${json}`;
 };
 
-const createLogger = (name: string) => {
+// Create Winston logger instance for production
+const createWinstonLogger = (name: string) => {
+  return winston.createLogger({
+    level: config.logLevel.toLowerCase(),
+    format: winston.format.combine(
+      winston.format.timestamp(),
+      winston.format.json(),
+      winston.format.printf(({ timestamp, level, message }) => {
+        return `${timestamp} | ${level.toUpperCase()} | [${name}]: ${
+          typeof message === "object" ? JSON.stringify(message) : message
+        }`;
+      })
+    ),
+    transports: [
+      new winston.transports.Console(),
+      new winston.transports.File({ filename: "error.log", level: "error" }),
+      new winston.transports.File({ filename: "combined.log" }),
+    ],
+  });
+};
+
+// Create development console logger
+const createConsoleLogger = (name: string) => {
   return {
     debug: <T>(message: T) => {
       if (levels[config.logLevel].includes("DEBUG")) {
@@ -47,6 +71,20 @@ const createLogger = (name: string) => {
       }
     },
   };
+};
+
+const createLogger = (name: string) => {
+  if (process.env.NODE_ENV === "production") {
+    const winstonLogger = createWinstonLogger(name);
+    return {
+      debug: <T>(message: T) => winstonLogger.debug(message),
+      info: <T>(message: T) => winstonLogger.info(message),
+      warn: <T>(message: T) => winstonLogger.warn(message),
+      error: <T extends { message: string }>(message: T) => winstonLogger.error(message),
+    };
+  }
+
+  return createConsoleLogger(name);
 };
 
 export default createLogger;
