@@ -1,9 +1,9 @@
 // import { LogLevel } from "@/utils/types";
 
-import chalk from "chalk";
-import winston from "winston";
+import chalk from 'chalk';
+import winston from 'winston';
 
-import config from "@/config";
+import config from '@/config';
 
 type LogLevel = "DEBUG" | "INFO" | "WARN" | "ERROR";
 
@@ -74,17 +74,19 @@ const createConsoleLogger = (name: string) => {
 };
 
 const createLogger = (name: string) => {
-  if (process.env.NODE_ENV === "production") {
-    const winstonLogger = createWinstonLogger(name);
-    return {
-      debug: <T>(message: T) => winstonLogger.debug(message),
-      info: <T>(message: T) => winstonLogger.info(message),
-      warn: <T>(message: T) => winstonLogger.warn(message),
-      error: <T extends { message: string }>(message: T) => winstonLogger.error(message),
-    };
-  }
+  // if (process.env.NODE_ENV === "production") {
+  //   const winstonLogger = createWinstonLogger(name);
+  //   return {
+  //     debug: <T>(message: T) => winstonLogger.debug(message),
+  //     info: <T>(message: T) => winstonLogger.info(message),
+  //     warn: <T>(message: T) => winstonLogger.warn(message),
+  //     error: <T extends { message: string }>(message: T) => winstonLogger.error(message),
+  //   };
+  // }
 
-  return createConsoleLogger(name);
+  // return createConsoleLogger(name);
+
+  return createWinstonLogger(name);
 };
 
 export default createLogger;
