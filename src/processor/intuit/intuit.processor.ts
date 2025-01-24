@@ -357,7 +357,6 @@ const createIntuitProcessor = async () => {
 
         const salesforce = await SalesforceService(config.salesforce);
         const { opportunityId, Id } = estimate;
-
         const result = await salesforce.mutation.updateOpportunity({
           Id: opportunityId,
           AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
