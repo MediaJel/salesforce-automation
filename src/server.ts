@@ -3,8 +3,9 @@ import express from "express";
 import intuitOAuth2Client from "intuit-oauth";
 import jsforce from "jsforce";
 
-import config from "@/config";
+import cfg from "@/config";
 import { processorState } from "@/processor";
+import createIntuitAuth from "@/services/intuit/auth";
 import redisService from "@/services/redis/service";
 import createLogger from "@/utils/logger";
 import { ExpressServerConfig, IntuitAuthResponse } from "@/utils/types";
@@ -13,17 +14,17 @@ const app = express();
 const logger = createLogger("Server");
 
 const jsForceOAuth2 = new jsforce.OAuth2({
-  loginUrl: config.salesforce.loginUrl,
-  clientId: config.salesforce.oauth2.clientId,
-  clientSecret: config.salesforce.oauth2.clientSecret,
-  redirectUri: config.salesforce.oauth2.redirectUri,
+  loginUrl: cfg.salesforce.loginUrl,
+  clientId: cfg.salesforce.oauth2.clientId,
+  clientSecret: cfg.salesforce.oauth2.clientSecret,
+  redirectUri: cfg.salesforce.oauth2.redirectUri,
 });
 
 const intuitOAuth2 = new intuitOAuth2Client({
-  clientId: config.intuit.clientId,
-  clientSecret: config.intuit.clientSecret,
-  environment: config.intuit.environment,
-  redirectUri: config.intuit.redirectUri,
+  clientId: cfg.intuit.clientId,
+  clientSecret: cfg.intuit.clientSecret,
+  environment: cfg.intuit.environment,
+  redirectUri: cfg.intuit.redirectUri,
 });
 
 const createServer = async (config: ExpressServerConfig) => {
@@ -89,7 +90,9 @@ const createServer = async (config: ExpressServerConfig) => {
   });
 
   app.get("/intuit/tokens", auth, async (req, res) => {
+    await createIntuitAuth().authenticate(cfg.intuit);
     const tokens = await redis.getIntuitTokens();
+
     res.send(tokens);
   });
 
