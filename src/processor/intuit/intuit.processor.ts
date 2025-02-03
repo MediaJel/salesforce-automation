@@ -302,6 +302,14 @@ const processEstimate = async (
     BillEmail: {
       Address: contact.Email,
     },
+    CustomField: [
+      {
+        DefinitionId: "3",
+        Type: "StringType",
+        StringValue: opportunity.Proposal_Number__c,
+        Name: "SF Proposal Number",
+      },
+    ],
     ShipAddr: {
       //* TODO: Note sure if to use account.id here, was not included in the mappings,
       Id: 69420,

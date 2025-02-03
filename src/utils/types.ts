@@ -160,6 +160,12 @@ export interface CreateIntuitServiceInput {
 
 export interface QuickbooksCreateEstimateInput {
   TotalAmt: number;
+  CustomField: {
+    DefinitionId: string;
+    Type: string;
+    StringValue: string;
+    Name: string;
+  }[];
   BillEmail: {
     Address: string;
   };
@@ -424,6 +430,7 @@ export interface Opportunity {
   RecordTypeId: string;
   Deal_Signatory__c: string;
   AccountId: string;
+  Proposal_Number__c: string;
 }
 
 export interface SalesforceStreamSubscriptionParams {
