@@ -354,39 +354,31 @@ const createIntuitProcessor = async () => {
 
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
+      try {
+        const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
+          throw new Error(`Error processing resources: ${err}`);
+        });
+
+        const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
+          throw new Error(`Error processing resources: ${err}`);
+        });
+
+        const salesforce = await SalesforceService(config.salesforce);
+        const { opportunityId, Id } = estimate;
+        const result = await salesforce.mutation.updateOpportunity({
+          Id: opportunityId,
+          AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+          ...(!isProduction && { QBO_Oppty_ID_Staging__c: Id }),
+          //* Only mutate this field in production
+          ...(isProduction && { AVFSQB__Quickbooks_Id__c: Id }),
+        });
+
+        logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+
+        logger.info("Completed processing resources");
+      } catch (err) {
         logger.error({ message: "Error processing resources", err });
-        return null;
-      });
-
-      if (!customers) {
-        logger.error({ message: "No customers returned from processing resources" });
-        return;
       }
-
-      const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
-        logger.error({ message: "Error processing resources", err });
-        return null;
-      });
-
-      if (!estimate) {
-        logger.error({ message: "No estimate returned from processing resources" });
-        return;
-      }
-
-      const salesforce = await SalesforceService(config.salesforce);
-      const { opportunityId } = estimate;
-      const result = await salesforce.mutation.updateOpportunity({
-        Id: opportunityId,
-        AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-        ...(!isProduction && { QBO_Oppty_ID_Staging__c: opportunityId }),
-        //* Only mutate this field in production
-        ...(isProduction && { AVSFQB__Quickbooks_Id__c: opportunityId }),
-      });
-
-      logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
-
-      logger.info("Completed processing resources");
     },
   };
 };
