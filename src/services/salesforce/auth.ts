@@ -5,28 +5,36 @@ import { Logger } from "@/utils/types";
 const createSalesforceAuth = (opts: ConnectionOptions, logger: Logger) => {
   return {
     async authenticate(): Promise<Connection> {
-      return new Promise<Connection>(async (resolve, reject) => {
-        logger.info("Authenticating/Reauthenticating to Salesforce");
-        const client = new Connection(opts);
+      logger.info("Authenticating/Reauthenticating to Salesforce");
 
-        const data = await client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
-          if (err) {
-            logger.error({ message: "Error authenticating to Salesforce" });
-            reject(err);
-          }
+      // Create the initial connection using full credentials.
+      // Make sure opts includes refreshToken, clientId, and clientSecret.
+      const client = new Connection(opts);
+
+      try {
+        // Wrap the callback-based refreshToken method into a Promise.
+        const data = await new Promise<any>((resolve, reject) => {
+          client.oauth2.refreshToken(opts.refreshToken, (err, res) => {
+            if (err) {
+              logger.error({ message: "Error refreshing token", err });
+              return reject(err);
+            }
+            resolve(res);
+          });
         });
+
+        // Instead of creating a new connection, update the existing connection.
+        client.accessToken = data.access_token;
+        client.instanceUrl = data.instance_url;
 
         logger.debug(`Salesforce OAuth2 Refreshed: ${JSON.stringify(data, null, 2)}`);
-
-        const newClient = new Connection({
-          accessToken: data.access_token,
-          instanceUrl: data["instance_url"],
-        });
-
         logger.info("Authentication/Reauthentication Successful");
 
-        resolve(newClient);
-      });
+        return client;
+      } catch (err) {
+        logger.error({ message: "Error authenticating to Salesforce", err });
+        throw err;
+      }
     },
   };
 };
