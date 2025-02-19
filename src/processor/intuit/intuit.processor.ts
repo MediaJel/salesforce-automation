@@ -368,9 +368,9 @@ const createIntuitProcessor = async () => {
         const result = await salesforce.mutation.updateOpportunity({
           Id: opportunityId,
           AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
-          ...(!isProduction && { QBO_Oppty_ID_Staging__c: Id }),
+          ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
           //* Only mutate this field in production
-          ...(isProduction && { AVFSQB__Quickbooks_Id__c: Id }),
+          ...(isProduction && { AVFSQB__Quickbooks_Id__c: estimate.Id }),
         });
 
         logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
