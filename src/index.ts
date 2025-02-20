@@ -7,8 +7,9 @@ const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);
 
 const startApp = async () => {
-  const app = await createApp(config);
   tracer.start();
+  const app = await createApp(config);
+
   await app.start();
 };
 

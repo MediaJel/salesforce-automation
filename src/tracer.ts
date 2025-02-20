@@ -28,8 +28,8 @@ const sdk = new opentelemetry.NodeSDK({
     new ExpressInstrumentation(),
   ],
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: "salesforce-automation",
-    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || "local",
+    [SemanticResourceAttributes.SERVICE_NAME]: 'salesforce-automation',
+    [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'local',
   }),
 });
 
