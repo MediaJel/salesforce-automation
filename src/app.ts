@@ -13,7 +13,7 @@ const createApp = async (config: Config) => {
 
   return {
     async start() {
-      await tracer.start();
+      tracer.start();
       server.start();
       await processor.listen();
     },
