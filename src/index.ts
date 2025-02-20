@@ -1,7 +1,8 @@
 import createApp from '@/app';
 import config from '@/config';
 import createLogger from '@/utils/logger';
-import tracer from "./tracer";
+import tracer from './tracer';
+
 
 const logger = createLogger("Index");
 logger.info(`Logging set to ${config.logLevel} mode`);
