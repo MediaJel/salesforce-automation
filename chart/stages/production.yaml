@@ -12,4 +12,3 @@ global:
   environment: PRODUCTION
 salesForceChannel: "live" # Must either be "live" or "test", production must use "live"
 intuitEnvironment: production
-service_name: "Salesforce Automation"

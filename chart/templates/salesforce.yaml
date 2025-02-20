@@ -82,9 +82,6 @@ spec:
             memory: |-
               {{ .Values.memoryRequest }}
         env:  
-        - name: SERVICE_NAME
-          value:  |-
-            {{ .Values.service_name }}
         - name: GRAPHQL_ENDPOINT
           value: |-
             {{ .Values.gqlEndpoint }}

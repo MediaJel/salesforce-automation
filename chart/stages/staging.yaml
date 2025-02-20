@@ -13,4 +13,3 @@ global:
   environment: STAGE
 salesForceChannel: "live" # Must either be "live" or "test", production must use "live"
 intuitEnvironment: sandbox
-service_name: "Salesforce Automation"
