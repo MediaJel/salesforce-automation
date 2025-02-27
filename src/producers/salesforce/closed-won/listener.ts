@@ -63,40 +63,119 @@ const handleResourcesHierarchy = async (opts: HandleHierarchyParams): Promise<Sa
   return resources.reverse();
 };
 
+// Helper to set up the stream listener with reconnection logic
+const setupStreamListener = async (
+  salesforce: SalesforceServiceType,
+  topic: SalesforceStreamSubscriptionParams,
+  logger: Logger,
+  handler: (opp: Opportunity) => Promise<void>,
+  config: any,
+  maxRetries = 5
+) => {
+  let retryCount = 0;
+  let streamSubscription: any = null;
+
+  const setupStream = async () => {
+    try {
+      streamSubscription = await salesforce.stream.listen<Opportunity>(topic, async (opp) => {
+        try {
+          await handler(opp);
+        } catch (error) {
+          logger.error({ message: "Error processing opportunity from stream", error });
+        }
+      });
+
+      // Reset retry count on successful connection
+      retryCount = 0;
+      logger.info(`Successfully connected to Salesforce streaming topic: ${topic}`);
+
+      // Add error and disconnect handlers
+      if (streamSubscription?.client?.stream) {
+        streamSubscription.client.stream.on("error", async (error: any) => {
+          logger.error({ message: "Stream error detected", error });
+          await reconnect();
+        });
+
+        streamSubscription.client.stream.on("disconnect", async () => {
+          logger.warn("Stream disconnected");
+          await reconnect();
+        });
+      }
+    } catch (error) {
+      logger.error({ message: "Error setting up stream listener", error });
+      await reconnect();
+    }
+  };
+
+  const reconnect = async () => {
+    if (retryCount >= maxRetries) {
+      logger.error({ message: `Max retry attempts (${maxRetries}) reached. Giving up on reconnection.` });
+      return;
+    }
+
+    retryCount++;
+    const backoffTime = Math.min(1000 * Math.pow(2, retryCount), 30000); // Exponential backoff with max of 30s
+
+    logger.info(`Attempting to reconnect in ${backoffTime}ms (attempt ${retryCount}/${maxRetries})`);
+
+    setTimeout(async () => {
+      try {
+        // Try to refresh the Salesforce connection
+        if (salesforce.reconnect) {
+          const refreshedService = await salesforce.reconnect();
+          if (refreshedService) {
+            salesforce = refreshedService;
+            logger.info("Connection refreshed, setting up stream again");
+          }
+        }
+
+        await setupStream();
+      } catch (error) {
+        logger.error({ message: "Error during reconnection attempt", error });
+        await reconnect(); // Try again
+      }
+    }, backoffTime);
+  };
+
+  await setupStream();
+  return streamSubscription;
+};
+
 const createSalesforceListener =
   (opts: StreamListener) => async (cb: (resources: SalesforceClosedWonResource[]) => void) => {
     const { condition, config, logger, topic } = opts;
 
     const salesforce = await SalesforceService(config.salesforce);
 
-    salesforce.stream.listen<Opportunity>(topic, async (opp) => {
+    const handleOpportunity = async (opp: Opportunity) => {
       if (!opp?.Deal_Signatory__c) return logger.warn("No Deal Signatory");
-      const params = { salesforce, logger, opp, cb };
 
       const products = await salesforce.query.productsByOpportunityId({
         id: opp.Id,
         where: condition ? condition : null,
-      }); // DONE
+      });
 
-      if (!products) return logger.warn(`No ${condition.Family} Products`);
+      if (!products) return logger.warn(`No ${condition?.Family} Products`);
 
-      const account = await salesforce.query.accountById(opp.AccountId); // DONE
+      const account = await salesforce.query.accountById(opp.AccountId);
       if (!account) return logger.warn("No Account");
 
-      const contact = await salesforce.query.contactById(opp.Deal_Signatory__c); // DONE
+      const contact = await salesforce.query.contactById(opp.Deal_Signatory__c);
       if (!contact) return logger.warn("No Contact");
 
-      const opportunityLineItems = await salesforce.query.opportunityLineItemByOpportunityId(opp.Id); // DONE
+      const opportunityLineItems = await salesforce.query.opportunityLineItemByOpportunityId(opp.Id);
       if (!opportunityLineItems) return logger.warn("No Opportunity Line Item");
 
       const resources = await handleResourcesHierarchy({
-        ...params,
+        salesforce,
+        logger,
         account,
         opportunity: opp,
         opportunityLineItems,
         contact: contact,
         products: products,
       });
+
       if (!resources.length) return;
 
       // TODO: Remove this
@@ -118,6 +197,10 @@ const createSalesforceListener =
       });
 
       cb(sorted);
-    });
+    };
+
+    // Set up the stream with reconnection logic
+    await setupStreamListener(salesforce, topic, logger, handleOpportunity, config);
   };
+
 export default createSalesforceListener;
