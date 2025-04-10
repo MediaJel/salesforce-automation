@@ -5,7 +5,7 @@ import createIntuitService, { IntuitService } from '@/services/intuit/service';
 import SalesforceService from '@/services/salesforce';
 import createLogger from '@/utils/logger';
 import {
-    Account, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
+    Account, ItemRef, Product, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
     QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
     SalesforceClosedWonResource
 } from '@/utils/types';
@@ -199,29 +199,21 @@ const processCustomerHierarchy = async (
   return customers;
 };
 
-const processEstimate = async (
+const processItemRef = async (
   service: IntuitService,
-  customer: QuickbooksCustomer,
-  resource: SalesforceClosedWonResource
-): Promise<QuickbooksEstimate & { opportunityId: string }> => {
-  const { opportunity, account, contact, opportunityLineItems, products } = resource;
+  product: Product
+): Promise<ItemRef> => {
+  let itemRef: ItemRef | null = null;
 
-  const linesPromises = opportunityLineItems.map(async (opportunityLineItem, i) => {
-    const DEFAULT_ITEM_REF = {
-      name: "Services",
-      value: "1",
-    };
-    let itemRef: { name: string; value: string } | null = null;
-
-    logger.debug(`Finding item with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
+  logger.debug(`Finding item with Quickbooks ID: ${product["AVSFQB__Quickbooks_Id__c"]}`);
 
     const id = [];
-    products[i]["AVSFQB__Quickbooks_Id__c"] &&
-      id.push({ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] });
+    product["AVSFQB__Quickbooks_Id__c"] &&
+      id.push({ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] });
 
     id.length > 0 &&
       (await service.items
-        .find([{ field: "Id", operator: "=", value: products[i]["AVSFQB__Quickbooks_Id__c"] }])
+        .find([{ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] }])
         .then((items) => {
           if (items?.QueryResponse?.Item?.length >= 1) {
             logger.info(`Items found via Quickbooks ID in salesforce: ${JSON.stringify(items, null, 2)}`);
@@ -235,14 +227,14 @@ const processEstimate = async (
           logger.error({ message: "Error finding item by Quickbooks ID", err });
         }));
 
-    if (!id) logger.warn(`No Quickbooks ID found for product: ${products[i].Name}`);
+    if (!id) logger.warn(`No Quickbooks ID found for product: ${product.Name}`);
 
     if (!itemRef) {
-      logger.warn(`Item not found with ID, finding by Sku: ${products[i].Name}`);
-      logger.debug(`Finding item by SKU: ${products[i].ProductCode}`);
+      logger.warn(`Item not found with ID, finding by Sku: ${product.Name}`);
+      logger.debug(`Finding item by SKU: ${product.ProductCode}`);
 
       await service.items
-        .find([{ field: "Sku", operator: "LIKE", value: products[i].ProductCode }])
+        .find([{ field: "Sku", operator: "LIKE", value: product.ProductCode }])
         .then((items) => {
           if (items?.QueryResponse?.Item?.length >= 1) {
             logger.info(`Items found via Sku: ${JSON.stringify(items, null, 2)}`);
@@ -258,10 +250,10 @@ const processEstimate = async (
     }
 
     if (!itemRef) {
-      logger.warn(`Item not found with Quickbooks ID: ${products[i]["AVSFQB__Quickbooks_Id__c"]}`);
-      logger.debug(`Finding item with Name: ${products[i].Name}`);
+      logger.warn(`Item not found with Quickbooks ID: ${product["AVSFQB__Quickbooks_Id__c"]}`);
+      logger.debug(`Finding item with Name: ${product.Name}`);
       await service.items
-        .find([{ field: "Name", operator: "LIKE", value: products[i].Name }])
+        .find([{ field: "Name", operator: "LIKE", value: product.Name }])
         .then((items) => {
           if (items?.QueryResponse?.Item?.length >= 1) {
             logger.info(`Items found via Name: ${JSON.stringify(items, null, 2)}`);
@@ -277,7 +269,53 @@ const processEstimate = async (
     }
 
     if (!itemRef) {
-      logger.warn(`Item not found with SKU: ${products[i].ProductCode}`);
+      logger.warn(`Item not found with SKU: ${product.ProductCode}`);
+    }
+
+  return itemRef;
+}
+
+
+const processEstimate = async (
+  service: IntuitService,
+  customer: QuickbooksCustomer,
+  resource: SalesforceClosedWonResource
+): Promise<QuickbooksEstimate & { opportunityId: string } & { productError: Boolean }> => {
+  const { opportunity, account, contact, opportunityLineItems, products } = resource;
+  let productError = false;
+  const linesPromises = opportunityLineItems.map(async (opportunityLineItem, i) => {
+    const DEFAULT_ITEM_REF: ItemRef = {
+      name: "Services",
+      value: "1",
+    };
+    // Check if the product exists in the products array
+    // const DEFAULT_PRODUCT = {
+    //   attributes: {
+    //     type: 'Product2',
+    //     url: '/services/data/v56.0/sobjects/Product2/01t6g000005a2aBAAQ'
+    //   },
+    //   Id: '01t6g000005a2aBAAQ',
+    //   Name: 'Standard Display Awareness',
+    //   Family: 'Display Advertising',
+    //   Description: 'Static and animated banners with standard targeting including up to 10% retargeting impressions. Monthly Media Buy Budget (CPM)',
+    //   ProductCode: 'MB-DIS-DISP-ATRG',
+    //   AVSFQB__Quickbooks_Id__c: '73'
+    // }
+
+    // check if the product exists in the products array, if not use the default item ref
+    const isProductAvailable = !!products[i];
+    const itemRef = isProductAvailable ? await processItemRef(service, products[i]).catch((err) => {
+      logger.error({ message: "Error finding item", err });
+      return null;
+    }) : null;
+
+    if(!opportunityLineItem.ServiceDate){
+      logger.warn(`ServiceDate not found for opportunity line item: ${opportunityLineItem.Id}`);
+    }
+
+    if (!isProductAvailable || !itemRef) {
+      productError = true;
+      logger.warn(`Product not found for opportunity line item: ${opportunityLineItem.Id}`);
       logger.warn(`Using default item: ${DEFAULT_ITEM_REF.name}`);
     }
 
@@ -290,6 +328,7 @@ const processEstimate = async (
         Qty: opportunityLineItem.Quantity,
         UnitPrice: opportunityLineItem.UnitPrice,
         ItemRef: itemRef || DEFAULT_ITEM_REF,
+        ServiceDate: opportunityLineItem.ServiceDate,
       },
     };
   });
@@ -346,7 +385,7 @@ const processEstimate = async (
 
   logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
 
-  return { ...estimate, opportunityId: resource.opportunity.Id };
+  return { ...estimate, opportunityId: resource.opportunity.Id, productError };
 };
 
 const createIntuitProcessor = async () => {
@@ -367,7 +406,7 @@ const createIntuitProcessor = async () => {
         const { opportunityId, Id } = estimate;
         const result = await salesforce.mutation.updateOpportunity({
           Id: opportunityId,
-          AVSFQB__QB_ERROR__C: "Estimate Created by Engineering",
+          AVSFQB__QB_ERROR__C: estimate.productError ? `Error! Please double check Products in Quickbooks Estimate: txnId=` + estimate.Id : "Estimate Created by Engineering",
           ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
           //* Only mutate this field in production
           ...(isProduction && { AVFSQB__Quickbooks_Id__c: estimate.Id }),

@@ -211,6 +211,10 @@ interface QuickbooksEstimateLineInput {
   Amount: number;
   Id?: string;
 }
+export interface ItemRef {
+  name: string;
+  value: string;
+}
 
 interface QuickbooksSalesItemLineDetailInput {
   TaxCodeRef: {
@@ -218,10 +222,7 @@ interface QuickbooksSalesItemLineDetailInput {
   };
   Qty: number;
   UnitPrice: number;
-  ItemRef: {
-    name: string;
-    value: string;
-  };
+  ItemRef: ItemRef;
 }
 
 interface QuickbooksDiscountLineDetailInput {
