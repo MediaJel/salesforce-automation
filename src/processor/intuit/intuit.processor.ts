@@ -1,15 +1,22 @@
-import { log } from 'console';
+import { log } from "console";
 
-import config from '@/config';
-import createIntuitService, { IntuitService } from '@/services/intuit/service';
-import SalesforceService from '@/services/salesforce';
-import createLogger from '@/utils/logger';
+import config from "@/config";
+import createIntuitService, { IntuitService } from "@/services/intuit/service";
+import SalesforceService from "@/services/salesforce";
+import createLogger from "@/utils/logger";
 import {
-    Account, ItemRef, Product, QuickbooksCreateCustomerInput, QuickbooksCreateEstimateInput, QuickbooksCustomer,
-    QuickbooksEstimate, QuickbooksEstimateResponse, QuickbooksFindCustomersInput,
-    SalesforceClosedWonResource
-} from '@/utils/types';
-import { isProduction } from '@/utils/utils';
+  Account,
+  ItemRef,
+  Product,
+  QuickbooksCreateCustomerInput,
+  QuickbooksCreateEstimateInput,
+  QuickbooksCustomer,
+  QuickbooksEstimate,
+  QuickbooksEstimateResponse,
+  QuickbooksFindCustomersInput,
+  SalesforceClosedWonResource,
+} from "@/utils/types";
+import { isProduction } from "@/utils/utils";
 
 const logger = createLogger("Intuit Processor");
 
@@ -131,7 +138,7 @@ const processCustomerHierarchy = async (
   const customers = [];
 
   for (const resource of resources) {
-    const { account, parent } = resource;
+    const { account, parent, contact } = resource;
     const accountProducerId = isProduction ? account?.AVSFQB__Quickbooks_Id__c : account.QBO_Account_ID_Staging__c;
 
     if (parent?.Id) {
@@ -178,6 +185,9 @@ const processCustomerHierarchy = async (
     const customer = await processCustomer(service, accountProducerId, account.Id, {
       DisplayName: account.Name,
       CompanyName: account.Name,
+      PrimaryEmailAddr: {
+        Address: contact.Email,
+      },
       BillAddr: {
         City: account.BillingCity,
         Line1: account.BillingStreet,
@@ -199,82 +209,78 @@ const processCustomerHierarchy = async (
   return customers;
 };
 
-const processItemRef = async (
-  service: IntuitService,
-  product: Product
-): Promise<ItemRef> => {
+const processItemRef = async (service: IntuitService, product: Product): Promise<ItemRef> => {
   let itemRef: ItemRef | null = null;
 
   logger.debug(`Finding item with Quickbooks ID: ${product["AVSFQB__Quickbooks_Id__c"]}`);
 
-    const id = [];
-    product["AVSFQB__Quickbooks_Id__c"] &&
-      id.push({ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] });
+  const id = [];
+  product["AVSFQB__Quickbooks_Id__c"] &&
+    id.push({ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] });
 
-    id.length > 0 &&
-      (await service.items
-        .find([{ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] }])
-        .then((items) => {
-          if (items?.QueryResponse?.Item?.length >= 1) {
-            logger.info(`Items found via Quickbooks ID in salesforce: ${JSON.stringify(items, null, 2)}`);
-            itemRef = {
-              name: items.QueryResponse.Item[0].Name,
-              value: items.QueryResponse.Item[0].Id,
-            };
-          }
-        })
-        .catch((err) => {
-          logger.error({ message: "Error finding item by Quickbooks ID", err });
-        }));
+  id.length > 0 &&
+    (await service.items
+      .find([{ field: "Id", operator: "=", value: product["AVSFQB__Quickbooks_Id__c"] }])
+      .then((items) => {
+        if (items?.QueryResponse?.Item?.length >= 1) {
+          logger.info(`Items found via Quickbooks ID in salesforce: ${JSON.stringify(items, null, 2)}`);
+          itemRef = {
+            name: items.QueryResponse.Item[0].Name,
+            value: items.QueryResponse.Item[0].Id,
+          };
+        }
+      })
+      .catch((err) => {
+        logger.error({ message: "Error finding item by Quickbooks ID", err });
+      }));
 
-    if (!id) logger.warn(`No Quickbooks ID found for product: ${product.Name}`);
+  if (!id) logger.warn(`No Quickbooks ID found for product: ${product.Name}`);
 
-    if (!itemRef) {
-      logger.warn(`Item not found with ID, finding by Sku: ${product.Name}`);
-      logger.debug(`Finding item by SKU: ${product.ProductCode}`);
+  if (!itemRef) {
+    logger.warn(`Item not found with ID, finding by Sku: ${product.Name}`);
+    logger.debug(`Finding item by SKU: ${product.ProductCode}`);
 
-      await service.items
-        .find([{ field: "Sku", operator: "LIKE", value: product.ProductCode }])
-        .then((items) => {
-          if (items?.QueryResponse?.Item?.length >= 1) {
-            logger.info(`Items found via Sku: ${JSON.stringify(items, null, 2)}`);
-            itemRef = {
-              name: items.QueryResponse.Item[0].Name,
-              value: items.QueryResponse.Item[0].Id,
-            };
-          }
-        })
-        .catch((err) => {
-          logger.error({ message: "Error finding item by SKU", err });
-        });
-    }
+    await service.items
+      .find([{ field: "Sku", operator: "LIKE", value: product.ProductCode }])
+      .then((items) => {
+        if (items?.QueryResponse?.Item?.length >= 1) {
+          logger.info(`Items found via Sku: ${JSON.stringify(items, null, 2)}`);
+          itemRef = {
+            name: items.QueryResponse.Item[0].Name,
+            value: items.QueryResponse.Item[0].Id,
+          };
+        }
+      })
+      .catch((err) => {
+        logger.error({ message: "Error finding item by SKU", err });
+      });
+  }
 
-    if (!itemRef) {
-      logger.warn(`Item not found with Quickbooks ID: ${product["AVSFQB__Quickbooks_Id__c"]}`);
-      logger.debug(`Finding item with Name: ${product.Name}`);
-      await service.items
-        .find([{ field: "Name", operator: "LIKE", value: product.Name }])
-        .then((items) => {
-          if (items?.QueryResponse?.Item?.length >= 1) {
-            logger.info(`Items found via Name: ${JSON.stringify(items, null, 2)}`);
-            itemRef = {
-              name: items.QueryResponse.Item[0].Name,
-              value: items.QueryResponse.Item[0].Id,
-            };
-          }
-        })
-        .catch((err) => {
-          logger.error({ message: "Error finding item by Name", err });
-        });
-    }
+  if (!itemRef) {
+    logger.warn(`Item not found with Quickbooks ID: ${product["AVSFQB__Quickbooks_Id__c"]}`);
+    logger.debug(`Finding item with Name: ${product.Name}`);
+    await service.items
+      .find([{ field: "Name", operator: "LIKE", value: product.Name }])
+      .then((items) => {
+        if (items?.QueryResponse?.Item?.length >= 1) {
+          logger.info(`Items found via Name: ${JSON.stringify(items, null, 2)}`);
+          itemRef = {
+            name: items.QueryResponse.Item[0].Name,
+            value: items.QueryResponse.Item[0].Id,
+          };
+        }
+      })
+      .catch((err) => {
+        logger.error({ message: "Error finding item by Name", err });
+      });
+  }
 
-    if (!itemRef) {
-      logger.warn(`Item not found with SKU: ${product.ProductCode}`);
-    }
+  if (!itemRef) {
+    logger.warn(`Item not found with SKU: ${product.ProductCode}`);
+  }
 
   return itemRef;
-}
-
+};
 
 const processEstimate = async (
   service: IntuitService,
@@ -304,12 +310,14 @@ const processEstimate = async (
 
     // check if the product exists in the products array, if not use the default item ref
     const isProductAvailable = !!products[i];
-    const itemRef = isProductAvailable ? await processItemRef(service, products[i]).catch((err) => {
-      logger.error({ message: "Error finding item", err });
-      return null;
-    }) : null;
+    const itemRef = isProductAvailable
+      ? await processItemRef(service, products[i]).catch((err) => {
+          logger.error({ message: "Error finding item", err });
+          return null;
+        })
+      : null;
 
-    if(!opportunityLineItem.ServiceDate){
+    if (!opportunityLineItem.ServiceDate) {
       logger.warn(`ServiceDate not found for opportunity line item: ${opportunityLineItem.Id}`);
     }
 
@@ -406,7 +414,9 @@ const createIntuitProcessor = async () => {
         const { opportunityId, Id } = estimate;
         const result = await salesforce.mutation.updateOpportunity({
           Id: opportunityId,
-          AVSFQB__QB_ERROR__C: estimate.productError ? `Error! Please double check Products in Quickbooks Estimate: txnId=` + estimate.Id : "Estimate Created by Engineering",
+          AVSFQB__QB_ERROR__C: estimate.productError
+            ? `Error! Please double check Products in Quickbooks Estimate: txnId=` + estimate.Id
+            : "Estimate Created by Engineering",
           ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
           //* Only mutate this field in production
           ...(isProduction && { AVFSQB__Quickbooks_Id__c: estimate.Id }),
