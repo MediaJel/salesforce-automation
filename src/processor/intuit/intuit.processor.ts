@@ -165,6 +165,9 @@ const processCustomerHierarchy = async (
       await processCustomer(service, accountProducerId, account.Id, {
         DisplayName: account.Name,
         CompanyName: account.Name,
+        PrimaryEmailAddr: {
+          Address: contact.Email,
+        },
         BillAddr: {
           City: account.BillingCity,
           Line1: account.BillingStreet,
