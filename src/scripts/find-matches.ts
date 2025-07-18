@@ -7,6 +7,8 @@ import { json2csv } from "json-2-csv";
 import fs from "fs";
 import { retryWithBackoff } from "@/utils/retry-with-backoff";
 import { processBatch } from "@/utils/process-batch";
+import { sleep } from "@/utils/utils";
+import { ProgressIndicator } from "@/utils/progress-indicator";
 
 interface GetAccountsWithNoQuickbooksIdReturnType extends QueryAttribute {
   Id: string;
@@ -74,6 +76,22 @@ const main = async () => {
   const salesforce = await createSalesforceService(config.salesforce);
   const quickbooks = await createIntuitService(config.intuit);
 
+  //! Stage 0: Jake's request
+
+  // const accountsWithQuickbooksId = await salesforce.query.soql<GetAccountsWithNoQuickbooksIdReturnType>(
+  //   "SELECT Id, Name, AVSFQB__Quickbooks_Id__c FROM Account WHERE AVSFQB__Quickbooks_Id__c != null"
+  // );
+
+  // const accountsWithQuickbooksIdCsv = json2csv(
+  //   accountsWithQuickbooksId.map((account) => ({
+  //     salesforceId: account.Id,
+  //     salesforceName: account.Name,
+  //     quickbooksId: account.AVSFQB__Quickbooks_Id__c,
+  //   }))
+  // );
+  // fs.writeFileSync("accounts-with-quickbooks-id.csv", accountsWithQuickbooksIdCsv);
+
+  //! Stage 1: Find accounts with no Quickbooks ID
   const accountsWithNoQuickbooksId = await salesforce.query.soql<GetAccountsWithNoQuickbooksIdReturnType>(
     "SELECT Id, Name, AVSFQB__Quickbooks_Id__c FROM Account WHERE AVSFQB__Quickbooks_Id__c = null"
   );
@@ -92,6 +110,43 @@ const main = async () => {
   const csv = json2csv(sorted);
 
   fs.writeFileSync("matches.csv", csv);
+
+  // //! Stage 2: Update the accounts with the Quickbooks ID
+  const matchedAccounts = sorted.filter((result) => result.withMatch);
+
+  if (matchedAccounts.length === 0) {
+    console.log("No matched accounts to update.");
+    return;
+  }
+
+  const updateProgress = new ProgressIndicator(matchedAccounts.length, {
+    title: "Stage 2: Updating accounts with Quickbooks IDs",
+    showProgressBar: true,
+    showTimeEstimates: true,
+    showPercentage: true,
+    showCount: true,
+  });
+
+  for (const account of matchedAccounts) {
+    try {
+      await sleep(500);
+
+      await salesforce.mutation.updateAccount({
+        Id: account.salesforceId,
+        AVSFQB__Quickbooks_Id__c: account.quickbooksId,
+      });
+
+      updateProgress.success(account.salesforceName);
+    } catch (error) {
+      updateProgress.failure(account.salesforceName);
+      logger.error({ message: `Failed to update account`, error, account });
+    }
+  }
+
+  updateProgress.complete();
 };
 
-main();
+main().then(() => {
+  console.log("Done");
+  process.exit(0);
+});
