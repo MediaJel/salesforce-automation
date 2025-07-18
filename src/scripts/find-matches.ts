@@ -109,41 +109,41 @@ const main = async () => {
   const sorted = results.sort((a, b) => Number(b.withMatch) - Number(a.withMatch));
   const csv = json2csv(sorted);
 
-  fs.writeFileSync("matches.csv", csv);
+  fs.writeFileSync("matches-updated.csv", csv);
 
-  // //! Stage 2: Update the accounts with the Quickbooks ID
-  const matchedAccounts = sorted.filter((result) => result.withMatch);
+  // // //! Stage 2: Update the accounts with the Quickbooks ID
+  // const matchedAccounts = sorted.filter((result) => result.withMatch);
 
-  if (matchedAccounts.length === 0) {
-    console.log("No matched accounts to update.");
-    return;
-  }
+  // if (matchedAccounts.length === 0) {
+  //   console.log("No matched accounts to update.");
+  //   return;
+  // }
 
-  const updateProgress = new ProgressIndicator(matchedAccounts.length, {
-    title: "Stage 2: Updating accounts with Quickbooks IDs",
-    showProgressBar: true,
-    showTimeEstimates: true,
-    showPercentage: true,
-    showCount: true,
-  });
+  // const updateProgress = new ProgressIndicator(matchedAccounts.length, {
+  //   title: "Stage 2: Updating accounts with Quickbooks IDs",
+  //   showProgressBar: true,
+  //   showTimeEstimates: true,
+  //   showPercentage: true,
+  //   showCount: true,
+  // });
 
-  for (const account of matchedAccounts) {
-    try {
-      await sleep(500);
+  // for (const account of matchedAccounts) {
+  //   try {
+  //     await sleep(500);
 
-      await salesforce.mutation.updateAccount({
-        Id: account.salesforceId,
-        AVSFQB__Quickbooks_Id__c: account.quickbooksId,
-      });
+  //     await salesforce.mutation.updateAccount({
+  //       Id: account.salesforceId,
+  //       AVSFQB__Quickbooks_Id__c: account.quickbooksId,
+  //     });
 
-      updateProgress.success(account.salesforceName);
-    } catch (error) {
-      updateProgress.failure(account.salesforceName);
-      logger.error({ message: `Failed to update account`, error, account });
-    }
-  }
+  //     updateProgress.success(account.salesforceName);
+  //   } catch (error) {
+  //     updateProgress.failure(account.salesforceName);
+  //     logger.error({ message: `Failed to update account`, error, account });
+  //   }
+  // }
 
-  updateProgress.complete();
+  // updateProgress.complete();
 };
 
 main().then(() => {
