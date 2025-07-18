@@ -16,6 +16,35 @@ const intuitOAuth2 = new intuitOAuth2Client({
 
 const logger = createLogger("Intuit Auth");
 
+interface CreateQuickbooksClientInput {
+  consumerKey: string;
+  consumerSecret: string;
+  accessToken: string;
+  withTokenSecret: boolean;
+  realmId: string;
+  useSandbox: boolean;
+  enableDebugging: boolean;
+  minorVersion: string;
+  oAuthVersion: string;
+  refreshToken: string;
+}
+const createQuickbooksClient = (input: CreateQuickbooksClientInput) => {
+  logger.info(`Creating Quickbooks client with input: ${JSON.stringify(input, null, 2)}`);
+
+  return new Quickbooks(
+    input.consumerKey,
+    input.consumerSecret,
+    input.accessToken,
+    input.withTokenSecret,
+    input.realmId,
+    input.useSandbox,
+    input.enableDebugging,
+    input.minorVersion,
+    input.oAuthVersion,
+    input.refreshToken
+  );
+};
+
 const createIntuitAuth = () => {
   return {
     async authenticate(input: CreateIntuitServiceInput) {
@@ -42,19 +71,20 @@ const createIntuitAuth = () => {
         //* Add a 5 minute buffer to the token expiration
         if (cachedTokens.createdAt + cachedTokens.expires_in * 1000 - 600000 > Date.now()) {
           logger.debug("Intuit tokens not expired, using cached tokens");
+
           return resolve(
-            new Quickbooks(
+            createQuickbooksClient({
               consumerKey,
               consumerSecret,
-              cachedTokens.access_token,
+              accessToken: cachedTokens.access_token,
               withTokenSecret,
-              input.realmId,
+              realmId: input.realmId,
               useSandbox,
               enableDebugging,
               minorVersion,
               oAuthVersion,
-              cachedTokens.refresh_token
-            )
+              refreshToken: cachedTokens.refresh_token,
+            })
           );
         }
 
@@ -74,18 +104,18 @@ const createIntuitAuth = () => {
         logger.debug(`Intuit OAuth2 Refreshed: ${JSON.stringify(auth.token, null, 2)}`);
 
         return resolve(
-          new Quickbooks(
+          createQuickbooksClient({
             consumerKey,
             consumerSecret,
-            auth.token.access_token,
+            accessToken: auth.token.access_token,
             withTokenSecret,
-            input.realmId,
+            realmId: input.realmId,
             useSandbox,
             enableDebugging,
             minorVersion,
             oAuthVersion,
-            auth.token.refresh_token
-          )
+            refreshToken: auth.token.refresh_token,
+          })
         );
       });
     },

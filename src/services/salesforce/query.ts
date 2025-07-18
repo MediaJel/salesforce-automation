@@ -1,10 +1,15 @@
-import { Connection } from 'jsforce';
+import { Connection } from "jsforce";
 
 import {
-    Account, Contact, Logger, OpportunityLineItem, Product, ProductsByOpportunityIdParams,
-    QueryAttribute
-} from '@/utils/types';
-import { isProduction, match } from '@/utils/utils';
+  Account,
+  Contact,
+  Logger,
+  OpportunityLineItem,
+  Product,
+  ProductsByOpportunityIdParams,
+  QueryAttribute,
+} from "@/utils/types";
+import { isProduction, match } from "@/utils/utils";
 
 const query = <T extends QueryAttribute>(client: Connection, query: string) => {
   return new Promise<T[]>((resolve, reject) => {
@@ -19,6 +24,10 @@ const query = <T extends QueryAttribute>(client: Connection, query: string) => {
 
 const createSalesforceQueries = (client: Connection, logger: Logger) => {
   return {
+    soql: async <T extends QueryAttribute>(soql: string): Promise<T[]> => {
+      const result = await query<T>(client, soql);
+      return result;
+    },
     opportunityLineItemByOpportunityId: async (id: string): Promise<OpportunityLineItem[]> => {
       const soql = `SELECT Id,Name, Quantity, ServiceDate, UnitPrice, TotalPrice, Description, AVSFQB__Quickbooks_Id__c FROM OpportunityLineItem WHERE OpportunityId = '${id}'`;
 
