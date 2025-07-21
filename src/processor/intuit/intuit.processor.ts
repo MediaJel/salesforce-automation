@@ -17,6 +17,7 @@ import {
   SalesforceClosedWonResource,
 } from "@/utils/types";
 import { isProduction } from "@/utils/utils";
+import { Job } from "bull";
 
 const logger = createLogger("Intuit Processor");
 
@@ -133,36 +134,72 @@ const processCustomer = async (
 
 const processCustomerHierarchy = async (
   service: IntuitService,
-  resources: SalesforceClosedWonResource[]
+  resources: SalesforceClosedWonResource[],
+  job: Job
 ): Promise<QuickbooksCustomer[]> => {
   const customers = [];
 
-  for (const resource of resources) {
+  job.log(`Starting customer hierarchy processing for ${resources.length} resources`);
+
+  for (const [index, resource] of resources.entries()) {
     const { account, parent, contact } = resource;
     const accountProducerId = isProduction ? account?.AVSFQB__Quickbooks_Id__c : account.QBO_Account_ID_Staging__c;
 
-    if (parent?.Id) {
-      logger.warn(`Parent exists for account: ${account.Name}`);
-      const parentProducerId = isProduction ? parent?.AVSFQB__Quickbooks_Id__c : parent.QBO_Account_ID_Staging__c;
+    job.log(`Processing customer ${index + 1}/${resources.length}: ${account.Name}`);
 
-      const parentCustomer = await processCustomer(service, parentProducerId, parent.Id, {
-        DisplayName: parent.Name,
-        CompanyName: parent.Name,
-        BillAddr: {
-          City: parent.BillingCity,
-          Line1: parent.BillingStreet,
-          PostalCode: parent?.BillingPostalCode?.toString(),
-          Lat: parent.BillingLatitude?.toString(),
-          Long: parent.BillingLongitude?.toString(),
-          CountrySubDivisionCode: parent.BillingCountry,
-        },
-      });
-      if (!parentCustomer) {
-        logger.error({ message: "Parent customer not created" });
-        return null;
+    try {
+      if (parent?.Id) {
+        job.log(`Processing parent customer for account: ${account.Name}`);
+        logger.warn(`Parent exists for account: ${account.Name}`);
+        const parentProducerId = isProduction ? parent?.AVSFQB__Quickbooks_Id__c : parent.QBO_Account_ID_Staging__c;
+
+        const parentCustomer = await processCustomer(service, parentProducerId, parent.Id, {
+          DisplayName: parent.Name,
+          CompanyName: parent.Name,
+          BillAddr: {
+            City: parent.BillingCity,
+            Line1: parent.BillingStreet,
+            PostalCode: parent?.BillingPostalCode?.toString(),
+            Lat: parent.BillingLatitude?.toString(),
+            Long: parent.BillingLongitude?.toString(),
+            CountrySubDivisionCode: parent.BillingCountry,
+          },
+        });
+
+        if (!parentCustomer) {
+          const errorMsg = `Failed to create parent customer for account: ${account.Name}`;
+          logger.error({ message: errorMsg });
+          job.log(`ERROR: ${errorMsg}`);
+          job.moveToFailed({ message: errorMsg });
+          return null;
+        }
+
+        job.log(`Successfully created parent customer: ${parentCustomer.DisplayName}`);
+
+        await processCustomer(service, accountProducerId, account.Id, {
+          DisplayName: account.Name,
+          CompanyName: account.Name,
+          PrimaryEmailAddr: {
+            Address: contact.Email,
+          },
+          BillAddr: {
+            City: account.BillingCity,
+            Line1: account.BillingStreet,
+            PostalCode: account.BillingPostalCode?.toString(),
+            Lat: account.BillingLatitude?.toString(),
+            Long: account.BillingLongitude?.toString(),
+            CountrySubDivisionCode: account.BillingCountry,
+          },
+          Job: true,
+          ParentRef: {
+            value: parentCustomer.Id,
+          },
+        });
       }
 
-      await processCustomer(service, accountProducerId, account.Id, {
+      logger.info(`Account Info: ${JSON.stringify(account, null, 2)}`);
+
+      const customer = await processCustomer(service, accountProducerId, account.Id, {
         DisplayName: account.Name,
         CompanyName: account.Name,
         PrimaryEmailAddr: {
@@ -176,39 +213,29 @@ const processCustomerHierarchy = async (
           Long: account.BillingLongitude?.toString(),
           CountrySubDivisionCode: account.BillingCountry,
         },
-        Job: true,
-        ParentRef: {
-          value: parentCustomer.Id,
-        },
       });
+
+      logger.info(`Finish Customer Creation`);
+      if (!customer) {
+        const errorMsg = `Failed to create customer: ${account.Name}`;
+        logger.error({ message: errorMsg });
+        job.log(`ERROR: ${errorMsg}`);
+        job.moveToFailed({ message: errorMsg });
+        return null;
+      }
+
+      job.log(`Successfully created customer: ${customer.DisplayName}`);
+      customers.push(customer);
+    } catch (err) {
+      const errorMsg = `Error processing customer ${account.Name}: ${JSON.stringify(err, null, 2)}`;
+      logger.error({ message: errorMsg, err });
+      job.log(`ERROR: ${errorMsg}`);
+      job.moveToFailed({ message: errorMsg });
+      throw err;
     }
-
-    logger.info(`Account Info: ${JSON.stringify(account, null, 2)}`);
-
-    const customer = await processCustomer(service, accountProducerId, account.Id, {
-      DisplayName: account.Name,
-      CompanyName: account.Name,
-      PrimaryEmailAddr: {
-        Address: contact.Email,
-      },
-      BillAddr: {
-        City: account.BillingCity,
-        Line1: account.BillingStreet,
-        PostalCode: account.BillingPostalCode?.toString(),
-        Lat: account.BillingLatitude?.toString(),
-        Long: account.BillingLongitude?.toString(),
-        CountrySubDivisionCode: account.BillingCountry,
-      },
-    });
-
-    logger.info(`Finish Customer Creation`);
-    if (!customer) {
-      logger.error({ message: "Customer not created" });
-      return null;
-    }
-    customers.push(customer);
   }
 
+  job.log(`Customer hierarchy processing completed. Created ${customers.length} customers`);
   return customers;
 };
 
@@ -288,134 +315,169 @@ const processItemRef = async (service: IntuitService, product: Product): Promise
 const processEstimate = async (
   service: IntuitService,
   customer: QuickbooksCustomer,
-  resource: SalesforceClosedWonResource
+  resource: SalesforceClosedWonResource,
+  job: Job
 ): Promise<QuickbooksEstimate & { opportunityId: string } & { productError: Boolean }> => {
   const { opportunity, account, contact, opportunityLineItems, products } = resource;
   let productError = false;
-  const linesPromises = opportunityLineItems.map(async (opportunityLineItem, i) => {
-    const DEFAULT_ITEM_REF: ItemRef = {
-      name: "Services",
-      value: "1",
+
+  job.log(`Starting estimate creation for customer: ${customer.DisplayName}, opportunity: ${opportunity.Name}`);
+
+  try {
+    job.log(`Processing ${opportunityLineItems.length} opportunity line items`);
+
+    const linesPromises = opportunityLineItems.map(async (opportunityLineItem, i) => {
+      const DEFAULT_ITEM_REF: ItemRef = {
+        name: "Services",
+        value: "1",
+      };
+
+      job.log(
+        `Processing line item ${i + 1}/${opportunityLineItems.length}: ${
+          opportunityLineItem.Description || "No description"
+        }`
+      );
+
+      // check if the product exists in the products array, if not use the default item ref
+      const isProductAvailable = !!products[i];
+      const itemRef = isProductAvailable
+        ? await processItemRef(service, products[i]).catch((err) => {
+            logger.error({ message: "Error finding item", err });
+            job.log(`Warning: Error finding item for line item ${i + 1}: ${err.message}`);
+            return null;
+          })
+        : null;
+
+      if (!opportunityLineItem.ServiceDate) {
+        logger.warn(`ServiceDate not found for opportunity line item: ${opportunityLineItem.Id}`);
+        job.log(`Warning: ServiceDate not found for line item ${i + 1}`);
+      }
+
+      if (!isProductAvailable || !itemRef) {
+        productError = true;
+        logger.warn(`Product not found for opportunity line item: ${opportunityLineItem.Id}`);
+        logger.warn(`Using default item: ${DEFAULT_ITEM_REF.name}`);
+        job.log(`Warning: Product not found for line item ${i + 1}, using default item: ${DEFAULT_ITEM_REF.name}`);
+      }
+
+      return {
+        Id: (i + 1).toString(),
+        DetailType: "SalesItemLineDetail",
+        Amount: opportunityLineItem.TotalPrice,
+        Description: opportunityLineItem.Description,
+        SalesItemLineDetail: {
+          Qty: opportunityLineItem.Quantity,
+          UnitPrice: opportunityLineItem.UnitPrice,
+          ItemRef: itemRef || DEFAULT_ITEM_REF,
+          ServiceDate: opportunityLineItem.ServiceDate,
+        },
+      };
+    });
+
+    const lines = await Promise.all(linesPromises);
+    job.log(`Successfully processed all ${lines.length} line items`);
+
+    const mapping: Partial<QuickbooksCreateEstimateInput> = {
+      TotalAmt: opportunity.Amount,
+
+      BillEmail: {
+        Address: contact.Email,
+      },
+      CustomField: [
+        {
+          DefinitionId: "3",
+          Type: "StringType",
+          StringValue: opportunity.Proposal_Number__c,
+          Name: "SF Proposal Number",
+        },
+      ],
+      ShipAddr: {
+        //* TODO: Note sure if to use account.id here, was not included in the mappings,
+        Id: 69420,
+        City: account.ShippingCity || resource.parent?.ShippingCity,
+        Line1: account.ShippingStreet || resource.parent?.ShippingStreet,
+        PostalCode: account.ShippingPostalCode || resource.parent?.ShippingPostalCode,
+        Lat: account.ShippingLatitude || resource.parent?.ShippingLatitude,
+        Long: account.ShippingLongitude || resource.parent?.ShippingLongitude,
+        CountrySubDivisionCode: account.BillingCountry || resource.parent?.BillingCountry,
+      },
+      BillAddr: {
+        //* TODO: Note sure if to use account.id here, was not included in the mappings
+        Id: 69420,
+        City: account.BillingCity || resource.parent?.BillingCity,
+        Line1: account.BillingStreet || resource.parent?.BillingStreet,
+        PostalCode: parseInt(account?.BillingPostalCode || resource.parent?.BillingPostalCode || "0"),
+        Lat: account.BillingLatitude || resource.parent?.BillingLatitude,
+        Long: account.BillingLongitude || resource.parent?.BillingLongitude,
+        CountrySubDivisionCode: account.BillingCountry || resource.parent?.BillingCountry,
+      },
+      CustomerRef: {
+        name: customer.DisplayName,
+        value: customer.Id,
+      },
+
+      Line: lines,
     };
-    // Check if the product exists in the products array
-    // const DEFAULT_PRODUCT = {
-    //   attributes: {
-    //     type: 'Product2',
-    //     url: '/services/data/v56.0/sobjects/Product2/01t6g000005a2aBAAQ'
-    //   },
-    //   Id: '01t6g000005a2aBAAQ',
-    //   Name: 'Standard Display Awareness',
-    //   Family: 'Display Advertising',
-    //   Description: 'Static and animated banners with standard targeting including up to 10% retargeting impressions. Monthly Media Buy Budget (CPM)',
-    //   ProductCode: 'MB-DIS-DISP-ATRG',
-    //   AVSFQB__Quickbooks_Id__c: '73'
-    // }
 
-    // check if the product exists in the products array, if not use the default item ref
-    const isProductAvailable = !!products[i];
-    const itemRef = isProductAvailable
-      ? await processItemRef(service, products[i]).catch((err) => {
-          logger.error({ message: "Error finding item", err });
-          return null;
-        })
-      : null;
+    job.log(`Creating estimate in QuickBooks for customer: ${customer.DisplayName}`);
+    const estimate = await service.estimates.create(mapping);
 
-    if (!opportunityLineItem.ServiceDate) {
-      logger.warn(`ServiceDate not found for opportunity line item: ${opportunityLineItem.Id}`);
+    if (!estimate) {
+      const errorMsg = `Failed to create estimate for customer: ${customer.DisplayName}`;
+      logger.error({ message: errorMsg });
+      job.log(`ERROR: ${errorMsg}`);
+      job.moveToFailed({ message: errorMsg });
+      return null;
     }
 
-    if (!isProductAvailable || !itemRef) {
-      productError = true;
-      logger.warn(`Product not found for opportunity line item: ${opportunityLineItem.Id}`);
-      logger.warn(`Using default item: ${DEFAULT_ITEM_REF.name}`);
-    }
+    job.log(`Successfully created estimate with ID: ${estimate.Id} for customer: ${customer.DisplayName}`);
+    logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
 
-    return {
-      Id: (i + 1).toString(),
-      DetailType: "SalesItemLineDetail",
-      Amount: opportunityLineItem.TotalPrice,
-      Description: opportunityLineItem.Description,
-      SalesItemLineDetail: {
-        Qty: opportunityLineItem.Quantity,
-        UnitPrice: opportunityLineItem.UnitPrice,
-        ItemRef: itemRef || DEFAULT_ITEM_REF,
-        ServiceDate: opportunityLineItem.ServiceDate,
-      },
-    };
-  });
-
-  const lines = await Promise.all(linesPromises);
-
-  const mapping: Partial<QuickbooksCreateEstimateInput> = {
-    TotalAmt: opportunity.Amount,
-
-    BillEmail: {
-      Address: contact.Email,
-    },
-    CustomField: [
-      {
-        DefinitionId: "3",
-        Type: "StringType",
-        StringValue: opportunity.Proposal_Number__c,
-        Name: "SF Proposal Number",
-      },
-    ],
-    ShipAddr: {
-      //* TODO: Note sure if to use account.id here, was not included in the mappings,
-      Id: 69420,
-      City: account.ShippingCity || resource.parent?.ShippingCity,
-      Line1: account.ShippingStreet || resource.parent?.ShippingStreet,
-      PostalCode: account.ShippingPostalCode || resource.parent?.ShippingPostalCode,
-      Lat: account.ShippingLatitude || resource.parent?.ShippingLatitude,
-      Long: account.ShippingLongitude || resource.parent?.ShippingLongitude,
-      CountrySubDivisionCode: account.BillingCountry || resource.parent?.BillingCountry,
-    },
-    BillAddr: {
-      //* TODO: Note sure if to use account.id here, was not included in the mappings
-      Id: 69420,
-      City: account.BillingCity || resource.parent?.BillingCity,
-      Line1: account.BillingStreet || resource.parent?.BillingStreet,
-      PostalCode: parseInt(account?.BillingPostalCode || resource.parent?.BillingPostalCode || "0"),
-      Lat: account.BillingLatitude || resource.parent?.BillingLatitude,
-      Long: account.BillingLongitude || resource.parent?.BillingLongitude,
-      CountrySubDivisionCode: account.BillingCountry || resource.parent?.BillingCountry,
-    },
-    CustomerRef: {
-      name: customer.DisplayName,
-      value: customer.Id,
-    },
-
-    Line: lines,
-  };
-  const estimate = await service.estimates.create(mapping);
-
-  if (!estimate) {
-    logger.error({ message: "Error creating estimate" });
-    return null;
+    return { ...estimate, opportunityId: resource.opportunity.Id, productError };
+  } catch (err) {
+    const errorMsg = `Error creating estimate for customer ${customer.DisplayName}: ${JSON.stringify(err, null, 2)}`;
+    logger.error({ message: errorMsg, err });
+    job.log(`ERROR: ${errorMsg}`);
+    job.moveToFailed({ message: errorMsg });
+    throw err;
   }
-
-  logger.info(`Estimate created: ${JSON.stringify(estimate, null, 2)}`);
-
-  return { ...estimate, opportunityId: resource.opportunity.Id, productError };
 };
 
-const createIntuitProcessor = async () => {
+const createIntuitProcessor = async (job: Job) => {
   const intuitService = await createIntuitService(config.intuit);
 
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
-      try {
-        const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
-          throw new Error(`Error processing resources: ${err}`);
-        });
+      // Log to job queue if available
 
-        const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
-          throw new Error(`Error processing resources: ${err}`);
-        });
+      job.log(`Starting processing of ${resources.length} resources`);
 
-        const salesforce = await SalesforceService(config.salesforce);
-        const { opportunityId, Id } = estimate;
-        const result = await salesforce.mutation.updateOpportunity({
+      const customers = await processCustomerHierarchy(intuitService, resources, job).catch((err) => {
+        job.log(`Error processing customer hierarchy: ${JSON.stringify(err, null, 2)}`);
+        job.moveToFailed({ message: `Error processing customer hierarchy: ${JSON.stringify(err, null, 2)}` });
+      });
+
+      if (!customers) {
+        return;
+      }
+
+      job.log(`Successfully processed ${customers?.length || 0} customers`);
+
+      const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1), job).catch((err) => {
+        job.log(`Error creating estimate: ${JSON.stringify(err, null, 2)}`);
+        job.moveToFailed({ message: `Error creating estimate: ${JSON.stringify(err, null, 2)}` });
+      });
+
+      if (!estimate) {
+        return;
+      }
+
+      job.log(`Successfully created estimate with ID: ${estimate.Id}`);
+
+      const salesforce = await SalesforceService(config.salesforce);
+      const { opportunityId, Id } = estimate;
+      const result = await salesforce.mutation
+        .updateOpportunity({
           Id: opportunityId,
           AVSFQB__QB_ERROR__C: estimate.productError
             ? `Error! Please double check Products in Quickbooks Estimate: txnId=` + estimate.Id
@@ -423,14 +485,24 @@ const createIntuitProcessor = async () => {
           ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
           //* Only mutate this field in production
           ...(isProduction && { AVFSQB__Quickbooks_Id__c: estimate.Id }),
+        })
+        .catch((err) => {
+          job.log(`Error updating Salesforce opportunity: ${JSON.stringify(err, null, 2)}`);
+          job.moveToFailed({ message: `Error updating Salesforce opportunity: ${JSON.stringify(err, null, 2)}` });
         });
 
-        logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
-
-        logger.info("Completed processing resources");
-      } catch (err) {
-        logger.error({ message: "Error processing resources", err });
+      if (!result) {
+        return;
       }
+
+      job.log(`Successfully updated Salesforce opportunity: ${JSON.stringify(result, null, 2)}`);
+      logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
+
+      job.log(`Successfully updated Salesforce opportunity: ${JSON.stringify(result, null, 2)}`);
+
+      logger.info("Completed processing resources");
+
+      job.moveToCompleted("Successfully completed processing all resources");
     },
   };
 };

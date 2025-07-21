@@ -7,9 +7,9 @@ import tracer from "./tracer";
 import { Config } from "./utils/types";
 
 const createApp = async (config: Config) => {
-  const server = await createServer(config.server);
   const salesforceProducer: DataProducer = createSalesforceProducer(config);
   const processor = await createProcessor(salesforceProducer, config);
+  const server = await createServer(config.server, processor.queue);
 
   return {
     async start() {
