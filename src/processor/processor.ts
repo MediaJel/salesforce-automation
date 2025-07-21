@@ -41,7 +41,7 @@ const createProcessor = async (producer: DataProducer, config: Config) => {
             resources: candidates,
           },
           {
-            attempts: 3,
+            attempts: 1,
           }
         );
 

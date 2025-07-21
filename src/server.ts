@@ -2,9 +2,9 @@ import cors from "cors";
 import express from "express";
 import intuitOAuth2Client from "intuit-oauth";
 import jsforce from "jsforce";
-import { createBullBoard } from '@bull-board/api';
-import { BullAdapter } from '@bull-board/api/bullAdapter';
-import { ExpressAdapter } from '@bull-board/express';
+import { createBullBoard } from "@bull-board/api";
+import { BullAdapter } from "@bull-board/api/bullAdapter";
+import { ExpressAdapter } from "@bull-board/express";
 
 import cfg from "@/config";
 import { processorState } from "@/processor";
@@ -41,11 +41,11 @@ const createServer = async (config: ExpressServerConfig, queue?: any) => {
       queues: [new BullAdapter(queue)],
       serverAdapter: serverAdapter,
     });
-    
-    serverAdapter.setBasePath('/admin/queues');
-    app.use('/admin/queues', serverAdapter.getRouter());
-    
-    logger.info('Bull Board UI available at /admin/queues');
+
+    serverAdapter.setBasePath("/admin/queues");
+    app.use("/admin/queues", serverAdapter.getRouter());
+
+    logger.info("Bull Board UI available at /admin/queues");
   }
 
   const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
