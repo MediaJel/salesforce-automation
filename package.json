@@ -22,6 +22,7 @@
     "@opentelemetry/instrumentation-nestjs-core": "^0.39.0",
     "@opentelemetry/instrumentation-pino": "^0.41.0",
     "@opentelemetry/sdk-node": "^0.45.0",
+    "@types/bull": "^4.10.4",
     "@types/jsforce": "^1.11.0",
     "@types/node": "^18.11.9",
     "nodemon": "^2.0.20",
@@ -35,8 +36,10 @@
     "npm": "===> PLEASE USE YARN >=1.22.19 WHEN  INSTALLING DEPENDENCIES <==="
   },
   "dependencies": {
+    "@bull-board/express": "^6.11.1",
     "@types/express": "^4.17.14",
     "@urql/core": "^3.0.5",
+    "bull": "^4.16.5",
     "chalk": "4.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

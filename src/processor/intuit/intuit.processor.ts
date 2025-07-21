@@ -399,19 +399,38 @@ const processEstimate = async (
   return { ...estimate, opportunityId: resource.opportunity.Id, productError };
 };
 
-const createIntuitProcessor = async () => {
+const createIntuitProcessor = async (job?: any) => {
   const intuitService = await createIntuitService(config.intuit);
 
   return {
     process: async (type: string, resources: SalesforceClosedWonResource[]) => {
       try {
+        // Log to job queue if available
+        if (job) {
+          job.log(`Starting processing of ${resources.length} resources`);
+        }
+
         const customers = await processCustomerHierarchy(intuitService, resources).catch((err) => {
+          if (job) {
+            job.log(`Error processing customer hierarchy: ${err.message}`);
+          }
           throw new Error(`Error processing resources: ${err}`);
         });
 
+        if (job) {
+          job.log(`Successfully processed ${customers?.length || 0} customers`);
+        }
+
         const estimate = await processEstimate(intuitService, customers.at(-1), resources.at(-1)).catch((err) => {
+          if (job) {
+            job.log(`Error creating estimate: ${err.message}`);
+          }
           throw new Error(`Error processing resources: ${err}`);
         });
+
+        if (job) {
+          job.log(`Successfully created estimate with ID: ${estimate.Id}`);
+        }
 
         const salesforce = await SalesforceService(config.salesforce);
         const { opportunityId, Id } = estimate;
@@ -427,9 +446,20 @@ const createIntuitProcessor = async () => {
 
         logger.info(`Opportunity updated: ${JSON.stringify(result, null, 2)}`);
 
+        if (job) {
+          job.log(`Successfully updated Salesforce opportunity: ${opportunityId}`);
+        }
+
         logger.info("Completed processing resources");
+
+        if (job) {
+          job.log("Successfully completed processing all resources");
+        }
       } catch (err) {
         logger.error({ message: "Error processing resources", err });
+        if (job) {
+          job.log(`FAILED: ${JSON.stringify(err, null, 2)}`);
+        }
       }
     },
   };
