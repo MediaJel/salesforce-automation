@@ -34,6 +34,37 @@ const createServer = async (config: ExpressServerConfig, queue?: any) => {
   app.use(cors());
   const redis = await redisService();
 
+  const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.query.key === config.serverKey) {
+      return next();
+    }
+    return res.json({ message: "Invalid Key" }).status(401);
+  };
+
+  // Basic Auth middleware for Bull Board
+  const basicAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      res.setHeader("WWW-Authenticate", 'Basic realm="Bull Board Admin"');
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    const auth = authHeader.split(" ")[1];
+    const [username, password] = Buffer.from(auth, "base64").toString().split(":");
+
+    // Use config values or defaults for admin credentials
+    const adminUsername = config.serverKey;
+    const adminPassword = config.serverKey;
+
+    if (username === adminUsername && password === adminPassword) {
+      return next();
+    }
+
+    res.setHeader("WWW-Authenticate", 'Basic realm="Bull Board Admin"');
+    return res.status(401).json({ message: "Invalid credentials" });
+  };
+
   // Set up Bull Board if queue is provided
   if (queue) {
     const serverAdapter = new ExpressAdapter();
@@ -43,17 +74,10 @@ const createServer = async (config: ExpressServerConfig, queue?: any) => {
     });
 
     serverAdapter.setBasePath("/admin/queues");
-    app.use("/admin/queues", serverAdapter.getRouter());
+    app.use("/admin/queues", basicAuth, serverAdapter.getRouter());
 
-    logger.info("Bull Board UI available at /admin/queues");
+    logger.info("Bull Board UI available at /admin/queues (Basic Auth required)");
   }
-
-  const auth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.query.key === config.serverKey) {
-      return next();
-    }
-    return res.json({ message: "Invalid Key" }).status(401);
-  };
 
   app.get("/salesforce/login", (req, res) => {
     res.redirect(jsForceOAuth2.getAuthorizationUrl({ scope: "api id web refresh_token" }));
