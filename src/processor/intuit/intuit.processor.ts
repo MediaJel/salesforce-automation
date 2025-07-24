@@ -484,7 +484,7 @@ const createIntuitProcessor = async (job: Job) => {
             : "Estimate Created by Engineering",
           ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
           //* Only mutate this field in production
-          ...(isProduction && { AVFSQB__Quickbooks_Id__c: estimate.Id }),
+          ...(isProduction && { AVSFQB__Quickbooks_Id__c: estimate.Id }),
         })
         .catch((err) => {
           job.log(`Error updating Salesforce opportunity: ${JSON.stringify(err, null, 2)}`);
