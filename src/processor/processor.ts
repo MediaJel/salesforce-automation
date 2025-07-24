@@ -5,15 +5,7 @@ import { Config, DataProducer, SalesforceClosedWonResource } from "@/utils/types
 
 const logger = createLogger("Processor");
 
-const createProcessor = async (producer: DataProducer, config: Config) => {
-  // Create the Bull queue
-  const salesforceQueue = new Bull("salesforce processing", {
-    redis: {
-      host: process.env.REDIS_HOST || "localhost",
-      port: parseInt(process.env.REDIS_PORT || "6379"),
-    },
-  });
-
+const createProcessor = async (producer: DataProducer, config: Config, salesforceQueue: Bull.Queue) => {
   // Process jobs
   salesforceQueue.process("process-closed-won", async (job) => {
     const { type, resources } = job.data as { type: string; resources: SalesforceClosedWonResource[] };
@@ -48,7 +40,6 @@ const createProcessor = async (producer: DataProducer, config: Config) => {
         logger.info(`Added job ${job.id} to queue for type: All`);
       });
     },
-    queue: salesforceQueue,
   };
 };
 
