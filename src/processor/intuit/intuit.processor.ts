@@ -479,7 +479,7 @@ const createIntuitProcessor = async (job: Job) => {
       const result = await salesforce.mutation
         .updateOpportunity({
           Id: opportunityId,
-          AVSFQB__QB_ERROR__C: estimate.productError
+          AVSFQB__QB_Error__c: estimate.productError
             ? `Error! Please double check Products in Quickbooks Estimate: txnId=` + estimate.Id
             : "Estimate Created by Engineering",
           ...(!isProduction && { QBO_Oppty_ID_Staging__c: estimate.Id }),
