@@ -193,6 +193,7 @@ export interface QuickbooksCreateEstimateInput {
 interface QuickbooksAddressInput {
   City: string;
   Line1: string;
+  Line2?: string;
   PostalCode: number;
   Lat: number;
   Long: number;
@@ -483,6 +484,7 @@ export interface Account {
   ShippingLatitude: number;
   ShippingLongitude: number;
   BillingCity: string;
+  BillingState: string;
   BillingStreet: string;
   BillingPostalCode: string;
   BillingLatitude: number;

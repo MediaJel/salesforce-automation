@@ -159,6 +159,7 @@ const processCustomerHierarchy = async (
           BillAddr: {
             City: parent.BillingCity,
             Line1: parent.BillingStreet,
+            Line2: parent.BillingState,
             PostalCode: parent?.BillingPostalCode?.toString(),
             Lat: parent.BillingLatitude?.toString(),
             Long: parent.BillingLongitude?.toString(),
@@ -185,6 +186,7 @@ const processCustomerHierarchy = async (
           BillAddr: {
             City: account.BillingCity,
             Line1: account.BillingStreet,
+            Line2: account.BillingState,
             PostalCode: account.BillingPostalCode?.toString(),
             Lat: account.BillingLatitude?.toString(),
             Long: account.BillingLongitude?.toString(),
@@ -208,6 +210,7 @@ const processCustomerHierarchy = async (
         BillAddr: {
           City: account.BillingCity,
           Line1: account.BillingStreet,
+          Line2: account.BillingState,
           PostalCode: account.BillingPostalCode?.toString(),
           Lat: account.BillingLatitude?.toString(),
           Long: account.BillingLongitude?.toString(),
@@ -406,6 +409,7 @@ const processEstimate = async (
         Id: 69420,
         City: account.BillingCity || resource.parent?.BillingCity,
         Line1: account.BillingStreet || resource.parent?.BillingStreet,
+        Line2: account.BillingState || resource.parent?.BillingState,
         PostalCode: parseInt(account?.BillingPostalCode || resource.parent?.BillingPostalCode || "0"),
         Lat: account.BillingLatitude || resource.parent?.BillingLatitude,
         Long: account.BillingLongitude || resource.parent?.BillingLongitude,
