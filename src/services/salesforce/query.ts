@@ -67,7 +67,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
 
     accountByQuickbooksId: async (field: string, id: string): Promise<Account> => {
       logger.info(`Searching for account with ${field}: ${id}`);
-      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c, QBO_Account_ID_Staging__c  FROM Account WHERE ${field} = '${id}'`;
+      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingState, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c, QBO_Account_ID_Staging__c  FROM Account WHERE ${field} = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
         logger.error({ message: "Account By Quickbooks ID error", err });
         return [];
@@ -80,7 +80,7 @@ const createSalesforceQueries = (client: Connection, logger: Logger) => {
     accountById: async (id: string): Promise<Account> => {
       // if (!id) return;
       logger.info(`Searching for account with ID: ${id}`);
-      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c, QBO_Account_ID_Staging__c  FROM Account WHERE Id = '${id}'`;
+      const soql = `SELECT Id, Name, ParentId, ShippingCity, ShippingStreet, ShippingPostalCode, ShippingLatitude, ShippingLongitude, BillingCountry, BillingState, BillingCity, BillingStreet, BillingPostalCode, BillingLatitude, BillingLongitude, AVSFQB__Quickbooks_Id__c, QBO_Account_ID_Staging__c  FROM Account WHERE Id = '${id}'`;
       const [account] = await query<Account>(client, soql).catch((err) => {
         logger.error({ message: "Account By ID error", err });
         return [];
